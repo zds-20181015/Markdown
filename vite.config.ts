@@ -6,12 +6,14 @@ import electron, { onstart } from 'vite-plugin-electron'
 import pkg from './package.json'
 import { fileURLToPath, URL } from 'node:url'
 
+import vueJsx from '@vitejs/plugin-vue-jsx'
 rmSync('dist', { recursive: true, force: true }) // v14.14.0
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
+    vueJsx({}),
     electron({
       main: {
         entry: 'electron/main/index.ts',
