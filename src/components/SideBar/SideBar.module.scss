@@ -1,0 +1,54 @@
+@use 'src/styles/variables' as v;
+
+.root {
+  display: flex;
+  overflow: hidden;
+  height: 600px;
+  box-shadow: 0 2px 12px 2px #eee;
+  &.open {
+    width: 300px;
+  }
+  &.close {
+    width: 60px;
+  }
+  .icon-bar {
+    flex-basis: 60px;
+    position: relative;
+    box-sizing: border-box;
+    padding: 12px 0;
+    height: 100%;
+    background-color: #4a4a4a;
+    .icon {
+      position: relative;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .expand {
+      width: 60px;
+      height: 60px;
+      position: absolute;
+      bottom: 0;
+    }
+    svg {
+      width: 36px;
+      height: 36px;
+      color: #757575;
+      position: absolute;
+      top: 50%;
+      right: 50%;
+      transform: translate(50%, -50%);
+      &:hover {
+        color: v.$primary;
+        transition: ease-in-out 300ms;
+      }
+    }
+  }
+  .tab {
+    background-color: v.$white;
+    width: 100%;
+    overflow: hidden;
+  }
+}
