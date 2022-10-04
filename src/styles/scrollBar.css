@@ -1,0 +1,11 @@
+*::-webkit-scrollbar,
+*::-webkit-scrollbar-thumb {
+  width: 12px;
+  border-radius: 12px;
+  background-clip: padding-box;
+  background-color: rgba(128, 128, 128, 0.1);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(128, 128, 128, 0.4);
+}

@@ -35,16 +35,16 @@ export default defineComponent({
     }
 
     const tabShow = ref(true)
-    const rootStyle = computed(() => {
-      const rootState = () => (tabShow.value ? styles.open : styles.close)
-      return styles.root + ' ' + rootState()
+    const tabStyle = computed(() => {
+      const tabState = () => (tabShow.value ? styles.open : styles.close)
+      return styles.tab + ' ' + tabState()
     })
     const changeTabShow = () => {
       tabShow.value = !tabShow.value
     }
     return () => (
       <div>
-        <div class={rootStyle.value}>
+        <div class={styles.root}>
           <div class={styles['icon-bar']}>
             <Icon name="files" />
             <Icon name="toc" />
@@ -56,7 +56,7 @@ export default defineComponent({
               <ElIcons.Expand />
             </div>
           </div>
-          <div class={styles.tab} ref="tab">
+          <div class={tabStyle.value} ref="tab">
             {h(tabs[currentTab.value].component)}
           </div>
         </div>
