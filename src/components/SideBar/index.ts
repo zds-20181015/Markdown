@@ -5,4 +5,4 @@ export interface TOCTree {
   children?: TOCTree
 }
 
-export { SideBar }
+export default SideBar
