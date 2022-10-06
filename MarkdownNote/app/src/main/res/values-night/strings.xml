@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">MarkdownNote</string>
+    <string name="initNote">我的第一条Markdown笔记！</string>
+    <string name="add">添加我的Markdown笔记</string>
+    <string name="edit_markdown">编辑Markdown笔记…</string>
+    <string name="h6">H6</string>
+    <string name="h5">H5</string>
+    <string name="h4">H4</string>
+    <string name="h3">H3</string>
+    <string name="h2">H2</string>
+    <string name="h1">H1</string>
+    <string name="txt">TXT</string>
+    <string name="title">标题</string>
+    <string name="content">内容</string>
+    <string name="goBack">返回</string>
+</resources>
