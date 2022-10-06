@@ -117,7 +117,6 @@ class QuickInsert extends BaseScrollFloat {
       'muya-quick-insert',
       (reference: any, block: any, status: any) => {
         if (status) {
-          console.log(status)
           this.block = block
           this.show(reference)
           this.search(block.text.substring(1)) // remove `@` char

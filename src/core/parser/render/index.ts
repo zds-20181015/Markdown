@@ -197,7 +197,6 @@ class StateRender {
   }
 
   render(blocks: any, activeBlocks: any, matches: any) {
-    console.log('render called')
     const selector = `div#${CLASS_OR_ID.AG_EDITOR_ID}`
     const children = blocks.map((block: any) => {
       return this.renderBlock(null, block, activeBlocks, matches, true)
@@ -229,7 +228,6 @@ class StateRender {
     startKey: any,
     endKey: any
   ) {
-    console.log('partialRender called')
     const cursorOutMostBlock = activeBlocks[activeBlocks.length - 1]
     // If cursor is not in render blocks, need to render cursor block independently
     const needRenderCursorBlock = blocks.indexOf(cursorOutMostBlock) === -1
@@ -262,10 +260,8 @@ class StateRender {
     }
     nextSibling && needToRemoved.push(nextSibling)
 
-    console.log('插入的新的html:', html)
     firstOldDom.insertAdjacentHTML('beforebegin', html)
 
-    console.log('删除旧的oldDom', firstOldDom)
     Array.from(needToRemoved).forEach((dom) => (dom as any).remove())
 
     // Render cursor block independently
@@ -297,7 +293,6 @@ class StateRender {
    * @param {array} matches
    */
   singleRender(block: any, activeBlocks: any, matches: any) {
-    console.log('singleRender called')
     const selector = `#${block.key}`
     const newVdom: any = this.renderBlock(
       null,

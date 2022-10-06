@@ -1,5 +1,16 @@
 import { defineStore } from 'pinia'
 
-export const useStore = defineStore('main', {
-  // other options...
+import { reactive, ref } from 'vue'
+
+import { toTOCTree, TOCTree, TOC } from '@/components/SideBar'
+export const useTOCStore = defineStore('toc', () => {
+  const toc = reactive<any[]>([])
+  function setTOC(tocs: TOC[]) {
+    const a = toTOCTree(tocs)
+    Object.assign(toc, a)
+  }
+  return {
+    toc,
+    setTOC
+  }
 })

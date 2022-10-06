@@ -114,6 +114,11 @@ const inputCtrl = (ContentState: any) => {
     event: any,
     notEqual = false
   ) {
+    /**
+     * 发送目录信息
+     */
+    this.muya.eventCenter.dispatch('input-toc', this.getTOC())
+
     const { start, end } = selection.getCursorRange()
     if (!start || !end) {
       return
@@ -124,11 +129,6 @@ const inputCtrl = (ContentState: any) => {
     const block = this.getBlock(key)
     const paragraph: any = document.querySelector(`#${key}`)
 
-    console.clear()
-    console.log('InputEvent\n', event)
-    console.log('cursor\n', start, end, oldStart, oldEnd)
-    console.log('block\n', block)
-    console.log('paragraph\n', paragraph)
     // Fix issue 1447
     // Fixme: any better solution?
     if (
@@ -154,7 +154,6 @@ const inputCtrl = (ContentState: any) => {
       CLASS_OR_ID.AG_MATH_RENDER,
       CLASS_OR_ID.AG_RUBY_RENDER
     ])
-    console.log('text: ' + text)
 
     let needRender = false
     let needRenderAll = false
@@ -385,7 +384,6 @@ const inputCtrl = (ContentState: any) => {
       block.type === 'span' &&
       block.functionType === 'codeContent'
     ) {
-      console.log('Throttle render if edit in code block.')
       if (renderCodeBlockTimer) {
         clearTimeout(renderCodeBlockTimer)
       }
@@ -426,12 +424,6 @@ const inputCtrl = (ContentState: any) => {
       }
     }
 
-    console.log(
-      '判断渲染类型',
-      checkMarkedUpdate,
-      inlineUpdatedBlock,
-      needRender
-    )
     if (checkMarkedUpdate || inlineUpdatedBlock || needRender) {
       return needRenderAll ? this.render() : this.partialRender()
     }
