@@ -127,7 +127,6 @@ export default function renderLeafBlock(
         labels: this.labels,
         options: this.muya.options
       })
-      console.log('tokens', tokens)
       const hasReferenceTokens = hasReferenceToken(tokens)
       if (
         highlights.length === 0 &&
