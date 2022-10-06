@@ -202,7 +202,6 @@ class Keyboard {
   inputBinding() {
     const { container, eventCenter, contentState } = this.muya
     const inputHandler = (event: any) => {
-      console.log(event)
       if (!this.isComposed) {
         contentState.inputHandler(event)
         this.muya.dispatchChange()

@@ -16,6 +16,11 @@ for (const key in ElIcons) {
   app.component(key, ElIcons[key as KeyOfElIcon])
 }
 
+// pinia
+import { createPinia } from 'pinia'
+const pinia = createPinia()
+app.use(pinia)
+
 app.mount('#app').$nextTick(() => {
   postMessage({ payload: 'removeLoading' }, '*')
 })

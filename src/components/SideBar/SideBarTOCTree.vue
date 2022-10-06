@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { ElTree } from 'element-plus'
+import { useTOCStore } from '@/store'
 
 interface TOCTree {
   label: string
@@ -76,10 +77,12 @@ const defaultProps = {
 const props = defineProps<{
   toc: TOCTree[]
 }>()
+
+const tocStore = useTOCStore()
 </script>
 <template>
   <div>
-    <ElTree :data="defaultToc" :props="defaultProps" />
+    <ElTree :data="tocStore.toc" :props="defaultProps" />
   </div>
 </template>
 
