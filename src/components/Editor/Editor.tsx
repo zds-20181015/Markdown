@@ -1,8 +1,6 @@
 import { defineComponent, ref, onMounted } from 'vue'
 import styles from './Editor.module.scss'
 
-import EditorHeader from './EditorHeader'
-import EditorFooter from './EditorFooter'
 import _EditorTest from './_EditorTest'
 
 import MarkCore from '@/core'
@@ -15,9 +13,13 @@ export default defineComponent({
       console.log(editor.value)
       const mark = new MarkCore(editor?.value, {})
       mark.init()
-      const edit = document.getElementsByClassName(styles.editor)[0]
-      const basic = document.getElementsByClassName(styles.input)[0]
-      const button = document.querySelectorAll('.button')
+      const edit: HTMLDivElement = document.getElementsByClassName(
+        styles.editor
+      )[0] as HTMLDivElement
+      const basic: HTMLDivElement = document.getElementsByClassName(
+        styles.input
+      )[0] as HTMLDivElement
+      const button: any = document.querySelectorAll('.button')
       button[0].onclick = () => {
         console.log(button)
         console.log(basic.style.color)
@@ -35,12 +37,10 @@ export default defineComponent({
 
     return () => (
       <div class={styles.root}>
-        <EditorHeader />
         <ElButton class="button">更换主题</ElButton>
         <div class={styles.editor}>
           <div class={styles.input} ref={editor}></div>
         </div>
-        <EditorFooter />
       </div>
     )
   }
