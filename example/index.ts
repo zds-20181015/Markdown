@@ -1,4 +1,4 @@
-import Muya from "../lib";
+import Muya from '../lib'
 // import EmojiPicker from "../lib/ui/emojiPicker";
 // import FormatPicker from "../lib/ui/formatPicker";
 // // import ImagePicker from '../lib/ui/imagePicker'
@@ -15,7 +15,7 @@ import Muya from "../lib";
 // import FrontButton from "../lib/ui/frontButton";
 // import FrontMenu from "../lib/ui/frontMenu";
 
-import { DEFAULT_STATE } from "./testData";
+import { DEFAULT_STATE } from './testData'
 
 // Muya.use(EmojiPicker);
 // Muya.use(FormatPicker);
@@ -35,7 +35,7 @@ import { DEFAULT_STATE } from "./testData";
 // Muya.use(TableTools);
 // Muya.use(PreviewTools);
 
-const container = document.querySelector("#editor") as HTMLDivElement;
+const container = document.querySelector('#editor') as HTMLDivElement
 // const undoBtn = document.querySelector("#undo") as HTMLButtonElement;
 // const redoBtn = document.querySelector("#redo") as HTMLButtonElement;
 // const searchInput = document.querySelector("#search") as HTMLInputElement;
@@ -46,12 +46,12 @@ const container = document.querySelector("#editor") as HTMLDivElement;
 // const allBtn = document.querySelector("#all") as HTMLButtonElement;
 const muya = new Muya(container, {
   json: DEFAULT_STATE,
-  disableHtml: true,
-}) as any;
+  disableHtml: true
+}) as any
 
-(window as any).muya = muya;
+;(window as any).muya = muya
 
-muya.init();
+muya.init()
 
 // undoBtn.addEventListener("click", () => {
 //   muya.undo();
