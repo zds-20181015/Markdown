@@ -1,3 +1,4 @@
+/* eslint-disable */
 import TreeNode from '@/lib/block/base/treeNode'
 import LinkedList from '@/lib/block/base/linkedList/linkedList'
 import { operateClassName } from '@/lib/utils/dom'
@@ -7,11 +8,11 @@ import logger from '@/lib/utils/logger'
 const debug = logger('parent:')
 
 class Parent extends TreeNode {
-  get active () {
+  get active() {
     return this._active
   }
 
-  set active (value) {
+  set active(value) {
     this._active = value
     if (value) {
       operateClassName(this.domNode, 'add', CLASS_NAMES.MU_ACTIVE)
@@ -20,15 +21,15 @@ class Parent extends TreeNode {
     }
   }
 
-  get firstChild () {
+  get firstChild() {
     return this.children.head
   }
 
-  get lastChild () {
+  get lastChild() {
     return this.children.tail
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     // Used to store icon, checkbox etc. these blocks are not in children properties in json state.
     this.attachments = new LinkedList()
@@ -36,7 +37,7 @@ class Parent extends TreeNode {
     this._active = false
   }
 
-  getJsonPath () {
+  getJsonPath() {
     const { path } = this
     if (this.isContainerBlock) {
       path.pop()
@@ -48,7 +49,7 @@ class Parent extends TreeNode {
   /**
    * Clone itself.
    */
-  clone () {
+  clone() {
     const state = this.getState()
     const { muya } = this
 
@@ -58,15 +59,15 @@ class Parent extends TreeNode {
   /**
    * Return the length of children.
    */
-  length () {
+  length() {
     return this.reduce((acc, _) => acc + 1, 0)
   }
 
-  offset (node) {
+  offset(node) {
     return this.children.offset(node)
   }
 
-  find (offset) {
+  find(offset) {
     return this.children.find(offset)
   }
 
@@ -74,10 +75,11 @@ class Parent extends TreeNode {
    * Append node in linkedList, mounted it into the DOM tree, dispatch operation if necessary.
    * @param  {...any} args
    */
-  append (...args) {
-    const source = typeof args[args.length - 1] === 'string' ? args.pop() : 'api'
+  append(...args) {
+    const source =
+      typeof args[args.length - 1] === 'string' ? args.pop() : 'api'
 
-    args.forEach(node => {
+    args.forEach((node) => {
       node.parent = this
       const { domNode } = node
       this.domNode.appendChild(domNode)
@@ -87,7 +89,7 @@ class Parent extends TreeNode {
 
     // push operations
     if (source === 'user') {
-      args.forEach(node => {
+      args.forEach((node) => {
         const path = node.getJsonPath()
         const state = node.getState()
         this.jsonState.pushOperation('insertOp', path, state)
@@ -99,8 +101,8 @@ class Parent extends TreeNode {
    * This method will only be used when initialization.
    * @param  {...any} nodes attachment blocks
    */
-  appendAttachment (...nodes) {
-    nodes.forEach(node => {
+  appendAttachment(...nodes) {
+    nodes.forEach((node) => {
       node.parent = this
       const { domNode } = node
       this.domNode.appendChild(domNode)
@@ -109,19 +111,19 @@ class Parent extends TreeNode {
     this.attachments.append(...nodes)
   }
 
-  forEachAt (index, length, callback) {
+  forEachAt(index, length, callback) {
     return this.children.forEachAt(index, length, callback)
   }
 
-  forEach (callback) {
+  forEach(callback) {
     return this.children.forEach(callback)
   }
 
-  map (callback) {
+  map(callback) {
     return this.children.map(callback)
   }
 
-  reduce (callback, initialValue = this.firstChild) {
+  reduce(callback, initialValue = this.firstChild) {
     return this.children.reduce(callback, initialValue)
   }
 
@@ -129,7 +131,7 @@ class Parent extends TreeNode {
    * Use the `block` to replace the current block(this)
    * @param {TreeNode} block
    */
-  replaceWith (block, source = 'user') {
+  replaceWith(block, source = 'user') {
     if (!this.parent) {
       debug.warn('Call replaceWith need has a parent block')
 
@@ -143,7 +145,7 @@ class Parent extends TreeNode {
     return block
   }
 
-  insertBefore (newNode, refNode, source = 'user') {
+  insertBefore(newNode, refNode, source = 'user') {
     newNode.parent = this
     this.children.insertBefore(newNode, refNode)
     this.domNode.insertBefore(newNode.domNode, refNode ? refNode.domNode : null)
@@ -158,13 +160,13 @@ class Parent extends TreeNode {
     return newNode
   }
 
-  insertAfter (newNode, refNode, source = 'user') {
+  insertAfter(newNode, refNode, source = 'user') {
     this.insertBefore(newNode, refNode.next, source)
 
     return newNode
   }
 
-  remove (source = 'user') {
+  remove(source = 'user') {
     if (source === 'user') {
       // dispatch json1 operation
       const path = this.getJsonPath()
@@ -174,9 +176,11 @@ class Parent extends TreeNode {
     super.remove()
   }
 
-  removeChild (node) {
+  removeChild(node) {
     if (!this.children.contains(node)) {
-      debug.warn('Can not removeChild(node), because node is not child of this block')
+      debug.warn(
+        'Can not removeChild(node), because node is not child of this block'
+      )
     }
 
     node.remove()
@@ -187,7 +191,7 @@ class Parent extends TreeNode {
   /**
    * find the first content block, paragraph.content etc.
    */
-  firstContentInDescendant () {
+  firstContentInDescendant() {
     let firstContentBlock = this
     do {
       firstContentBlock = firstContentBlock.children.head
@@ -199,7 +203,7 @@ class Parent extends TreeNode {
   /**
    * find the last content block in container block.
    */
-  lastContentInDescendant () {
+  lastContentInDescendant() {
     let lastContentBlock = this
 
     do {

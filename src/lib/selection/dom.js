@@ -1,13 +1,15 @@
 // utils used in selection/index.js
 import { CLASS_NAMES } from '@/lib/config'
 
-export const isContentDOM = element => {
-  return element &&
+export const isContentDOM = (element) => {
+  return (
+    element &&
     element.tagName === 'SPAN' &&
     element.classList.contains('mu-content')
+  )
 }
 
-export const findContentDOM = node => {
+export const findContentDOM = (node) => {
   do {
     if (isContentDOM(node)) {
       return node
@@ -17,7 +19,10 @@ export const findContentDOM = node => {
 }
 
 export const compareParagraphsOrder = (paragraph1, paragraph2) => {
-  return paragraph1.compareDocumentPosition(paragraph2) & Node.DOCUMENT_POSITION_FOLLOWING
+  return (
+    paragraph1.compareDocumentPosition(paragraph2) &
+    Node.DOCUMENT_POSITION_FOLLOWING
+  )
 }
 
 export const getTextContent = (node, blackList) => {
@@ -28,16 +33,25 @@ export const getTextContent = (node, blackList) => {
   }
 
   let text = ''
-  if (blackList.some(className => node.classList && node.classList.contains(className))) {
+  if (
+    blackList.some(
+      (className) => node.classList && node.classList.contains(className)
+    )
+  ) {
     return text
   }
 
   if (node.nodeType === 3) {
     text += node.textContent
-  } else if (node.nodeType === 1 && node.classList.contains(`${CLASS_NAMES.MU_INLINE_IMAGE}`)) {
+  } else if (
+    node.nodeType === 1 &&
+    node.classList.contains(`${CLASS_NAMES.MU_INLINE_IMAGE}`)
+  ) {
     // handle inline image
     const raw = node.getAttribute('data-raw')
-    const imageContainer = node.querySelector(`.${CLASS_NAMES.MU_IMAGE_CONTAINER}`)
+    const imageContainer = node.querySelector(
+      `.${CLASS_NAMES.MU_IMAGE_CONTAINER}`
+    )
     const hasImg = imageContainer.querySelector('img')
     const childNodes = imageContainer.childNodes
     if (childNodes.length && hasImg) {
@@ -71,11 +85,14 @@ export const getOffsetOfParagraph = (node, paragraph) => {
   do {
     preSibling = preSibling.previousSibling
     if (preSibling) {
-      offset += getTextContent(preSibling, [CLASS_NAMES.MU_MATH_RENDER, CLASS_NAMES.MU_RUBY_RENDER]).length
+      offset += getTextContent(preSibling, [
+        CLASS_NAMES.MU_MATH_RENDER,
+        CLASS_NAMES.MU_RUBY_RENDER
+      ]).length
     }
   } while (preSibling)
 
-  return (node === paragraph || node.parentNode === paragraph)
+  return node === paragraph || node.parentNode === paragraph
     ? offset
     : offset + getOffsetOfParagraph(node.parentNode, paragraph)
 }

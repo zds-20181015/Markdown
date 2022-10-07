@@ -3,7 +3,14 @@ import { PREVIEW_DOMPURIFY_CONFIG } from '@/lib/config'
 import { sanitize } from '@/lib/utils'
 import loadRenderer from '@/lib/utils/diagram'
 
-const renderDiagram = async ({ type, code, target, sequenceTheme, vegaTheme, mermaidTheme }) => {
+const renderDiagram = async ({
+  type,
+  code,
+  target,
+  sequenceTheme,
+  vegaTheme,
+  mermaidTheme
+}) => {
   const render = await loadRenderer(type)
   const options = {}
   if (type === 'sequence') {
@@ -41,13 +48,13 @@ const renderDiagram = async ({ type, code, target, sequenceTheme, vegaTheme, mer
 class DiagramPreview extends Parent {
   static blockName = 'diagram-preview'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const diagramPreview = new DiagramPreview(muya, state)
 
     return diagramPreview
   }
 
-  constructor (muya, { text, meta }) {
+  constructor(muya, { text, meta }) {
     super(muya)
     this.tagName = 'div'
     this.code = text
@@ -61,20 +68,24 @@ class DiagramPreview extends Parent {
     this.update()
   }
 
-  attachDOMEvents () {
+  attachDOMEvents() {
     const { eventCenter } = this.muya
 
-    eventCenter.attachDOMEvent(this.domNode, 'click', this.clickHandler.bind(this))
+    eventCenter.attachDOMEvent(
+      this.domNode,
+      'click',
+      this.clickHandler.bind(this)
+    )
   }
 
-  clickHandler (event) {
+  clickHandler(event) {
     event.preventDefault()
     event.stopPropagation()
 
     this.parent.firstContentInDescendant().setCursor(0, 0)
   }
 
-  async update (code = this.code) {
+  async update(code = this.code) {
     if (this.code !== code) {
       this.code = code
     }
@@ -94,10 +105,12 @@ class DiagramPreview extends Parent {
           vegaTheme
         })
       } catch (err) {
-        this.domNode.innerHTML = '<div class="mu-diagram-error">&lt; Invalid Diagram Code &gt;</div>'
+        this.domNode.innerHTML =
+          '<div class="mu-diagram-error">&lt; Invalid Diagram Code &gt;</div>'
       }
     } else {
-      this.domNode.innerHTML = '<div class="mu-empty">&lt; Empty Diagram &gt;</div>'
+      this.domNode.innerHTML =
+        '<div class="mu-empty">&lt; Empty Diagram &gt;</div>'
     }
   }
 }

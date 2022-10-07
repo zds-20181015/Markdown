@@ -5,13 +5,13 @@ import Parent from '@/lib/block/base/parent'
 class MathPreview extends Parent {
   static blockName = 'math-preview'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const mathBlock = new MathPreview(muya, state)
 
     return mathBlock
   }
 
-  constructor (muya, { text }) {
+  constructor(muya, { text }) {
     super(muya)
     this.tagName = 'div'
     this.math = text
@@ -24,20 +24,24 @@ class MathPreview extends Parent {
     this.update()
   }
 
-  attachDOMEvents () {
+  attachDOMEvents() {
     const { eventCenter } = this.muya
 
-    eventCenter.attachDOMEvent(this.domNode, 'click', this.clickHandler.bind(this))
+    eventCenter.attachDOMEvent(
+      this.domNode,
+      'click',
+      this.clickHandler.bind(this)
+    )
   }
 
-  clickHandler (event) {
+  clickHandler(event) {
     event.preventDefault()
     event.stopPropagation()
 
     this.parent.firstContentInDescendant().setCursor(0, 0)
   }
 
-  update (math = this.math) {
+  update(math = this.math) {
     if (this.math !== math) {
       this.math = math
     }
@@ -49,10 +53,12 @@ class MathPreview extends Parent {
         })
         this.domNode.innerHTML = html
       } catch (err) {
-        this.domNode.innerHTML = '<div class="mu-math-error">&lt; Invalid Mathematical Formula &gt;</div>'
+        this.domNode.innerHTML =
+          '<div class="mu-math-error">&lt; Invalid Mathematical Formula &gt;</div>'
       }
     } else {
-      this.domNode.innerHTML = '<div class="mu-empty">&lt; Empty Mathematical Formula &gt;</div>'
+      this.domNode.innerHTML =
+        '<div class="mu-empty">&lt; Empty Mathematical Formula &gt;</div>'
     }
   }
 }

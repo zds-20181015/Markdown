@@ -12,7 +12,7 @@ import logger from '@/lib/utils/logger'
 const debug = logger('editor:')
 
 class Editor {
-  constructor (muya) {
+  constructor(muya) {
     const state = muya.options.json || muya.options.markdown || ''
     this.muya = muya
     this.jsonState = new JSONState(muya, state)
@@ -27,7 +27,7 @@ class Editor {
     this.selectedImage = null
   }
 
-  init () {
+  init() {
     const { muya } = this
     const state = this.jsonState.getState()
     this.scrollPage = ScrollPage.create(muya, state)
@@ -46,7 +46,10 @@ class Editor {
       }
     }
 
-    if (firstLeafBlock.blockName === 'paragraph.content' && firstLeafBlock.checkNeedRender(cursor)) {
+    if (
+      firstLeafBlock.blockName === 'paragraph.content' &&
+      firstLeafBlock.checkNeedRender(cursor)
+    ) {
       firstLeafBlock.update(cursor)
     }
 
@@ -54,7 +57,7 @@ class Editor {
     this.exportAPI()
   }
 
-  updateContents (operations, selection, source) {
+  updateContents(operations, selection, source) {
     const { muya } = this
     this.jsonState.dispatch(operations, source)
 
@@ -64,7 +67,7 @@ class Editor {
     }
 
     // Phase 1: Pick. Returns updated subdocument.
-    function pick (subDoc, descent) {
+    function pick(subDoc, descent) {
       const stack = []
 
       let i = 0
@@ -88,7 +91,10 @@ class Editor {
         const d = descent[i]
         if (typeof d !== 'object') {
           const container = stack.pop()
-          if ((subDoc === (container == null ? undefined : container.queryBlock([d])))) {
+          if (
+            subDoc ===
+            (container == null ? undefined : container.queryBlock([d]))
+          ) {
             subDoc = container
           } else {
             if (subDoc === undefined) {
@@ -96,7 +102,8 @@ class Editor {
               typeof d === 'number' && container.find(d).remove('api')
               subDoc = container
             } else {
-              typeof d === 'number' && container.find(d).replaceWith(subDoc, 'api')
+              typeof d === 'number' &&
+                container.find(d).replaceWith(subDoc, 'api')
               subDoc = container
             }
           }
@@ -110,7 +117,7 @@ class Editor {
 
     const snapshot = pick(this.scrollPage, operations)
 
-    function drop (root, descent) {
+    function drop(root, descent) {
       let subDoc = root
       let i = 0 // For reading
       let m = 0
@@ -118,11 +125,12 @@ class Editor {
       let container = rootContainer
       let key = 'root' // For writing
 
-      function mut () {
+      function mut() {
         for (; m < i; m++) {
           const d = descent[m]
           if (typeof d === 'object') continue
-          container = key === 'root' ? container[key] : container.queryBlock([key])
+          container =
+            key === 'root' ? container[key] : container.queryBlock([key])
           key = d
         }
       }
@@ -138,7 +146,8 @@ class Editor {
             subDoc = container[key] = child
           }
         } else if (typeof d === 'object') {
-          if (d.i !== undefined) { // Insert
+          if (d.i !== undefined) {
+            // Insert
             mut()
             const ref = container.find(key)
             if (typeof key === 'number') {
@@ -164,7 +173,8 @@ class Editor {
             }
           }
 
-          if (d.es) { // Edit. Ok because its illegal to drop inside mixed region
+          if (d.es) {
+            // Edit. Ok because its illegal to drop inside mixed region
             mut()
             if (subDoc.blockName === 'table.cell') {
               subDoc.align = otText.type.apply(subDoc.align, d.es)
@@ -200,14 +210,14 @@ class Editor {
     }
   }
 
-  exportAPI () {
+  exportAPI() {
     const apis = {
       jsonState: ['getState', 'getMarkdown'],
       history: ['undo', 'redo'],
       searchModule: ['search', 'find', 'replace']
     }
 
-    Object.keys(apis).forEach(key => {
+    Object.keys(apis).forEach((key) => {
       for (const api of apis[key]) {
         this[api] = this[key][api].bind(this[key])
       }

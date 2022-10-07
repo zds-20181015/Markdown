@@ -4,7 +4,7 @@ import ScrollPage from '@/lib/block/scrollPage'
 class DiagramContainer extends Parent {
   static blockName = 'diagram-container'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const diagramContainer = new DiagramContainer(muya, state)
 
     const code = ScrollPage.loadBlock('code').create(muya, state)
@@ -14,17 +14,17 @@ class DiagramContainer extends Parent {
     return diagramContainer
   }
 
-  get lang () {
+  get lang() {
     return this.meta.lang
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
 
     return [...pPath]
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = 'pre'
     this.meta = meta

@@ -3,7 +3,12 @@ import { loadImage } from '@/lib/utils/image'
 import { insertAfter, operateClassName } from '@/lib/utils/dom'
 import { CLASS_NAMES } from '@/lib/config'
 
-export default function loadImageAsync (imageInfo, attrs, className, imageClass) {
+export default function loadImageAsync(
+  imageInfo,
+  attrs,
+  className,
+  imageClass
+) {
   const { src, isUnknownType } = imageInfo
   let id
   let isSuccess
@@ -17,7 +22,8 @@ export default function loadImageAsync (imageInfo, attrs, className, imageClass)
         const imageText = document.querySelector(`#${id}`)
         const img = document.createElement('img')
         img.src = url
-        if (attrs.alt) img.alt = attrs.alt.replace(/[`*{}[\]()#+\-.!_>~:|<>$]/g, '')
+        if (attrs.alt)
+          img.alt = attrs.alt.replace(/[`*{}[\]()#+\-.!_>~:|<>$]/g, '')
         if (attrs.title) img.setAttribute('title', attrs.title)
         if (attrs.width && typeof attrs.width === 'number') {
           img.setAttribute('width', attrs.width)
@@ -33,7 +39,9 @@ export default function loadImageAsync (imageInfo, attrs, className, imageClass)
 
         if (imageText) {
           if (imageText.classList.contains(`${CLASS_NAMES.MU_INLINE_IMAGE}`)) {
-            const imageContainer = imageText.querySelector(`.${CLASS_NAMES.MU_IMAGE_CONTAINER}`)
+            const imageContainer = imageText.querySelector(
+              `.${CLASS_NAMES.MU_IMAGE_CONTAINER}`
+            )
             const oldImage = imageContainer.querySelector('img')
             if (oldImage) {
               oldImage.remove()

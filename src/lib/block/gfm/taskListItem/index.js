@@ -6,27 +6,33 @@ import containerQueryBlock from '@/lib/block/mixins/containerQueryBlock'
 class TaskListItem extends Parent {
   static blockName = 'task-list-item'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const listItem = new TaskListItem(muya, state)
 
-    listItem.appendAttachment(ScrollPage.loadBlock('task-list-checkbox').create(muya, state.meta))
-    listItem.append(...state.children.map(child => ScrollPage.loadBlock(child.name).create(muya, child)))
+    listItem.appendAttachment(
+      ScrollPage.loadBlock('task-list-checkbox').create(muya, state.meta)
+    )
+    listItem.append(
+      ...state.children.map((child) =>
+        ScrollPage.loadBlock(child.name).create(muya, child)
+      )
+    )
 
     return listItem
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset, 'children']
   }
 
-  get checked () {
+  get checked() {
     return this.meta.checked
   }
 
-  set checked (checked) {
+  set checked(checked) {
     const oldCheckStatus = this.meta.checked
     this.meta.checked = checked
     if (checked !== oldCheckStatus) {
@@ -38,7 +44,7 @@ class TaskListItem extends Parent {
     }
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = 'li'
     this.meta = meta
@@ -46,29 +52,27 @@ class TaskListItem extends Parent {
     this.createDomNode()
   }
 
-  find (key) {
+  find(key) {
     if (typeof key === 'number') {
       return super.find(key)
-    } else if (typeof key === 'string') { // If key is checked.
+    } else if (typeof key === 'string') {
+      // If key is checked.
       // Return taskListCheckbox.
       return this.attachments.head
     }
   }
 
-  getState () {
+  getState() {
     const state = {
       name: this.blockName,
       meta: { ...this.meta },
-      children: this.children.map(child => child.getState())
+      children: this.children.map((child) => child.getState())
     }
 
     return state
   }
 }
 
-mixins(
-  TaskListItem,
-  containerQueryBlock
-)
+mixins(TaskListItem, containerQueryBlock)
 
 export default TaskListItem

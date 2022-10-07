@@ -3,7 +3,7 @@ import { getCursorReference } from '@/lib/utils'
 import { getImageInfo } from '@/lib/utils/image'
 
 export default {
-  handleClickInlineRuleRender (event, inlineRuleRenderEle) {
+  handleClickInlineRuleRender(event, inlineRuleRenderEle) {
     event.preventDefault()
     event.stopPropagation()
     const startOffset = +inlineRuleRenderEle.getAttribute('data-start')
@@ -13,7 +13,7 @@ export default {
   },
 
   // Handle click inline image.
-  handleClickInlineImage (event, imageWrapper) {
+  handleClickInlineImage(event, imageWrapper) {
     event.preventDefault()
     event.stopPropagation()
     const { eventCenter } = this.muya
@@ -22,7 +22,9 @@ export default {
     if (target.tagName === 'IMG') {
       // Handle show image toolbar
       const imageInfo = getImageInfo(imageWrapper)
-      const rect = imageWrapper.querySelector(`.${CLASS_NAMES.MU_IMAGE_CONTAINER}`).getBoundingClientRect()
+      const rect = imageWrapper
+        .querySelector(`.${CLASS_NAMES.MU_IMAGE_CONTAINER}`)
+        .getBoundingClientRect()
       const reference = {
         getBoundingClientRect: () => rect,
         width: imageWrapper.offsetWidth,
@@ -38,7 +40,9 @@ export default {
       // Handle show image transformer
       const imageSelector = `#${imageInfo.imageId}`
 
-      const imageContainer = document.querySelector(`${imageSelector} .${CLASS_NAMES.MU_IMAGE_CONTAINER}`)
+      const imageContainer = document.querySelector(
+        `${imageSelector} .${CLASS_NAMES.MU_IMAGE_CONTAINER}`
+      )
 
       eventCenter.emit('muya-transformer', {
         block: this,
@@ -52,7 +56,7 @@ export default {
     // Handle click imagewrapper when it's empty or image load failed.
     if (
       imageWrapper.classList.contains(CLASS_NAMES.MU_EMPTY_IMAGE) ||
-        imageWrapper.classList.contains(CLASS_NAMES.MU_IMAGE_FAIL)
+      imageWrapper.classList.contains(CLASS_NAMES.MU_IMAGE_FAIL)
     ) {
       const rect = imageWrapper.getBoundingClientRect()
       const reference = {
@@ -68,10 +72,12 @@ export default {
     }
   },
 
-  clickHandler (event) {
+  clickHandler(event) {
     // Handler click inline math and inline ruby html.
     const { target } = event
-    const inlineRuleRenderEle = target.closest(`.${CLASS_NAMES.MU_MATH_RENDER}`) || target.closest(`.${CLASS_NAMES.MU_RUBY_RENDER}`)
+    const inlineRuleRenderEle =
+      target.closest(`.${CLASS_NAMES.MU_MATH_RENDER}`) ||
+      target.closest(`.${CLASS_NAMES.MU_RUBY_RENDER}`)
     const imageWrapper = target.closest(`.${CLASS_NAMES.MU_INLINE_IMAGE}`)
 
     if (inlineRuleRenderEle) {
@@ -86,9 +92,10 @@ export default {
         path: this.path
       })
 
-      const needRender = this.selection.block === this
-        ? this.checkNeedRender(cursor) || this.checkNeedRender()
-        : this.checkNeedRender(cursor)
+      const needRender =
+        this.selection.block === this
+          ? this.checkNeedRender(cursor) || this.checkNeedRender()
+          : this.checkNeedRender(cursor)
 
       if (needRender) {
         this.update(cursor)

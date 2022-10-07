@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+/* eslint-disable prefer-const */
 import BaseFloat from '../baseFloat'
 import { throttle } from '@/lib/utils'
 import ScrollPage from '@/lib/block/scrollPage'

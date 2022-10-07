@@ -12,21 +12,21 @@ for (const emoji of emojis) {
 }
 
 class Emoji {
-  constructor () {
+  constructor() {
     this.cache = new Map()
   }
 
-  search (text) {
+  search(text) {
     const { cache } = this
     if (cache.has(text)) return cache.get(text)
     const result = {}
 
-    Object.keys(emojisForSearch).forEach(category => {
+    Object.keys(emojisForSearch).forEach((category) => {
       const fuse = new Fuse(emojisForSearch[category], {
         includeScore: true,
         keys: ['aliases', 'tags']
       })
-      const list = fuse.search(text).map(i => i.item)
+      const list = fuse.search(text).map((i) => i.item)
       if (list.length) {
         result[category] = list
       }
@@ -36,7 +36,7 @@ class Emoji {
     return result
   }
 
-  destroy () {
+  destroy() {
     return this.cache.clear()
   }
 }

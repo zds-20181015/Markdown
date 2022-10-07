@@ -8,12 +8,12 @@ class ScrollPage extends Parent {
 
   static blocks = new Map()
 
-  static register (Block) {
+  static register(Block) {
     const { blockName } = Block
     this.blocks.set(blockName, Block)
   }
 
-  static loadBlock (blockName) {
+  static loadBlock(blockName) {
     const block = this.blocks.get(blockName)
     if (!block) {
       debug.warn(`block:${blockName} is not existed.`)
@@ -22,23 +22,25 @@ class ScrollPage extends Parent {
     return block
   }
 
-  static create (muya, state) {
+  static create(muya, state) {
     const scrollPage = new ScrollPage(muya)
 
-    scrollPage.append(...state.map(block => {
-      return this.loadBlock(block.name).create(muya, block)
-    }))
+    scrollPage.append(
+      ...state.map((block) => {
+        return this.loadBlock(block.name).create(muya, block)
+      })
+    )
 
     scrollPage.parent.domNode.appendChild(scrollPage.domNode)
 
     return scrollPage
   }
 
-  get path () {
+  get path() {
     return []
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     this.parent = muya
     this.tagName = 'div'
@@ -54,7 +56,7 @@ class ScrollPage extends Parent {
    * Find the content block by the path
    * @param {array} path
    */
-  queryBlock (path) {
+  queryBlock(path) {
     if (path.length === 0) {
       return this
     }
@@ -65,22 +67,22 @@ class ScrollPage extends Parent {
     return block && path.length ? block.queryBlock(path) : block
   }
 
-  updateRefLinkAndImage (label) {
+  updateRefLinkAndImage(label) {
     const REG = new RegExp(`\\[${label}\\](?!:)`)
 
-    this.breadthFirstTraverse(node => {
+    this.breadthFirstTraverse((node) => {
       if (node.isContentBlock && REG.test(node.text)) {
         node.update()
       }
     })
   }
 
-  handleBlurFromContent (block) {
+  handleBlurFromContent(block) {
     this.blurFocus.blur = block
     requestAnimationFrame(this.updateActiveStatus)
   }
 
-  handleFocusFromContent (block) {
+  handleFocusFromContent(block) {
     this.blurFocus.focus = block
     requestAnimationFrame(this.updateActiveStatus)
   }
@@ -110,13 +112,13 @@ class ScrollPage extends Parent {
     }
 
     if (needBlurBlocks.length) {
-      needBlurBlocks.forEach(b => {
+      needBlurBlocks.forEach((b) => {
         b.active = false
       })
     }
 
     if (needFocusBlocks.length) {
-      needFocusBlocks.forEach(b => {
+      needFocusBlocks.forEach((b) => {
         b.active = true
       })
     }

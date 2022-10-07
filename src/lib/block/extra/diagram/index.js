@@ -8,41 +8,49 @@ const debug = logger('diagram:')
 class DiagramBlock extends Parent {
   static blockName = 'diagram'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const diagramBlock = new DiagramBlock(muya, state)
     const { lang } = state.meta
-    const diagramPreview = ScrollPage.loadBlock('diagram-preview').create(muya, state)
-    const diagramContainer = ScrollPage.loadBlock('diagram-container').create(muya, state)
+    const diagramPreview = ScrollPage.loadBlock('diagram-preview').create(
+      muya,
+      state
+    )
+    const diagramContainer = ScrollPage.loadBlock('diagram-container').create(
+      muya,
+      state
+    )
 
     diagramBlock.appendAttachment(diagramPreview)
     diagramBlock.append(diagramContainer)
 
     loadLanguage(lang)
-      .then(infoList => {
+      .then((infoList) => {
         if (!Array.isArray(infoList)) return
         // There are three status `loaded`, `noexist` and `cached`.
         // if the status is `loaded`, indicated that it's a new loaded language
-        const needRender = infoList.some(({ status }) => status === 'loaded' || status === 'cached')
+        const needRender = infoList.some(
+          ({ status }) => status === 'loaded' || status === 'cached'
+        )
         if (needRender) {
           diagramBlock.lastContentInDescendant().update()
         }
       })
-      .catch(err => {
-      // if no parameter provided, will cause error.
+      .catch((err) => {
+        // if no parameter provided, will cause error.
         debug.warn(err)
       })
 
     return diagramBlock
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset]
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = 'figure'
     this.meta = meta
@@ -50,11 +58,13 @@ class DiagramBlock extends Parent {
     this.createDomNode()
   }
 
-  queryBlock (path) {
-    return path.length && path[0] === 'text' ? this.firstContentInDescendant() : this
+  queryBlock(path) {
+    return path.length && path[0] === 'text'
+      ? this.firstContentInDescendant()
+      : this
   }
 
-  getState () {
+  getState() {
     const { meta, blockName: name } = this
     const { text } = this.firstContentInDescendant()
 

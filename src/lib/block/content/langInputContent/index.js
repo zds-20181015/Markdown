@@ -4,27 +4,27 @@ import { getHighlightHtml } from '@/lib/utils/highlightHTML'
 class LangInputContent extends Content {
   static blockName = 'language-input'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const content = new LangInputContent(muya, state)
 
     return content
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya, meta.lang)
     this.classList = [...this.classList, 'mu-language-input']
     this.createDomNode()
   }
 
-  getAnchor () {
+  getAnchor() {
     return this.parent
   }
 
-  update (_, highlights = []) {
+  update(_, highlights = []) {
     this.domNode.innerHTML = getHighlightHtml(this.text, highlights)
   }
 
-  inputHandler () {
+  inputHandler() {
     const { start, end } = this.getCursor()
     const textContent = this.domNode.textContent
     const lang = textContent.split(/\s+/)[0]
@@ -47,7 +47,7 @@ class LangInputContent extends Content {
     }
   }
 
-  enterHandler (event) {
+  enterHandler(event) {
     event.preventDefault()
     event.stopPropagation()
 
@@ -55,7 +55,7 @@ class LangInputContent extends Content {
     parent.lastContentInDescendant().setCursor(0, 0)
   }
 
-  backspaceHandler () {
+  backspaceHandler() {
     const { start } = this.getCursor()
     if (start.offset === 0) {
       const cursorBlock = this.previousContentInContext()

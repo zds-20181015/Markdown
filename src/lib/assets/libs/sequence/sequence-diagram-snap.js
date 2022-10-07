@@ -1,3 +1,6 @@
+/* eslint-disable */
+/* eslint-disable no-var */
+/* eslint-disable no-fallthrough */
 /** js sequence diagrams 2.0.1
  *  https://bramp.github.io/js-sequence-diagrams/
  *  (c) 2012-2017 Andrew Brampton (bramp.net)
@@ -7,15 +10,15 @@ import _ from 'underscore'
 import Snap from 'snapsvg-cjs'
 import WebFont from 'webfontloader'
 
-function Diagram () {
+function Diagram() {
   this.title = undefined
   this.actors = []
   this.signals = []
 }
 
 /*
-  * Return an existing actor with this alias, or creates a new one with alias and name.
-  */
+ * Return an existing actor with this alias, or creates a new one with alias and name.
+ */
 Diagram.prototype.getActor = function (alias, name) {
   alias = alias.trim()
 
@@ -27,14 +30,14 @@ Diagram.prototype.getActor = function (alias, name) {
       return actors[i]
     }
   }
-  i = actors.push(new Diagram.Actor(alias, (name || alias), actors.length))
+  i = actors.push(new Diagram.Actor(alias, name || alias, actors.length))
 
   return actors[i - 1]
 }
 
 /*
-  * Parses the input as either a alias, or a "name as alias", and returns the corresponding actor.
-  */
+ * Parses the input as either a alias, or a "name as alias", and returns the corresponding actor.
+ */
 Diagram.prototype.getActorWithAlias = function (input) {
   input = input.trim()
 
@@ -96,7 +99,10 @@ Diagram.Note.prototype.hasManyActors = function () {
 
 Diagram.unescape = function (s) {
   // Turn "\\n" into "\n"
-  return s.trim().replace(/^"(.*)"$/m, '$1').replace(/\\n/gm, '\n')
+  return s
+    .trim()
+    .replace(/^"(.*)"$/m, '$1')
+    .replace(/\\n/gm, '\n')
 }
 
 Diagram.LINETYPE = {
@@ -200,15 +206,20 @@ if (typeof Object.getPrototypeOf !== 'function') {
    }
  */
 const parser = (function () {
-  function Parser () {
+  function Parser() {
     this.yy = {}
   }
 
   const o = function (k, v, o, l) {
-    for (o = o || {}, l = k.length; l--; o[k[l]] = v) ;
+    for (o = o || {}, l = k.length; l--; o[k[l]] = v);
 
     return o
-  }; const $V0 = [5, 8, 9, 13, 15, 24]; const $V1 = [1, 13]; const $V2 = [1, 17]; const $V3 = [24, 29, 30]; const parser = {
+  }
+  const $V0 = [5, 8, 9, 13, 15, 24]
+  const $V1 = [1, 13]
+  const $V2 = [1, 17]
+  const $V3 = [24, 29, 30]
+  const parser = {
     trace: function () {},
     yy: {},
     symbols_: {
@@ -263,7 +274,34 @@ const parser = (function () {
       30: 'OPENARROW',
       31: 'MESSAGE'
     },
-    productions_: [0, [3, 2], [4, 0], [4, 2], [6, 1], [6, 1], [7, 2], [7, 1], [7, 1], [7, 2], [12, 4], [12, 4], [19, 1], [19, 3], [16, 1], [16, 1], [11, 4], [17, 1], [10, 1], [23, 2], [23, 1], [25, 1], [25, 1], [26, 1], [26, 1], [14, 1]],
+    productions_: [
+      0,
+      [3, 2],
+      [4, 0],
+      [4, 2],
+      [6, 1],
+      [6, 1],
+      [7, 2],
+      [7, 1],
+      [7, 1],
+      [7, 2],
+      [12, 4],
+      [12, 4],
+      [19, 1],
+      [19, 3],
+      [16, 1],
+      [16, 1],
+      [11, 4],
+      [17, 1],
+      [10, 1],
+      [23, 2],
+      [23, 1],
+      [25, 1],
+      [25, 1],
+      [26, 1],
+      [26, 1],
+      [14, 1]
+    ],
     performAction: function (yytext, yyleng, yylineno, yy, yystate, $$, _$) {
       /* this == yyval */
       const $0 = $$.length - 1
@@ -315,7 +353,12 @@ const parser = (function () {
           break
 
         case 16:
-          this.$ = new Diagram.Signal($$[$0 - 3], $$[$0 - 2], $$[$0 - 1], $$[$0])
+          this.$ = new Diagram.Signal(
+            $$[$0 - 3],
+            $$[$0 - 2],
+            $$[$0 - 1],
+            $$[$0]
+          )
           break
 
         case 17:
@@ -327,7 +370,7 @@ const parser = (function () {
           break
 
         case 19:
-          this.$ = $$[$0 - 1] | $$[$0] << 2
+          this.$ = $$[$0 - 1] | ($$[$0] << 2)
           break
 
         case 21:
@@ -350,84 +393,123 @@ const parser = (function () {
           this.$ = Diagram.unescape($$[$0].substring(1))
       }
     },
-    table: [o($V0, [2, 2], {
-      3: 1,
-      4: 2
-    }), {
-      1: [3]
-    }, {
-      5: [1, 3],
-      6: 4,
-      7: 5,
-      8: [1, 6],
-      9: [1, 7],
-      11: 8,
-      12: 9,
-      13: [1, 10],
-      15: [1, 12],
-      17: 11,
-      24: $V1
-    }, {
-      1: [2, 1]
-    }, o($V0, [2, 3]), o($V0, [2, 4]), o($V0, [2, 5]), {
-      10: 14,
-      24: [1, 15]
-    }, o($V0, [2, 7]), o($V0, [2, 8]), {
-      14: 16,
-      31: $V2
-    }, {
-      23: 18,
-      25: 19,
-      27: [1, 20],
-      28: [1, 21]
-    }, {
-      16: 22,
-      18: [1, 23],
-      21: [1, 24],
-      22: [1, 25]
-    }, o([20, 27, 28, 31], [2, 17]), o($V0, [2, 6]), o($V0, [2, 18]), o($V0, [2, 9]), o($V0, [2, 25]), {
-      17: 26,
-      24: $V1
-    }, {
-      24: [2, 20],
-      26: 27,
-      29: [1, 28],
-      30: [1, 29]
-    }, o($V3, [2, 21]), o($V3, [2, 22]), {
-      17: 30,
-      24: $V1
-    }, {
-      17: 32,
-      19: 31,
-      24: $V1
-    }, {
-      24: [2, 14]
-    }, {
-      24: [2, 15]
-    }, {
-      14: 33,
-      31: $V2
-    }, {
-      24: [2, 19]
-    }, {
-      24: [2, 23]
-    }, {
-      24: [2, 24]
-    }, {
-      14: 34,
-      31: $V2
-    }, {
-      14: 35,
-      31: $V2
-    }, {
-      20: [1, 36],
-      31: [2, 12]
-    }, o($V0, [2, 16]), o($V0, [2, 10]), o($V0, [2, 11]), {
-      17: 37,
-      24: $V1
-    }, {
-      31: [2, 13]
-    }],
+    table: [
+      o($V0, [2, 2], {
+        3: 1,
+        4: 2
+      }),
+      {
+        1: [3]
+      },
+      {
+        5: [1, 3],
+        6: 4,
+        7: 5,
+        8: [1, 6],
+        9: [1, 7],
+        11: 8,
+        12: 9,
+        13: [1, 10],
+        15: [1, 12],
+        17: 11,
+        24: $V1
+      },
+      {
+        1: [2, 1]
+      },
+      o($V0, [2, 3]),
+      o($V0, [2, 4]),
+      o($V0, [2, 5]),
+      {
+        10: 14,
+        24: [1, 15]
+      },
+      o($V0, [2, 7]),
+      o($V0, [2, 8]),
+      {
+        14: 16,
+        31: $V2
+      },
+      {
+        23: 18,
+        25: 19,
+        27: [1, 20],
+        28: [1, 21]
+      },
+      {
+        16: 22,
+        18: [1, 23],
+        21: [1, 24],
+        22: [1, 25]
+      },
+      o([20, 27, 28, 31], [2, 17]),
+      o($V0, [2, 6]),
+      o($V0, [2, 18]),
+      o($V0, [2, 9]),
+      o($V0, [2, 25]),
+      {
+        17: 26,
+        24: $V1
+      },
+      {
+        24: [2, 20],
+        26: 27,
+        29: [1, 28],
+        30: [1, 29]
+      },
+      o($V3, [2, 21]),
+      o($V3, [2, 22]),
+      {
+        17: 30,
+        24: $V1
+      },
+      {
+        17: 32,
+        19: 31,
+        24: $V1
+      },
+      {
+        24: [2, 14]
+      },
+      {
+        24: [2, 15]
+      },
+      {
+        14: 33,
+        31: $V2
+      },
+      {
+        24: [2, 19]
+      },
+      {
+        24: [2, 23]
+      },
+      {
+        24: [2, 24]
+      },
+      {
+        14: 34,
+        31: $V2
+      },
+      {
+        14: 35,
+        31: $V2
+      },
+      {
+        20: [1, 36],
+        31: [2, 12]
+      },
+      o($V0, [2, 16]),
+      o($V0, [2, 10]),
+      o($V0, [2, 11]),
+      {
+        17: 37,
+        24: $V1
+      },
+      {
+        31: [2, 13]
+      }
+    ],
     defaultActions: {
       3: [2, 1],
       24: [2, 14],
@@ -442,66 +524,163 @@ const parser = (function () {
       this.trace(str)
     },
     parse: function (input) {
-      function lex () {
+      function lex() {
         let token
 
-        return token = lexer.lex() || EOF, typeof token !== 'number' && (token = self.symbols_[token] || token),
-        token
+        return (
+          (token = lexer.lex() || EOF),
+          typeof token !== 'number' && (token = self.symbols_[token] || token),
+          token
+        )
       }
-      var self = this; let stack = [0]; let vstack = [null]; let lstack = []; const table = this.table; let yytext = ''; let yylineno = 0; let yyleng = 0; let recovering = 0; const TERROR = 2; var EOF = 1; const args = lstack.slice.call(arguments, 1); var lexer = Object.create(this.lexer); const sharedState = {
+      var self = this
+      let stack = [0]
+      let vstack = [null]
+      let lstack = []
+      const table = this.table
+      let yytext = ''
+      let yylineno = 0
+      let yyleng = 0
+      let recovering = 0
+      const TERROR = 2
+      var EOF = 1
+      const args = lstack.slice.call(arguments, 1)
+      var lexer = Object.create(this.lexer)
+      const sharedState = {
         yy: {}
       }
 
-      for (const k in this.yy) Object.prototype.hasOwnProperty.call(this.yy, k) && (sharedState.yy[k] = this.yy[k])
-      lexer.setInput(input, sharedState.yy), sharedState.yy.lexer = lexer, sharedState.yy.parser = this,
-      typeof lexer.yylloc === 'undefined' && (lexer.yylloc = {})
+      for (const k in this.yy)
+        Object.prototype.hasOwnProperty.call(this.yy, k) &&
+          (sharedState.yy[k] = this.yy[k])
+      lexer.setInput(input, sharedState.yy),
+        (sharedState.yy.lexer = lexer),
+        (sharedState.yy.parser = this),
+        typeof lexer.yylloc === 'undefined' && (lexer.yylloc = {})
       let yyloc = lexer.yylloc
       lstack.push(yyloc)
       const ranges = lexer.options && lexer.options.ranges
-      typeof sharedState.yy.parseError === 'function' ? this.parseError = sharedState.yy.parseError : this.parseError = Object.getPrototypeOf(this).parseError
+      typeof sharedState.yy.parseError === 'function'
+        ? (this.parseError = sharedState.yy.parseError)
+        : (this.parseError = Object.getPrototypeOf(this).parseError)
 
-      for (var symbol, preErrorSymbol, state, action, r, p, len, newState, expected, yyval = {}; ;) {
-        if (state = stack[stack.length - 1], this.defaultActions[state]
-          ? action = this.defaultActions[state]
-          : (symbol !== null && typeof symbol !== 'undefined' || (symbol = lex()),
-            action = table[state] && table[state][symbol]), typeof action === 'undefined' || !action.length || !action[0]) {
+      for (
+        var symbol,
+          preErrorSymbol,
+          state,
+          action,
+          r,
+          p,
+          len,
+          newState,
+          expected,
+          yyval = {};
+        ;
+
+      ) {
+        if (
+          ((state = stack[stack.length - 1]),
+          this.defaultActions[state]
+            ? (action = this.defaultActions[state])
+            : ((symbol !== null && typeof symbol !== 'undefined') ||
+                (symbol = lex()),
+              (action = table[state] && table[state][symbol])),
+          typeof action === 'undefined' || !action.length || !action[0])
+        ) {
           let errStr = ''
           expected = []
 
-          for (p in table[state]) this.terminals_[p] && p > TERROR && expected.push("'" + this.terminals_[p] + "'")
-          errStr = lexer.showPosition ? 'Parse error on line ' + (yylineno + 1) + ':\n' + lexer.showPosition() + '\nExpecting ' + expected.join(', ') + ", got '" + (this.terminals_[symbol] || symbol) + "'" : 'Parse error on line ' + (yylineno + 1) + ': Unexpected ' + (symbol == EOF ? 'end of input' : "'" + (this.terminals_[symbol] || symbol) + "'"),
-          this.parseError(errStr, {
-            text: lexer.match,
-            token: this.terminals_[symbol] || symbol,
-            line: lexer.yylineno,
-            loc: yyloc,
-            expected: expected
-          })
+          for (p in table[state])
+            this.terminals_[p] &&
+              p > TERROR &&
+              expected.push("'" + this.terminals_[p] + "'")
+          ;(errStr = lexer.showPosition
+            ? 'Parse error on line ' +
+              (yylineno + 1) +
+              ':\n' +
+              lexer.showPosition() +
+              '\nExpecting ' +
+              expected.join(', ') +
+              ", got '" +
+              (this.terminals_[symbol] || symbol) +
+              "'"
+            : 'Parse error on line ' +
+              (yylineno + 1) +
+              ': Unexpected ' +
+              (symbol == EOF
+                ? 'end of input'
+                : "'" + (this.terminals_[symbol] || symbol) + "'")),
+            this.parseError(errStr, {
+              text: lexer.match,
+              token: this.terminals_[symbol] || symbol,
+              line: lexer.yylineno,
+              loc: yyloc,
+              expected: expected
+            })
         }
-        if (action[0] instanceof Array && action.length > 1) throw new Error('Parse Error: multiple actions possible at state: ' + state + ', token: ' + symbol)
+        if (action[0] instanceof Array && action.length > 1)
+          throw new Error(
+            'Parse Error: multiple actions possible at state: ' +
+              state +
+              ', token: ' +
+              symbol
+          )
         switch (action[0]) {
           case 1:
-            stack.push(symbol), vstack.push(lexer.yytext), lstack.push(lexer.yylloc), stack.push(action[1]),
-            symbol = null, preErrorSymbol
-              ? (symbol = preErrorSymbol, preErrorSymbol = null)
-              : (yyleng = lexer.yyleng,
-                yytext = lexer.yytext, yylineno = lexer.yylineno, yyloc = lexer.yylloc, recovering > 0 && recovering--)
+            stack.push(symbol),
+              vstack.push(lexer.yytext),
+              lstack.push(lexer.yylloc),
+              stack.push(action[1]),
+              (symbol = null),
+              preErrorSymbol
+                ? ((symbol = preErrorSymbol), (preErrorSymbol = null))
+                : ((yyleng = lexer.yyleng),
+                  (yytext = lexer.yytext),
+                  (yylineno = lexer.yylineno),
+                  (yyloc = lexer.yylloc),
+                  recovering > 0 && recovering--)
             break
 
           case 2:
-            if (len = this.productions_[action[1]][1], yyval.$ = vstack[vstack.length - len],
-            yyval._$ = {
-              first_line: lstack[lstack.length - (len || 1)].first_line,
-              last_line: lstack[lstack.length - 1].last_line,
-              first_column: lstack[lstack.length - (len || 1)].first_column,
-              last_column: lstack[lstack.length - 1].last_column
-            }, ranges && (yyval._$.range = [lstack[lstack.length - (len || 1)].range[0], lstack[lstack.length - 1].range[1]]),
-            r = this.performAction.apply(yyval, [yytext, yyleng, yylineno, sharedState.yy, action[1], vstack, lstack].concat(args)),
-            typeof r !== 'undefined') return r
-            len && (stack = stack.slice(0, -1 * len * 2), vstack = vstack.slice(0, -1 * len),
-            lstack = lstack.slice(0, -1 * len)), stack.push(this.productions_[action[1]][0]),
-            vstack.push(yyval.$), lstack.push(yyval._$), newState = table[stack[stack.length - 2]][stack[stack.length - 1]],
-            stack.push(newState)
+            if (
+              ((len = this.productions_[action[1]][1]),
+              (yyval.$ = vstack[vstack.length - len]),
+              (yyval._$ = {
+                first_line: lstack[lstack.length - (len || 1)].first_line,
+                last_line: lstack[lstack.length - 1].last_line,
+                first_column: lstack[lstack.length - (len || 1)].first_column,
+                last_column: lstack[lstack.length - 1].last_column
+              }),
+              ranges &&
+                (yyval._$.range = [
+                  lstack[lstack.length - (len || 1)].range[0],
+                  lstack[lstack.length - 1].range[1]
+                ]),
+              (r = this.performAction.apply(
+                yyval,
+                [
+                  yytext,
+                  yyleng,
+                  yylineno,
+                  sharedState.yy,
+                  action[1],
+                  vstack,
+                  lstack
+                ].concat(args)
+              )),
+              typeof r !== 'undefined')
+            )
+              return r
+            len &&
+              ((stack = stack.slice(0, -1 * len * 2)),
+              (vstack = vstack.slice(0, -1 * len)),
+              (lstack = lstack.slice(0, -1 * len))),
+              stack.push(this.productions_[action[1]][0]),
+              vstack.push(yyval.$),
+              lstack.push(yyval._$),
+              (newState =
+                table[stack[stack.length - 2]][stack[stack.length - 1]]),
+              stack.push(newState)
             break
 
           case 3:
@@ -511,7 +690,8 @@ const parser = (function () {
 
       return !0
     }
-  }; const lexer = (function () {
+  }
+  const lexer = (function () {
     const lexer = {
       EOF: 1,
       parseError: function (str, hash) {
@@ -520,57 +700,95 @@ const parser = (function () {
       },
       // resets the lexer, sets new input
       setInput: function (input, yy) {
-        return this.yy = yy || this.yy || {}, this._input = input, this._more = this._backtrack = this.done = !1,
-        this.yylineno = this.yyleng = 0, this.yytext = this.matched = this.match = '', this.conditionStack = ['INITIAL'],
-        this.yylloc = {
-          first_line: 1,
-          first_column: 0,
-          last_line: 1,
-          last_column: 0
-        }, this.options.ranges && (this.yylloc.range = [0, 0]), this.offset = 0, this
+        return (
+          (this.yy = yy || this.yy || {}),
+          (this._input = input),
+          (this._more = this._backtrack = this.done = !1),
+          (this.yylineno = this.yyleng = 0),
+          (this.yytext = this.matched = this.match = ''),
+          (this.conditionStack = ['INITIAL']),
+          (this.yylloc = {
+            first_line: 1,
+            first_column: 0,
+            last_line: 1,
+            last_column: 0
+          }),
+          this.options.ranges && (this.yylloc.range = [0, 0]),
+          (this.offset = 0),
+          this
+        )
       },
       // consumes and returns one char from the input
       input: function () {
         const ch = this._input[0]
-        this.yytext += ch, this.yyleng++, this.offset++, this.match += ch, this.matched += ch
+        ;(this.yytext += ch),
+          this.yyleng++,
+          this.offset++,
+          (this.match += ch),
+          (this.matched += ch)
         const lines = ch.match(/(?:\r\n?|\n).*/g)
 
-        return lines ? (this.yylineno++, this.yylloc.last_line++) : this.yylloc.last_column++,
-        this.options.ranges && this.yylloc.range[1]++, this._input = this._input.slice(1),
-        ch
+        return (
+          lines
+            ? (this.yylineno++, this.yylloc.last_line++)
+            : this.yylloc.last_column++,
+          this.options.ranges && this.yylloc.range[1]++,
+          (this._input = this._input.slice(1)),
+          ch
+        )
       },
       // unshifts one char (or a string) into the input
       unput: function (ch) {
-        const len = ch.length; const lines = ch.split(/(?:\r\n?|\n)/g)
-        this._input = ch + this._input, this.yytext = this.yytext.substr(0, this.yytext.length - len),
-        // this.yyleng -= len;
-        this.offset -= len
+        const len = ch.length
+        const lines = ch.split(/(?:\r\n?|\n)/g)
+        ;(this._input = ch + this._input),
+          (this.yytext = this.yytext.substr(0, this.yytext.length - len)),
+          // this.yyleng -= len;
+          (this.offset -= len)
         const oldLines = this.match.split(/(?:\r\n?|\n)/g)
-        this.match = this.match.substr(0, this.match.length - 1), this.matched = this.matched.substr(0, this.matched.length - 1),
-        lines.length - 1 && (this.yylineno -= lines.length - 1)
+        ;(this.match = this.match.substr(0, this.match.length - 1)),
+          (this.matched = this.matched.substr(0, this.matched.length - 1)),
+          lines.length - 1 && (this.yylineno -= lines.length - 1)
         const r = this.yylloc.range
 
-        return this.yylloc = {
-          first_line: this.yylloc.first_line,
-          last_line: this.yylineno + 1,
-          first_column: this.yylloc.first_column,
-          last_column: lines ? (lines.length === oldLines.length ? this.yylloc.first_column : 0) + oldLines[oldLines.length - lines.length].length - lines[0].length : this.yylloc.first_column - len
-        }, this.options.ranges && (this.yylloc.range = [r[0], r[0] + this.yyleng - len]),
-        this.yyleng = this.yytext.length, this
+        return (
+          (this.yylloc = {
+            first_line: this.yylloc.first_line,
+            last_line: this.yylineno + 1,
+            first_column: this.yylloc.first_column,
+            last_column: lines
+              ? (lines.length === oldLines.length
+                  ? this.yylloc.first_column
+                  : 0) +
+                oldLines[oldLines.length - lines.length].length -
+                lines[0].length
+              : this.yylloc.first_column - len
+          }),
+          this.options.ranges &&
+            (this.yylloc.range = [r[0], r[0] + this.yyleng - len]),
+          (this.yyleng = this.yytext.length),
+          this
+        )
       },
       // When called from action, caches matched text and appends it on next action
       more: function () {
-        return this._more = !0, this
+        return (this._more = !0), this
       },
       // When called from action, signals the lexer that this rule fails to match the input, so the next matching rule (regex) should be tested instead.
       reject: function () {
         return this.options.backtrack_lexer
-          ? (this._backtrack = !0, this)
-          : this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\n' + this.showPosition(), {
-            text: '',
-            token: null,
-            line: this.yylineno
-          })
+          ? ((this._backtrack = !0), this)
+          : this.parseError(
+              'Lexical error on line ' +
+                (this.yylineno + 1) +
+                '. You can only invoke reject() in the lexer when the lexer is of the backtracking persuasion (options.backtrack_lexer = true).\n' +
+                this.showPosition(),
+              {
+                text: '',
+                token: null,
+                line: this.yylineno
+              }
+            )
       },
       // retain first n characters of the match
       less: function (n) {
@@ -578,56 +796,93 @@ const parser = (function () {
       },
       // displays already matched input, i.e. for error messages
       pastInput: function () {
-        const past = this.matched.substr(0, this.matched.length - this.match.length)
+        const past = this.matched.substr(
+          0,
+          this.matched.length - this.match.length
+        )
 
-        return (past.length > 20 ? '...' : '') + past.substr(-20).replace(/\n/g, '')
+        return (
+          (past.length > 20 ? '...' : '') + past.substr(-20).replace(/\n/g, '')
+        )
       },
       // displays upcoming input, i.e. for error messages
       upcomingInput: function () {
         let next = this.match
 
-        return next.length < 20 && (next += this._input.substr(0, 20 - next.length)), (next.substr(0, 20) + (next.length > 20 ? '...' : '')).replace(/\n/g, '')
+        return (
+          next.length < 20 && (next += this._input.substr(0, 20 - next.length)),
+          (next.substr(0, 20) + (next.length > 20 ? '...' : '')).replace(
+            /\n/g,
+            ''
+          )
+        )
       },
       // displays the character position where the lexing error occurred, i.e. for error messages
       showPosition: function () {
-        const pre = this.pastInput(); const c = new Array(pre.length + 1).join('-')
+        const pre = this.pastInput()
+        const c = new Array(pre.length + 1).join('-')
 
         return pre + this.upcomingInput() + '\n' + c + '^'
       },
       // test the lexed token: return FALSE when not a match, otherwise return token
       test_match: function (match, indexed_rule) {
         let token, lines, backup
-        if (this.options.backtrack_lexer && (// save context
-          backup = {
-            yylineno: this.yylineno,
-            yylloc: {
-              first_line: this.yylloc.first_line,
-              last_line: this.last_line,
-              first_column: this.yylloc.first_column,
-              last_column: this.yylloc.last_column
-            },
-            yytext: this.yytext,
-            match: this.match,
-            matches: this.matches,
-            matched: this.matched,
-            yyleng: this.yyleng,
-            offset: this.offset,
-            _more: this._more,
-            _input: this._input,
-            yy: this.yy,
-            conditionStack: this.conditionStack.slice(0),
-            done: this.done
-          }, this.options.ranges && (backup.yylloc.range = this.yylloc.range.slice(0))), lines = match[0].match(/(?:\r\n?|\n).*/g),
-        lines && (this.yylineno += lines.length), this.yylloc = {
-          first_line: this.yylloc.last_line,
-          last_line: this.yylineno + 1,
-          first_column: this.yylloc.last_column,
-          last_column: lines ? lines[lines.length - 1].length - lines[lines.length - 1].match(/\r?\n?/)[0].length : this.yylloc.last_column + match[0].length
-        }, this.yytext += match[0], this.match += match[0], this.matches = match, this.yyleng = this.yytext.length,
-        this.options.ranges && (this.yylloc.range = [this.offset, this.offset += this.yyleng]),
-        this._more = !1, this._backtrack = !1, this._input = this._input.slice(match[0].length),
-        this.matched += match[0], token = this.performAction.call(this, this.yy, this, indexed_rule, this.conditionStack[this.conditionStack.length - 1]),
-        this.done && this._input && (this.done = !1), token) return token
+        if (
+          (this.options.backtrack_lexer && // save context
+            ((backup = {
+              yylineno: this.yylineno,
+              yylloc: {
+                first_line: this.yylloc.first_line,
+                last_line: this.last_line,
+                first_column: this.yylloc.first_column,
+                last_column: this.yylloc.last_column
+              },
+              yytext: this.yytext,
+              match: this.match,
+              matches: this.matches,
+              matched: this.matched,
+              yyleng: this.yyleng,
+              offset: this.offset,
+              _more: this._more,
+              _input: this._input,
+              yy: this.yy,
+              conditionStack: this.conditionStack.slice(0),
+              done: this.done
+            }),
+            this.options.ranges &&
+              (backup.yylloc.range = this.yylloc.range.slice(0))),
+          (lines = match[0].match(/(?:\r\n?|\n).*/g)),
+          lines && (this.yylineno += lines.length),
+          (this.yylloc = {
+            first_line: this.yylloc.last_line,
+            last_line: this.yylineno + 1,
+            first_column: this.yylloc.last_column,
+            last_column: lines
+              ? lines[lines.length - 1].length -
+                lines[lines.length - 1].match(/\r?\n?/)[0].length
+              : this.yylloc.last_column + match[0].length
+          }),
+          (this.yytext += match[0]),
+          (this.match += match[0]),
+          (this.matches = match),
+          (this.yyleng = this.yytext.length),
+          this.options.ranges &&
+            (this.yylloc.range = [this.offset, (this.offset += this.yyleng)]),
+          (this._more = !1),
+          (this._backtrack = !1),
+          (this._input = this._input.slice(match[0].length)),
+          (this.matched += match[0]),
+          (token = this.performAction.call(
+            this,
+            this.yy,
+            this,
+            indexed_rule,
+            this.conditionStack[this.conditionStack.length - 1]
+          )),
+          this.done && this._input && (this.done = !1),
+          token)
+        )
+          return token
         if (this._backtrack) {
           // recover context
           for (const k in backup) this[k] = backup[k]
@@ -642,13 +897,20 @@ const parser = (function () {
         if (this.done) return this.EOF
         this._input || (this.done = !0)
         let token, match, tempMatch, index
-        this._more || (this.yytext = '', this.match = '')
+        this._more || ((this.yytext = ''), (this.match = ''))
 
         for (var rules = this._currentRules(), i = 0; i < rules.length; i++) {
-          if (tempMatch = this._input.match(this.rules[rules[i]]),
-          tempMatch && (!match || tempMatch[0].length > match[0].length)) {
-            if (match = tempMatch, index = i, this.options.backtrack_lexer) {
-              if (token = this.test_match(tempMatch, rules[i]), token !== !1) return token
+          if (
+            ((tempMatch = this._input.match(this.rules[rules[i]])),
+            tempMatch && (!match || tempMatch[0].length > match[0].length))
+          ) {
+            if (
+              ((match = tempMatch), (index = i), this.options.backtrack_lexer)
+            ) {
+              if (
+                ((token = this.test_match(tempMatch, rules[i])), token !== !1)
+              )
+                return token
               if (this._backtrack) {
                 match = !1
                 continue
@@ -662,14 +924,21 @@ const parser = (function () {
         }
 
         return match
-          ? (token = this.test_match(match, rules[index]), token !== !1 && token)
+          ? ((token = this.test_match(match, rules[index])),
+            token !== !1 && token)
           : this._input === ''
-            ? this.EOF
-            : this.parseError('Lexical error on line ' + (this.yylineno + 1) + '. Unrecognized text.\n' + this.showPosition(), {
-              text: '',
-              token: null,
-              line: this.yylineno
-            })
+          ? this.EOF
+          : this.parseError(
+              'Lexical error on line ' +
+                (this.yylineno + 1) +
+                '. Unrecognized text.\n' +
+                this.showPosition(),
+              {
+                text: '',
+                token: null,
+                line: this.yylineno
+              }
+            )
       },
       // return next match that has a token
       lex: function () {
@@ -689,11 +958,18 @@ const parser = (function () {
       },
       // produce the lexer rule set which is active for the currently active lexer condition state
       _currentRules: function () {
-        return this.conditionStack.length && this.conditionStack[this.conditionStack.length - 1] ? this.conditions[this.conditionStack[this.conditionStack.length - 1]].rules : this.conditions.INITIAL.rules
+        return this.conditionStack.length &&
+          this.conditionStack[this.conditionStack.length - 1]
+          ? this.conditions[this.conditionStack[this.conditionStack.length - 1]]
+              .rules
+          : this.conditions.INITIAL.rules
       },
       // return the currently active lexer condition state; when an index argument is provided it produces the N-th previous condition state, if available
       topState: function (n) {
-        return n = this.conditionStack.length - 1 - Math.abs(n || 0), n >= 0 ? this.conditionStack[n] : 'INITIAL'
+        return (
+          (n = this.conditionStack.length - 1 - Math.abs(n || 0)),
+          n >= 0 ? this.conditionStack[n] : 'INITIAL'
+        )
       },
       // alias for begin(condition)
       pushState: function (condition) {
@@ -768,36 +1044,68 @@ const parser = (function () {
             return 'INVALID'
         }
       },
-      rules: [/^(?:[\r\n]+)/i, /^(?:\s+)/i, /^(?:#[^\r\n]*)/i, /^(?:participant\b)/i, /^(?:left of\b)/i, /^(?:right of\b)/i, /^(?:over\b)/i, /^(?:note\b)/i, /^(?:title\b)/i, /^(?:,)/i, /^(?:[^\->:,\r\n"]+)/i, /^(?:"[^"]+")/i, /^(?:--)/i, /^(?:-)/i, /^(?:>>)/i, /^(?:>)/i, /^(?:[^\r\n]+)/i, /^(?:$)/i, /^(?:.)/i],
+      rules: [
+        /^(?:[\r\n]+)/i,
+        /^(?:\s+)/i,
+        /^(?:#[^\r\n]*)/i,
+        /^(?:participant\b)/i,
+        /^(?:left of\b)/i,
+        /^(?:right of\b)/i,
+        /^(?:over\b)/i,
+        /^(?:note\b)/i,
+        /^(?:title\b)/i,
+        /^(?:,)/i,
+        /^(?:[^\->:,\r\n"]+)/i,
+        /^(?:"[^"]+")/i,
+        /^(?:--)/i,
+        /^(?:-)/i,
+        /^(?:>>)/i,
+        /^(?:>)/i,
+        /^(?:[^\r\n]+)/i,
+        /^(?:$)/i,
+        /^(?:.)/i
+      ],
       conditions: {
         INITIAL: {
-          rules: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18],
+          rules: [
+            0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18
+          ],
           inclusive: !0
         }
       }
     }
 
     return lexer
-  }())
+  })()
 
-  return parser.lexer = lexer, Parser.prototype = parser, parser.Parser = Parser,
-  new Parser()
-}())
+  return (
+    (parser.lexer = lexer),
+    (Parser.prototype = parser),
+    (parser.Parser = Parser),
+    new Parser()
+  )
+})()
 
-typeof require !== 'undefined' && typeof exports !== 'undefined' && (exports.parser = parser,
-exports.Parser = parser.Parser, exports.parse = function () {
-  return parser.parse.apply(parser, arguments)
-}, typeof module !== 'undefined' && require.main === module && exports.main(process.argv.slice(1)))
+typeof require !== 'undefined' &&
+  typeof exports !== 'undefined' &&
+  ((exports.parser = parser),
+  (exports.Parser = parser.Parser),
+  (exports.parse = function () {
+    return parser.parse.apply(parser, arguments)
+  }),
+  typeof module !== 'undefined' &&
+    require.main === module &&
+    exports.main(process.argv.slice(1)))
 
 /**
-  * jison doesn't have a good exception, so we make one.
-  * This is brittle as it depends on jison internals
-  */
-function ParseError (message, hash) {
+ * jison doesn't have a good exception, so we make one.
+ * This is brittle as it depends on jison internals
+ */
+function ParseError(message, hash) {
   _.extend(this, hash)
 
   this.name = 'ParseError'
-  this.message = (message || '')
+  this.message = message || ''
 }
 ParseError.prototype = new Error()
 Diagram.ParseError = ParseError
@@ -821,10 +1129,10 @@ Diagram.parse = function (input) {
 }
 
 /** js sequence diagrams
-  *  https://bramp.github.io/js-sequence-diagrams/
-  *  (c) 2012-2017 Andrew Brampton (bramp.net)
-  *  Simplified BSD license.
-  */
+ *  https://bramp.github.io/js-sequence-diagrams/
+ *  (c) 2012-2017 Andrew Brampton (bramp.net)
+ *  Simplified BSD license.
+ */
 /* global Diagram, _ */
 
 // Following the CSS convention
@@ -863,13 +1171,15 @@ const ARROWTYPE = Diagram.ARROWTYPE
 const ALIGN_LEFT = 0
 const ALIGN_CENTER = 1
 
-function AssertException (message) { this.message = message }
+function AssertException(message) {
+  this.message = message
+}
 
 AssertException.prototype.toString = function () {
   return 'AssertException: ' + this.message
 }
 
-function assert (exp, message) {
+function assert(exp, message) {
   if (!exp) {
     throw new AssertException(message)
   }
@@ -883,27 +1193,27 @@ if (!String.prototype.trim) {
 
 Diagram.themes = {}
 
-function registerTheme (name, theme) {
+function registerTheme(name, theme) {
   Diagram.themes[name] = theme
 }
 
 /******************
-  * Drawing extras
-  ******************/
+ * Drawing extras
+ ******************/
 
-function getCenterX (box) {
+function getCenterX(box) {
   return box.x + box.width / 2
 }
 
-function getCenterY (box) {
+function getCenterY(box) {
   return box.y + box.height / 2
 }
 
 /******************
-  * SVG Path extras
-  ******************/
+ * SVG Path extras
+ ******************/
 
-function clamp (x, min, max) {
+function clamp(x, min, max) {
   if (x < min) {
     return min
   }
@@ -915,7 +1225,7 @@ function clamp (x, min, max) {
   return x
 }
 
-function wobble (x1, y1, x2, y2) {
+function wobble(x1, y1, x2, y2) {
   assert(_.all([x1, x2, y1, y2], _.isFinite), 'x1,x2,y1,y2 must be numeric')
 
   // Wobble no more than 1/25 of the line length
@@ -939,43 +1249,58 @@ function wobble (x1, y1, x2, y2) {
     y: (y2 - y1) * r2 + y1 - yfactor
   }
 
-  return 'C' + p1.x.toFixed(1) + ',' + p1.y.toFixed(1) + // start control point
-          ' ' + p2.x.toFixed(1) + ',' + p2.y.toFixed(1) + // end control point
-          ' ' + x2.toFixed(1) + ',' + y2.toFixed(1) // end point
+  return (
+    'C' +
+    p1.x.toFixed(1) +
+    ',' +
+    p1.y.toFixed(1) + // start control point
+    ' ' +
+    p2.x.toFixed(1) +
+    ',' +
+    p2.y.toFixed(1) + // end control point
+    ' ' +
+    x2.toFixed(1) +
+    ',' +
+    y2.toFixed(1)
+  ) // end point
 }
 
 /**
-  * Draws a wobbly (hand drawn) rect
-  */
-function handRect (x, y, w, h) {
+ * Draws a wobbly (hand drawn) rect
+ */
+function handRect(x, y, w, h) {
   assert(_.all([x, y, w, h], _.isFinite), 'x, y, w, h must be numeric')
 
-  return 'M' + x + ',' + y +
+  return (
+    'M' +
+    x +
+    ',' +
+    y +
     wobble(x, y, x + w, y) +
     wobble(x + w, y, x + w, y + h) +
     wobble(x + w, y + h, x, y + h) +
     wobble(x, y + h, x, y)
+  )
 }
 
 /**
-  * Draws a wobbly (hand drawn) line
-  */
-function handLine (x1, y1, x2, y2) {
+ * Draws a wobbly (hand drawn) line
+ */
+function handLine(x1, y1, x2, y2) {
   assert(_.all([x1, x2, y1, y2], _.isFinite), 'x1,x2,y1,y2 must be numeric')
 
   return 'M' + x1.toFixed(1) + ',' + y1.toFixed(1) + wobble(x1, y1, x2, y2)
 }
 
 /******************
-  * BaseTheme
-  ******************/
+ * BaseTheme
+ ******************/
 
 const BaseTheme = function (diagram, options) {
   this.init(diagram, options)
 }
 
 _.extend(BaseTheme.prototype, {
-
   // Init called while creating the Theme
   init: function (diagram, options) {
     this.diagram = diagram
@@ -1012,7 +1337,7 @@ _.extend(BaseTheme.prototype, {
 
     // Setup some layout stuff
     if (diagram.title) {
-      const title = this.title_ = {}
+      const title = (this.title_ = {})
       const bb = this.textBBox(diagram.title, font)
       title.textBB = bb
       title.message = diagram.title
@@ -1026,20 +1351,25 @@ _.extend(BaseTheme.prototype, {
       diagram.height += title.height
     }
 
-    _.each(actors, function (a) {
-      const bb = this.textBBox(a.name, font)
-      a.textBB = bb
+    _.each(
+      actors,
+      function (a) {
+        const bb = this.textBBox(a.name, font)
+        a.textBB = bb
 
-      a.x = 0; a.y = 0
-      a.width = bb.width + (ACTOR_PADDING + ACTOR_MARGIN) * 2
-      a.height = bb.height + (ACTOR_PADDING + ACTOR_MARGIN) * 2
+        a.x = 0
+        a.y = 0
+        a.width = bb.width + (ACTOR_PADDING + ACTOR_MARGIN) * 2
+        a.height = bb.height + (ACTOR_PADDING + ACTOR_MARGIN) * 2
 
-      a.distances = []
-      a.paddingRight = 0
-      this.actorsHeight_ = Math.max(a.height, this.actorsHeight_)
-    }, this)
+        a.distances = []
+        a.paddingRight = 0
+        this.actorsHeight_ = Math.max(a.height, this.actorsHeight_)
+      },
+      this
+    )
 
-    function actorEnsureDistance (a, b, d) {
+    function actorEnsureDistance(a, b, d) {
       assert(a < b, 'a must be less than or equal to b')
 
       if (a < 0) {
@@ -1056,96 +1386,105 @@ _.extend(BaseTheme.prototype, {
       }
     }
 
-    _.each(signals, function (s) {
-      // Indexes of the left and right actors involved
-      let a
-      let b
+    _.each(
+      signals,
+      function (s) {
+        // Indexes of the left and right actors involved
+        let a
+        let b
 
-      const bb = this.textBBox(s.message, font)
+        const bb = this.textBBox(s.message, font)
 
-      // var bb = t.attr("text", s.message).getBBox();
-      s.textBB = bb
-      s.width = bb.width
-      s.height = bb.height
+        // var bb = t.attr("text", s.message).getBBox();
+        s.textBB = bb
+        s.width = bb.width
+        s.height = bb.height
 
-      let extraWidth = 0
+        let extraWidth = 0
 
-      if (s.type == 'Signal') {
-        s.width += (SIGNAL_MARGIN + SIGNAL_PADDING) * 2
-        s.height += (SIGNAL_MARGIN + SIGNAL_PADDING) * 2
+        if (s.type == 'Signal') {
+          s.width += (SIGNAL_MARGIN + SIGNAL_PADDING) * 2
+          s.height += (SIGNAL_MARGIN + SIGNAL_PADDING) * 2
 
-        if (s.isSelf()) {
-          // TODO Self signals need a min height
-          a = s.actorA.index
-          b = a + 1
-          s.width += SELF_SIGNAL_WIDTH
+          if (s.isSelf()) {
+            // TODO Self signals need a min height
+            a = s.actorA.index
+            b = a + 1
+            s.width += SELF_SIGNAL_WIDTH
+          } else {
+            a = Math.min(s.actorA.index, s.actorB.index)
+            b = Math.max(s.actorA.index, s.actorB.index)
+          }
+        } else if (s.type == 'Note') {
+          s.width += (NOTE_MARGIN + NOTE_PADDING) * 2
+          s.height += (NOTE_MARGIN + NOTE_PADDING) * 2
+
+          // HACK lets include the actor's padding
+          extraWidth = 2 * ACTOR_MARGIN
+
+          if (s.placement == PLACEMENT.LEFTOF) {
+            b = s.actor.index
+            a = b - 1
+          } else if (s.placement == PLACEMENT.RIGHTOF) {
+            a = s.actor.index
+            b = a + 1
+          } else if (s.placement == PLACEMENT.OVER && s.hasManyActors()) {
+            // Over multiple actors
+            a = Math.min(s.actor[0].index, s.actor[1].index)
+            b = Math.max(s.actor[0].index, s.actor[1].index)
+
+            // We don't need our padding, and we want to overlap
+            extraWidth = -(NOTE_PADDING * 2 + NOTE_OVERLAP * 2)
+          } else if (s.placement == PLACEMENT.OVER) {
+            // Over single actor
+            a = s.actor.index
+            actorEnsureDistance(a - 1, a, s.width / 2)
+            actorEnsureDistance(a, a + 1, s.width / 2)
+            this.signalsHeight_ += s.height
+
+            return // Bail out early
+          }
         } else {
-          a = Math.min(s.actorA.index, s.actorB.index)
-          b = Math.max(s.actorA.index, s.actorB.index)
+          throw new Error('Unhandled signal type:' + s.type)
         }
-      } else if (s.type == 'Note') {
-        s.width += (NOTE_MARGIN + NOTE_PADDING) * 2
-        s.height += (NOTE_MARGIN + NOTE_PADDING) * 2
 
-        // HACK lets include the actor's padding
-        extraWidth = 2 * ACTOR_MARGIN
-
-        if (s.placement == PLACEMENT.LEFTOF) {
-          b = s.actor.index
-          a = b - 1
-        } else if (s.placement == PLACEMENT.RIGHTOF) {
-          a = s.actor.index
-          b = a + 1
-        } else if (s.placement == PLACEMENT.OVER && s.hasManyActors()) {
-          // Over multiple actors
-          a = Math.min(s.actor[0].index, s.actor[1].index)
-          b = Math.max(s.actor[0].index, s.actor[1].index)
-
-          // We don't need our padding, and we want to overlap
-          extraWidth = -(NOTE_PADDING * 2 + NOTE_OVERLAP * 2)
-        } else if (s.placement == PLACEMENT.OVER) {
-          // Over single actor
-          a = s.actor.index
-          actorEnsureDistance(a - 1, a, s.width / 2)
-          actorEnsureDistance(a, a + 1, s.width / 2)
-          this.signalsHeight_ += s.height
-
-          return // Bail out early
-        }
-      } else {
-        throw new Error('Unhandled signal type:' + s.type)
-      }
-
-      actorEnsureDistance(a, b, s.width + extraWidth)
-      this.signalsHeight_ += s.height
-    }, this)
+        actorEnsureDistance(a, b, s.width + extraWidth)
+        this.signalsHeight_ += s.height
+      },
+      this
+    )
 
     // Re-jig the positions
     let actorsX = 0
-    _.each(actors, function (a) {
-      a.x = Math.max(actorsX, a.x)
+    _.each(
+      actors,
+      function (a) {
+        a.x = Math.max(actorsX, a.x)
 
-      // TODO This only works if we loop in sequence, 0, 1, 2, etc
-      _.each(a.distances, function (distance, b) {
-        // lodash (and possibly others) do not like sparse arrays
-        // so sometimes they return undefined
-        if (typeof distance === 'undefined') {
-          return
-        }
+        // TODO This only works if we loop in sequence, 0, 1, 2, etc
+        _.each(a.distances, function (distance, b) {
+          // lodash (and possibly others) do not like sparse arrays
+          // so sometimes they return undefined
+          if (typeof distance === 'undefined') {
+            return
+          }
 
-        b = actors[b]
-        distance = Math.max(distance, a.width / 2, b.width / 2)
-        b.x = Math.max(b.x, a.x + a.width / 2 + distance - b.width / 2)
-      })
+          b = actors[b]
+          distance = Math.max(distance, a.width / 2, b.width / 2)
+          b.x = Math.max(b.x, a.x + a.width / 2 + distance - b.width / 2)
+        })
 
-      actorsX = a.x + a.width + a.paddingRight
-    }, this)
+        actorsX = a.x + a.width + a.paddingRight
+      },
+      this
+    )
 
     diagram.width = Math.max(actorsX, diagram.width)
 
     // TODO Refactor a little
     diagram.width += 2 * DIAGRAM_MARGIN
-    diagram.height += 2 * DIAGRAM_MARGIN + 2 * this.actorsHeight_ + this.signalsHeight_
+    diagram.height +=
+      2 * DIAGRAM_MARGIN + 2 * this.actorsHeight_ + this.signalsHeight_
 
     return this
   },
@@ -1157,49 +1496,78 @@ _.extend(BaseTheme.prototype, {
   drawTitle: function () {
     const title = this.title_
     if (title) {
-      this.drawTextBox(title, title.message, TITLE_MARGIN, TITLE_PADDING, this.font_, ALIGN_LEFT)
+      this.drawTextBox(
+        title,
+        title.message,
+        TITLE_MARGIN,
+        TITLE_PADDING,
+        this.font_,
+        ALIGN_LEFT
+      )
     }
   },
 
   drawActors: function (offsetY) {
     const y = offsetY
-    _.each(this.diagram.actors, function (a) {
-      // Top box
-      this.drawActor(a, y, this.actorsHeight_)
+    _.each(
+      this.diagram.actors,
+      function (a) {
+        // Top box
+        this.drawActor(a, y, this.actorsHeight_)
 
-      // Bottom box
-      this.drawActor(a, y + this.actorsHeight_ + this.signalsHeight_, this.actorsHeight_)
+        // Bottom box
+        this.drawActor(
+          a,
+          y + this.actorsHeight_ + this.signalsHeight_,
+          this.actorsHeight_
+        )
 
-      // Veritical line
-      const aX = getCenterX(a)
-      this.drawLine(
-        aX, y + this.actorsHeight_ - ACTOR_MARGIN,
-        aX, y + this.actorsHeight_ + ACTOR_MARGIN + this.signalsHeight_)
-    }, this)
+        // Veritical line
+        const aX = getCenterX(a)
+        this.drawLine(
+          aX,
+          y + this.actorsHeight_ - ACTOR_MARGIN,
+          aX,
+          y + this.actorsHeight_ + ACTOR_MARGIN + this.signalsHeight_
+        )
+      },
+      this
+    )
   },
 
   drawActor: function (actor, offsetY, height) {
     actor.y = offsetY
     actor.height = height
-    this.drawTextBox(actor, actor.name, ACTOR_MARGIN, ACTOR_PADDING, this.font_, ALIGN_CENTER)
+    this.drawTextBox(
+      actor,
+      actor.name,
+      ACTOR_MARGIN,
+      ACTOR_PADDING,
+      this.font_,
+      ALIGN_CENTER
+    )
   },
 
   drawSignals: function (offsetY) {
     let y = offsetY
-    _.each(this.diagram.signals, function (s) {
-      // TODO Add debug mode, that draws padding/margin box
-      if (s.type == 'Signal') {
-        if (s.isSelf()) {
-          this.drawSelfSignal(s, y)
-        } else {
-          this.drawSignal(s, y)
+    _.each(
+      this.diagram.signals,
+      function (s) {
+        // TODO Add debug mode, that draws padding/margin box
+        if (s.type == 'Signal') {
+          if (s.isSelf()) {
+            this.drawSelfSignal(s, y)
+          } else {
+            this.drawSignal(s, y)
+          }
+        } else if (s.type == 'Note') {
+          this.drawNote(s, y)
         }
-      } else if (s.type == 'Note') {
-        this.drawNote(s, y)
-      }
 
-      y += s.height
-    }, this)
+        y += s.height
+      },
+      this
+    )
   },
 
   drawSelfSignal: function (signal, offsetY) {
@@ -1218,8 +1586,21 @@ _.extend(BaseTheme.prototype, {
 
     // Draw three lines, the last one with a arrow
     this.drawLine(aX, y1, aX + SELF_SIGNAL_WIDTH, y1, signal.linetype)
-    this.drawLine(aX + SELF_SIGNAL_WIDTH, y1, aX + SELF_SIGNAL_WIDTH, y2, signal.linetype)
-    this.drawLine(aX + SELF_SIGNAL_WIDTH, y2, aX, y2, signal.linetype, signal.arrowtype)
+    this.drawLine(
+      aX + SELF_SIGNAL_WIDTH,
+      y1,
+      aX + SELF_SIGNAL_WIDTH,
+      y2,
+      signal.linetype
+    )
+    this.drawLine(
+      aX + SELF_SIGNAL_WIDTH,
+      y2,
+      aX,
+      y2,
+      signal.linetype,
+      signal.arrowtype
+    )
   },
 
   drawSignal: function (signal, offsetY) {
@@ -1256,7 +1637,7 @@ _.extend(BaseTheme.prototype, {
           const bX = getCenterX(note.actor[1])
           const overlap = NOTE_OVERLAP + NOTE_PADDING
           note.x = Math.min(aX, bX) - overlap
-          note.width = (Math.max(aX, bX) + overlap) - note.x
+          note.width = Math.max(aX, bX) + overlap - note.x
         } else {
           note.x = aX - note.width / 2
         }
@@ -1265,12 +1646,19 @@ _.extend(BaseTheme.prototype, {
         throw new Error('Unhandled note placement: ' + note.placement)
     }
 
-    return this.drawTextBox(note, note.message, NOTE_MARGIN, NOTE_PADDING, this.font_, ALIGN_LEFT)
+    return this.drawTextBox(
+      note,
+      note.message,
+      NOTE_MARGIN,
+      NOTE_PADDING,
+      this.font_,
+      ALIGN_LEFT
+    )
   },
 
   /**
-    * Draw text surrounded by a box
-    */
+   * Draw text surrounded by a box
+   */
   drawTextBox: function (box, text, margin, padding, font, align) {
     let x = box.x + margin
     let y = box.y + margin
@@ -1294,10 +1682,10 @@ _.extend(BaseTheme.prototype, {
 })
 
 /** js sequence diagrams
-  *  https://bramp.github.io/js-sequence-diagrams/
-  *  (c) 2012-2017 Andrew Brampton (bramp.net)
-  *  Simplified BSD license.
-  */
+ *  https://bramp.github.io/js-sequence-diagrams/
+ *  (c) 2012-2017 Andrew Brampton (bramp.net)
+ *  Simplified BSD license.
+ */
 /* global Diagram, Snap, WebFont _ */
 // TODO Move defintion of font onto the <svg>, so it can easily be override at each level
 if (typeof Snap !== 'undefined') {
@@ -1318,8 +1706,8 @@ if (typeof Snap !== 'undefined') {
   const LOADED_FONTS = {}
 
   /******************
-    * SnapTheme
-    ******************/
+   * SnapTheme
+   ******************/
 
   const SnapTheme = function (diagram, options, resume) {
     _.defaults(options, {
@@ -1332,7 +1720,6 @@ if (typeof Snap !== 'undefined') {
   }
 
   _.extend(SnapTheme.prototype, BaseTheme.prototype, {
-
     init: function (diagram, options, resume) {
       BaseTheme.prototype.init.call(this, diagram)
 
@@ -1343,11 +1730,11 @@ if (typeof Snap !== 'undefined') {
         'font-family': options['font-family']
       }
 
-      const a = this.arrowTypes_ = {}
+      const a = (this.arrowTypes_ = {})
       a[ARROWTYPE.FILLED] = 'Block'
       a[ARROWTYPE.OPEN] = 'Open'
 
-      const l = this.lineTypes_ = {}
+      const l = (this.lineTypes_ = {})
       l[LINETYPE.SOLID] = ''
       l[LINETYPE.DOTTED] = '6,2'
 
@@ -1362,7 +1749,9 @@ if (typeof Snap !== 'undefined') {
       const fontFamily = this.font_['font-family']
 
       if (typeof WebFont === 'undefined') {
-        throw new Error('WebFont is required (https://github.com/typekit/webfontloader).')
+        throw new Error(
+          'WebFont is required (https://github.com/typekit/webfontloader).'
+        )
       }
 
       if (LOADED_FONTS[fontFamily]) {
@@ -1412,13 +1801,17 @@ if (typeof Snap !== 'undefined') {
       this.beginGroup()
 
       // TODO Perhaps only include the markers if we actually use them.
-      const a = this.arrowMarkers_ = {}
+      const a = (this.arrowMarkers_ = {})
       let arrow = this.paper_.path('M 0 0 L 5 2.5 L 0 5 z')
-      a[ARROWTYPE.FILLED] = arrow.marker(0, 0, 5, 5, 5, 2.5)
+      a[ARROWTYPE.FILLED] = arrow
+        .marker(0, 0, 5, 5, 5, 2.5)
         .attr({ id: 'markerArrowBlock' })
 
-      arrow = this.paper_.path('M 9.6,8 1.92,16 0,13.7 5.76,8 0,2.286 1.92,0 9.6,8 z')
-      a[ARROWTYPE.OPEN] = arrow.marker(0, 0, 9.6, 16, 9.6, 8)
+      arrow = this.paper_.path(
+        'M 9.6,8 1.92,16 0,13.7 5.76,8 0,2.286 1.92,0 9.6,8 z'
+      )
+      a[ARROWTYPE.OPEN] = arrow
+        .marker(0, 0, 9.6, 16, 9.6, 8)
         .attr({ markerWidth: '4', id: 'markerArrowOpen' })
     },
 
@@ -1494,12 +1887,12 @@ if (typeof Snap !== 'undefined') {
     },
 
     /**
-      * Draws text with a optional white background
-      * x,y (int) x,y top left point of the text, or the center of the text (depending on align param)
-      * text (string) text to print
-      * font (Object)
-      * align (string) ALIGN_LEFT or ALIGN_CENTER
-      */
+     * Draws text with a optional white background
+     * x,y (int) x,y top left point of the text, or the center of the text (depending on align param)
+     * text (string) text to print
+     * font (Object)
+     * align (string) ALIGN_LEFT or ALIGN_CENTER
+     */
     drawText: function (x, y, text, font, align) {
       const t = this.createText(text, font)
       const bb = t.getBBox()
@@ -1556,8 +1949,8 @@ if (typeof Snap !== 'undefined') {
   })
 
   /******************
-    * SnapHandTheme
-    ******************/
+   * SnapHandTheme
+   ******************/
 
   const SnapHandTheme = function (diagram, options, resume) {
     _.defaults(options, {
@@ -1596,10 +1989,10 @@ if (typeof Snap !== 'undefined') {
 }
 
 /** js sequence diagrams
-  *  https://bramp.github.io/js-sequence-diagrams/
-  *  (c) 2012-2017 Andrew Brampton (bramp.net)
-  *  Simplified BSD license.
-  */
+ *  https://bramp.github.io/js-sequence-diagrams/
+ *  (c) 2012-2017 Andrew Brampton (bramp.net)
+ *  Simplified BSD license.
+ */
 /* global Diagram, _ */
 
 if (typeof Raphael === 'undefined' && typeof Snap === 'undefined') {
@@ -1614,7 +2007,8 @@ if (_.isEmpty(Diagram.themes)) {
 
 // Set the default hand/simple based on which theme is available.
 Diagram.themes.hand = Diagram.themes.snapHand || Diagram.themes.raphaelHand
-Diagram.themes.simple = Diagram.themes.snapSimple || Diagram.themes.raphaelSimple
+Diagram.themes.simple =
+  Diagram.themes.snapSimple || Diagram.themes.raphaelSimple
 
 /* Draws the diagram. Creates a SVG inside the container
  * container (HTMLElement|string) DOM element or its ID to draw on
@@ -1632,7 +2026,9 @@ Diagram.prototype.drawSVG = function (container, options) {
   }
 
   // TODO Write tests for this check
-  const div = _.isString(container) ? document.getElementById(container) : container
+  const div = _.isString(container)
+    ? document.getElementById(container)
+    : container
   if (div === null || !div.tagName) {
     throw new Error('Invalid container: ' + container)
   }

@@ -27,7 +27,7 @@
 
 .mu-list-picker .item:hover,
 .mu-list-picker .item.active {
- background-color: var(--floatHoverColor);
+  background-color: var(--floatHoverColor);
 }
 
 .mu-list-picker .item .icon-wrapper {

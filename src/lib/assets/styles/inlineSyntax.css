@@ -3,7 +3,9 @@
   text-decoration: none;
 }
 
-.mu-hide, .mu-hide .mu-highlight, .mu-hide .mu-selection {
+.mu-hide,
+.mu-hide .mu-highlight,
+.mu-hide .mu-selection {
   display: inline-block;
   width: 0;
   height: 0;
@@ -29,8 +31,9 @@ code.mu-inline-rule {
   padding: 0.2em 0.4em;
 
   color: var(--editorColor);
-  font-size: .8em;
-  font-family: "DejaVu Sans Mono", "Source Code Pro", "Droid Sans Mono", Consolas, monospace;
+  font-size: 0.8em;
+  font-family: 'DejaVu Sans Mono', 'Source Code Pro', 'Droid Sans Mono',
+    Consolas, monospace;
 
   background-color: var(--codeBlockBgColor);
   border-radius: 3px;
@@ -67,7 +70,7 @@ code.mu-inline-rule {
 }
 
 .mu-hide.mu-emoji-marked-text::before {
-  top: -.8em;
+  top: -0.8em;
 }
 
 .mu-warn.mu-emoji-marked-text {
@@ -106,7 +109,7 @@ code.mu-inline-rule {
 .mu-hard-line-break-space::after {
   font-family: monospace;
 
-  opacity: .5;
+  opacity: 0.5;
 
   content: '↩';
 }
@@ -130,12 +133,12 @@ code.mu-inline-rule {
 .mu-math > .mu-math-render,
 .mu-ruby > .mu-ruby-render {
   position: absolute;
-  top: calc(100% + .5em);
+  top: calc(100% + 0.5em);
   left: 0;
   z-index: 1;
 
   display: inline-block;
-  padding: .3em .5em;
+  padding: 0.3em 0.5em;
 
   color: var(--editorColor);
 
@@ -213,8 +216,10 @@ div .mu-math-error,
   border-bottom-color: var(--floatBgColor);
 }
 
-.mu-gray.mu-ruby > .mu-ruby-render::before
-.mu-gray.mu-math > .mu-math-render::before {
+.mu-gray.mu-ruby
+  > .mu-ruby-render::before
+  .mu-gray.mu-math
+  > .mu-math-render::before {
   position: absolute;
   bottom: 100%;
   left: 50%;
@@ -225,11 +230,13 @@ div .mu-math-error,
   border-style: solid;
   border-width: 5px;
 
-  content: "";
+  content: '';
 }
 
-.mu-hide.mu-ruby > .mu-ruby-render::before
-.mu-hide.mu-math > .mu-math-render::before {
+.mu-hide.mu-ruby
+  > .mu-ruby-render::before
+  .mu-hide.mu-math
+  > .mu-math-render::before {
   content: none;
 }
 
@@ -240,7 +247,7 @@ blockquote .mu-hide.mu-math > .mu-math-render {
 
 /* header space */
 .mu-header-tight-space {
-  margin-left: -.3em;
+  margin-left: -0.3em;
 }
 
 /* inline image and <img> image */
@@ -316,7 +323,7 @@ blockquote .mu-hide.mu-math > .mu-math-render {
   color: var(--iconColor);
 }
 
-.mu-inline-image i.icon > i[class^="icon-"] {
+.mu-inline-image i.icon > i[class^='icon-'] {
   position: absolute;
   left: -20px;
 
@@ -392,7 +399,7 @@ blockquote .mu-hide.mu-math > .mu-math-render {
   align-items: center;
   justify-content: space-around;
 
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .mu-image-marked-text ~ img {
@@ -402,10 +409,12 @@ blockquote .mu-hide.mu-math > .mu-math-render {
 }
 
 .mu-inline-image.mu-image-uploading .mu-image-container img {
-  opacity: .3;
+  opacity: 0.3;
 }
 
-.mu-inline-image.mu-image-success.mu-inline-image-selected .mu-image-container img {
+.mu-inline-image.mu-image-success.mu-inline-image-selected
+  .mu-image-container
+  img {
   filter: brightness(80%);
 }
 
@@ -479,13 +488,13 @@ blockquote .mu-hide.mu-math > .mu-math-render {
 /* reference definition */
 .mu-reference-marker {
   color: var(--editorColor50);
-  font-size: .9em;
+  font-size: 0.9em;
 }
 
 .mu-reference-title {
   margin: 0 5px;
 
-  font-size: .9em;
+  font-size: 0.9em;
 }
 
 .mu-reference-label {

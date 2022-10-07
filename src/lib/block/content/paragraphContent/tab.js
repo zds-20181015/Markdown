@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import ScrollPage from '@/lib/block'
 import { tokenizer } from '@/lib/inlineRenderer/lexer'
 
@@ -16,7 +18,7 @@ const BOTH_SIDES_FORMATS = [
 ]
 
 export default {
-  isUnindentableListItem () {
+  isUnindentableListItem() {
     const { parent } = this
     const listItem = parent.parent
     const list = listItem?.parent
@@ -26,14 +28,18 @@ export default {
       return false
     }
 
-    if (listParent && (listParent.blockName === 'list-item' || listParent.blockName === 'task-list-item')) {
+    if (
+      listParent &&
+      (listParent.blockName === 'list-item' ||
+        listParent.blockName === 'task-list-item')
+    ) {
       return list.prev ? 'INDENT' : 'REPLACEMENT'
     }
 
     return false
   },
 
-  isIndentableListItem () {
+  isIndentableListItem() {
     const { parent } = this
     if (parent.blockName !== 'paragraph' || !parent.parent) {
       return false
@@ -43,14 +49,18 @@ export default {
     // Now we know it's a list item. Check whether we can indent the list item.
     const list = listItem?.parent
 
-    if ((listItem.blockName !== 'list-item' && listItem.blockName !== 'task-list-item') || !this.isCollapse) {
+    if (
+      (listItem.blockName !== 'list-item' &&
+        listItem.blockName !== 'task-list-item') ||
+      !this.isCollapse
+    ) {
       return false
     }
 
     return list && /ol|ul/.test(list.tagName) && listItem.prev
   },
 
-  unindentListItem (type) {
+  unindentListItem(type) {
     const { parent } = this
     const listItem = parent?.parent
     const list = listItem?.parent
@@ -71,19 +81,25 @@ export default {
       const newListItem = listItem.clone()
       listParent.parent.insertAfter(newListItem, listParent)
 
-      if ((listItem.next || list.next) && newListItem.lastChild.blockName !== list.blockName) {
+      if (
+        (listItem.next || list.next) &&
+        newListItem.lastChild.blockName !== list.blockName
+      ) {
         const state = {
           name: list.blockName,
           meta: { ...list.meta },
           children: []
         }
-        const childList = ScrollPage.loadBlock(state.name).create(this.muya, state)
+        const childList = ScrollPage.loadBlock(state.name).create(
+          this.muya,
+          state
+        )
         newListItem.append(childList, 'user')
       }
 
       if (listItem.next) {
         const offset = list.offset(listItem)
-        list.forEachAt(offset + 1, undefined, node => {
+        list.forEachAt(offset + 1, undefined, (node) => {
           newListItem.lastChild.append(node.clone(), 'user')
           node.remove()
         })
@@ -91,7 +107,7 @@ export default {
 
       if (list.next) {
         const offset = listParent.offset(list)
-        listParent.forEachAt(offset + 1, undefined, node => {
+        listParent.forEachAt(offset + 1, undefined, (node) => {
           newListItem.lastChild.append(node.clone(), 'user')
           node.remove()
         })
@@ -103,12 +119,14 @@ export default {
         listItem.remove()
       }
 
-      const cursorBlock = newListItem.find(cursorParagraphOffset).firstContentInDescendant()
+      const cursorBlock = newListItem
+        .find(cursorParagraphOffset)
+        .firstContentInDescendant()
       cursorBlock.setCursor(start.offset, end.offset, true)
     }
   },
 
-  indentListItem () {
+  indentListItem() {
     const { parent, muya } = this
     const listItem = parent?.parent
     const list = listItem?.parent
@@ -134,25 +152,30 @@ export default {
 
     listItem.remove()
 
-    const cursorBlock = newList.lastChild.find(offset).firstContentInDescendant()
+    const cursorBlock = newList.lastChild
+      .find(offset)
+      .firstContentInDescendant()
     cursorBlock.setCursor(start.offset, end.offset, true)
   },
 
-  insertTab () {
+  insertTab() {
     const { muya, text } = this
     const { tabSize } = muya.options
     const tabCharacter = String.fromCharCode(160).repeat(tabSize)
     const { start, end } = this.getCursor()
 
     if (this.isCollapse) {
-      this.text = text.substring(0, start.offset) + tabCharacter + text.substring(end.offset)
+      this.text =
+        text.substring(0, start.offset) +
+        tabCharacter +
+        text.substring(end.offset)
       const offset = start.offset + tabCharacter.length
 
       this.setCursor(offset, offset, true)
     }
   },
 
-  checkCursorAtEndFormat () {
+  checkCursorAtEndFormat() {
     const { offset } = this.getCursor().start
     // TODO: add labels in tokenizer...
     const { muya, text } = this
@@ -161,12 +184,27 @@ export default {
       options: muya.options
     })
     let result = null
-    const walkTokens = tkns => {
+    const walkTokens = (tkns) => {
       for (const token of tkns) {
-        const { marker, type, range, children, srcAndTitle, hrefAndTitle, backlash, closeTag, isFullLink, label } = token
+        const {
+          marker,
+          type,
+          range,
+          children,
+          srcAndTitle,
+          hrefAndTitle,
+          backlash,
+          closeTag,
+          isFullLink,
+          label
+        } = token
         const { start, end } = range
 
-        if (BOTH_SIDES_FORMATS.includes(type) && offset > start && offset < end) {
+        if (
+          BOTH_SIDES_FORMATS.includes(type) &&
+          offset > start &&
+          offset < end
+        ) {
           switch (type) {
             case 'strong':
 
@@ -193,7 +231,8 @@ export default {
 
             case 'link': {
               const linkTitleLen = (srcAndTitle || hrefAndTitle).length
-              const secondLashLen = backlash && backlash.second ? backlash.second.length : 0
+              const secondLashLen =
+                backlash && backlash.second ? backlash.second.length : 0
               if (offset === end - 3 - (linkTitleLen + secondLashLen)) {
                 result = {
                   offset: 2
@@ -214,7 +253,8 @@ export default {
 
             case 'reference_link': {
               const labelLen = label ? label.length : 0
-              const secondLashLen = backlash && backlash.second ? backlash.second.length : 0
+              const secondLashLen =
+                backlash && backlash.second ? backlash.second.length : 0
               if (isFullLink) {
                 if (offset === end - 3 - labelLen - secondLashLen) {
                   result = {
@@ -264,7 +304,7 @@ export default {
     return result
   },
 
-  tabHandler (event) {
+  tabHandler(event) {
     // disable tab focus
     event.preventDefault()
 

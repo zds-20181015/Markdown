@@ -1,4 +1,7 @@
-export const createDomNode = (tagName, { classList = [], attributes = {}, datasets = {} } = {}) => {
+export const createDomNode = (
+  tagName,
+  { classList = [], attributes = {}, datasets = {} } = {}
+) => {
   const domNode = document.createElement(tagName)
 
   for (const className of classList) {
@@ -22,7 +25,7 @@ export const createDomNode = (tagName, { classList = [], attributes = {}, datase
 export const operateClassName = (element, ctrl, className) => {
   const existed = element.classList.contains(className)
 
-  if (ctrl === 'add' && !existed || ctrl === 'remove' && existed) {
+  if ((ctrl === 'add' && !existed) || (ctrl === 'remove' && existed)) {
     element.classList[ctrl](className)
   }
 }

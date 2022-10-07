@@ -6,41 +6,42 @@ import containerQueryBlock from '@/lib/block/mixins/containerQueryBlock'
 class ListItem extends Parent {
   static blockName = 'list-item'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const listItem = new ListItem(muya)
 
-    listItem.append(...state.children.map(child => ScrollPage.loadBlock(child.name).create(muya, child)))
+    listItem.append(
+      ...state.children.map((child) =>
+        ScrollPage.loadBlock(child.name).create(muya, child)
+      )
+    )
 
     return listItem
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset, 'children']
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     this.tagName = 'li'
     this.classList = ['mu-list-item']
     this.createDomNode()
   }
 
-  getState () {
+  getState() {
     const state = {
       name: this.blockName,
-      children: this.children.map(child => child.getState())
+      children: this.children.map((child) => child.getState())
     }
 
     return state
   }
 }
 
-mixins(
-  ListItem,
-  containerQueryBlock
-)
+mixins(ListItem, containerQueryBlock)
 
 export default ListItem

@@ -5,11 +5,14 @@ import { CLASS_NAMES } from '@/lib/config'
 class HTMLBlock extends Parent {
   static blockName = 'html-block'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const htmlBlock = new HTMLBlock(muya)
 
     const htmlPreview = ScrollPage.loadBlock('html-preview').create(muya, state)
-    const htmlContainer = ScrollPage.loadBlock('html-container').create(muya, state)
+    const htmlContainer = ScrollPage.loadBlock('html-container').create(
+      muya,
+      state
+    )
 
     htmlBlock.appendAttachment(htmlPreview)
     htmlBlock.append(htmlContainer)
@@ -17,14 +20,14 @@ class HTMLBlock extends Parent {
     return htmlBlock
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset]
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     this.tagName = 'figure'
     this.classList = [CLASS_NAMES.MU_HTML_BLOCK]
@@ -35,11 +38,13 @@ class HTMLBlock extends Parent {
     this.createDomNode()
   }
 
-  queryBlock (path) {
-    return path.length && path[0] === 'text' ? this.firstContentInDescendant() : this
+  queryBlock(path) {
+    return path.length && path[0] === 'text'
+      ? this.firstContentInDescendant()
+      : this
   }
 
-  getState () {
+  getState() {
     const state = {
       name: 'html-block',
       text: this.firstContentInDescendant().text

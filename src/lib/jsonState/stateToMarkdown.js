@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 /**
  * Hi contributors!
  *
@@ -12,12 +14,17 @@ import logger from '@/lib/utils/logger'
 import { deepCopy } from '@/lib/utils'
 
 const debug = logger('export markdown: ')
-const escapeText = str => {
+const escapeText = (str) => {
   return str.replace(/([^\\])\|/g, '$1\\|')
 }
 
 export default class ExportMarkdown {
-  constructor ({ listIndentation, isGitlabCompatibilityEnabled } = { listIndentation: 1, isGitlabCompatibilityEnabled: false }) {
+  constructor(
+    { listIndentation, isGitlabCompatibilityEnabled } = {
+      listIndentation: 1,
+      isGitlabCompatibilityEnabled: false
+    }
+  ) {
     this.listType = [] // 'ul' or 'ol'
     // helper to translate the first tight item in a nested list
     this.isLooseParentList = true
@@ -35,17 +42,21 @@ export default class ExportMarkdown {
     }
   }
 
-  generate (states) {
+  generate(states) {
     return this.convertStatesToMarkdown(states)
   }
 
-  convertStatesToMarkdown (states, indent = '', listIndent = '') {
+  convertStatesToMarkdown(states, indent = '', listIndent = '') {
     const result = []
     // helper for CommonMark 264
     let lastListBullet = ''
 
     for (const state of states) {
-      if (state.name !== 'order-list' && state.name !== 'bullet-list' && state.name !== 'task-list') {
+      if (
+        state.name !== 'order-list' &&
+        state.name !== 'bullet-list' &&
+        state.name !== 'task-list'
+      ) {
         lastListBullet = ''
       }
 
@@ -153,12 +164,12 @@ export default class ExportMarkdown {
     return result.join('')
   }
 
-  insertLineBreak (result, indent) {
+  insertLineBreak(result, indent) {
     if (!result.length) return
     result.push(`${indent}\n`)
   }
 
-  serializeFrontMatter (state) {
+  serializeFrontMatter(state) {
     let startToken
     let endToken
     switch (state.meta.lang) {
@@ -196,14 +207,14 @@ export default class ExportMarkdown {
     return result.join('')
   }
 
-  serializeTextParagraph (state, indent) {
+  serializeTextParagraph(state, indent) {
     const { text } = state
     const lines = text.split('\n')
 
-    return lines.map(line => `${indent}${line}`).join('\n') + '\n'
+    return lines.map((line) => `${indent}${line}`).join('\n') + '\n'
   }
 
-  serializeAtxHeading (state, indent) {
+  serializeAtxHeading(state, indent) {
     const { text } = state
     const match = text.match(/(#{1,6})(.*)/)
     const atxHeadingText = `${match[1]} ${match[2].trim()}`
@@ -211,15 +222,18 @@ export default class ExportMarkdown {
     return `${indent}${atxHeadingText}\n`
   }
 
-  serializeSetextHeading (state, indent) {
+  serializeSetextHeading(state, indent) {
     const { text, meta } = state
     const { underline } = meta
     const lines = text.trim().split('\n')
 
-    return lines.map(line => `${indent}${line}`).join('\n') + `\n${indent}${underline.trim()}\n`
+    return (
+      lines.map((line) => `${indent}${line}`).join('\n') +
+      `\n${indent}${underline.trim()}\n`
+    )
   }
 
-  serializeCodeBlock (state, indent) {
+  serializeCodeBlock(state, indent) {
     const result = []
     const { text, meta } = state
     const textList = text.split('\n')
@@ -227,12 +241,12 @@ export default class ExportMarkdown {
 
     if (type === 'fenced') {
       result.push(`${indent}${lang ? '```' + lang + '\n' : '```\n'}`)
-      textList.forEach(text => {
+      textList.forEach((text) => {
         result.push(`${indent}${text}\n`)
       })
       result.push(indent + '```\n')
     } else {
-      textList.forEach(text => {
+      textList.forEach((text) => {
         result.push(`${indent}    ${text}\n`)
       })
     }
@@ -240,7 +254,7 @@ export default class ExportMarkdown {
     return result.join('')
   }
 
-  serializeHtmlBlock (state, indent) {
+  serializeHtmlBlock(state, indent) {
     const result = []
     const { text } = state
     const lines = text.split('\n')
@@ -252,9 +266,12 @@ export default class ExportMarkdown {
     return result.join('')
   }
 
-  serializeMathBlock (state, indent) {
+  serializeMathBlock(state, indent) {
     const result = []
-    const { text, meta: { mathStyle } } = state
+    const {
+      text,
+      meta: { mathStyle }
+    } = state
     const lines = text.split('\n')
     result.push(indent + (mathStyle === '' ? '$$\n' : '```math\n'))
 
@@ -266,9 +283,12 @@ export default class ExportMarkdown {
     return result.join('')
   }
 
-  serializeDiagramBlock (state, indent) {
+  serializeDiagramBlock(state, indent) {
     const result = []
-    const { text, meta: { type } } = state
+    const {
+      text,
+      meta: { type }
+    } = state
     const lines = text.split('\n')
     result.push(indent + '```' + type + '\n')
 
@@ -280,63 +300,83 @@ export default class ExportMarkdown {
     return result.join('')
   }
 
-  serializeBlockquote (state, indent) {
+  serializeBlockquote(state, indent) {
     const { children } = state
     const newIndent = `${indent}> `
 
     return this.convertStatesToMarkdown(children, newIndent)
   }
 
-  serializeTable (state, indent) {
+  serializeTable(state, indent) {
     const result = []
     const row = state.children.length
     const column = state.children[0].children.length
     const tableData = []
 
     for (const rowState of state.children) {
-      tableData.push(rowState.children.map(cell => escapeText(cell.text.trim())))
+      tableData.push(
+        rowState.children.map((cell) => escapeText(cell.text.trim()))
+      )
     }
 
-    const columnWidth = state.children[0].children.map(th => ({ width: 5, align: th.meta.align }))
+    const columnWidth = state.children[0].children.map((th) => ({
+      width: 5,
+      align: th.meta.align
+    }))
 
     let i
     let j
 
     for (i = 0; i < row; i++) {
       for (j = 0; j < column; j++) {
-        columnWidth[j].width = Math.max(columnWidth[j].width, tableData[i][j].length + 2) // add 2, because have two space around text
+        columnWidth[j].width = Math.max(
+          columnWidth[j].width,
+          tableData[i][j].length + 2
+        ) // add 2, because have two space around text
       }
     }
 
     tableData.forEach((r, i) => {
-      const rs = indent + '|' + r.map((cell, j) => {
-        const raw = ` ${cell + ' '.repeat(columnWidth[j].width)}`
+      const rs =
+        indent +
+        '|' +
+        r
+          .map((cell, j) => {
+            const raw = ` ${cell + ' '.repeat(columnWidth[j].width)}`
 
-        return raw.substring(0, columnWidth[j].width)
-      }).join('|') + '|'
+            return raw.substring(0, columnWidth[j].width)
+          })
+          .join('|') +
+        '|'
       result.push(rs)
       if (i === 0) {
-        const cutOff = indent + '|' + columnWidth.map(({ width, align }) => {
-          let raw = '-'.repeat(width - 2)
-          switch (align) {
-            case 'left':
-              raw = `:${raw} `
-              break
+        const cutOff =
+          indent +
+          '|' +
+          columnWidth
+            .map(({ width, align }) => {
+              let raw = '-'.repeat(width - 2)
+              switch (align) {
+                case 'left':
+                  raw = `:${raw} `
+                  break
 
-            case 'center':
-              raw = `:${raw}:`
-              break
+                case 'center':
+                  raw = `:${raw}:`
+                  break
 
-            case 'right':
-              raw = ` ${raw}:`
-              break
-            default:
-              raw = ` ${raw} `
-              break
-          }
+                case 'right':
+                  raw = ` ${raw}:`
+                  break
+                default:
+                  raw = ` ${raw} `
+                  break
+              }
 
-          return raw
-        }).join('|') + '|'
+              return raw
+            })
+            .join('|') +
+          '|'
         result.push(cutOff)
       }
     })
@@ -344,13 +384,13 @@ export default class ExportMarkdown {
     return result.join('\n') + '\n'
   }
 
-  serializeList (state, indent, listIndent) {
+  serializeList(state, indent, listIndent) {
     const { children } = state
 
     return this.convertStatesToMarkdown(children, indent, listIndent)
   }
 
-  serializeListItem (state, indent) {
+  serializeListItem(state, indent) {
     const result = []
     const listInfo = this.listType[this.listType.length - 1]
     const { marker, delimiter, start } = listInfo
@@ -394,7 +434,11 @@ export default class ExportMarkdown {
     }
 
     result.push(`${indent}${itemMarker}`)
-    result.push(this.convertStatesToMarkdown(children, newIndent, listIndent).substring(newIndent.length))
+    result.push(
+      this.convertStatesToMarkdown(children, newIndent, listIndent).substring(
+        newIndent.length
+      )
+    )
 
     return result.join('')
   }

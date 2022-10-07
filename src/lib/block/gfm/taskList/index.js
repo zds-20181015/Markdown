@@ -6,22 +6,26 @@ import containerQueryBlock from '@/lib/block/mixins/containerQueryBlock'
 class TaskList extends Parent {
   static blockName = 'task-list'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const taskList = new TaskList(muya, state)
 
-    taskList.append(...state.children.map(child => ScrollPage.loadBlock(child.name).create(muya, child)))
+    taskList.append(
+      ...state.children.map((child) =>
+        ScrollPage.loadBlock(child.name).create(muya, child)
+      )
+    )
 
     return taskList
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset, 'children']
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = 'ul'
     this.meta = meta
@@ -38,7 +42,7 @@ class TaskList extends Parent {
   /**
    * Auto move checked list item to the end of task list.
    */
-  orderIfNecessary () {
+  orderIfNecessary() {
     const { autoMoveCheckedToEnd } = this.muya.options
     if (!autoMoveCheckedToEnd) {
       return
@@ -63,20 +67,17 @@ class TaskList extends Parent {
     }
   }
 
-  getState () {
+  getState() {
     const state = {
       name: this.blockName,
       meta: { ...this.meta },
-      children: this.children.map(child => child.getState())
+      children: this.children.map((child) => child.getState())
     }
 
     return state
   }
 }
 
-mixins(
-  TaskList,
-  containerQueryBlock
-)
+mixins(TaskList, containerQueryBlock)
 
 export default TaskList

@@ -6,7 +6,7 @@ import containerQueryBlock from '@/lib/block/mixins/containerQueryBlock'
 class BlockQuote extends Parent {
   static blockName = 'block-quote'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const blockQuote = new BlockQuote(muya, state)
 
     for (const child of state.children) {
@@ -16,33 +16,30 @@ class BlockQuote extends Parent {
     return blockQuote
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset, 'children']
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     this.tagName = 'blockquote'
     this.classList = ['mu-block-quote']
     this.createDomNode()
   }
 
-  getState () {
+  getState() {
     const state = {
       name: 'block-quote',
-      children: this.children.map(child => child.getState())
+      children: this.children.map((child) => child.getState())
     }
 
     return state
   }
 }
 
-mixins(
-  BlockQuote,
-  containerQueryBlock
-)
+mixins(BlockQuote, containerQueryBlock)
 
 export default BlockQuote

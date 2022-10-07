@@ -392,7 +392,7 @@ export const DEFAULT_TURNDOWN_CONFIG = {
   strongDelimiter: '**', // ** or __
   linkStyle: 'inlined',
   linkReferenceStyle: 'full',
-  blankReplacement (content, node, options) {
+  blankReplacement(content, node, options) {
     if (node && node.classList.contains('mu-soft-line-break')) {
       return LINE_BREAK
     } else if (node && node.classList.contains('mu-hard-line-break')) {

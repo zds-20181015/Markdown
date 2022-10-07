@@ -1,10 +1,10 @@
 class LinkedList {
-  constructor () {
+  constructor() {
     this.head = this.tail = null
     this.length = 0
   }
 
-  *iterator (curNode = this.head, length = this.length) {
+  *iterator(curNode = this.head, length = this.length) {
     let count = 0
 
     while (count < length && curNode) {
@@ -14,13 +14,13 @@ class LinkedList {
     }
   }
 
-  append (...nodes) {
+  append(...nodes) {
     for (const node of nodes) {
       this.insertBefore(node)
     }
   }
 
-  contains (node) {
+  contains(node) {
     const it = this.iterator()
     let data = null
 
@@ -34,7 +34,7 @@ class LinkedList {
     return false
   }
 
-  insertBefore (node, refNode = null) {
+  insertBefore(node, refNode = null) {
     if (!node) return
     node.next = refNode
     if (refNode !== null) {
@@ -57,11 +57,11 @@ class LinkedList {
     this.length += 1
   }
 
-  offset (node) {
+  offset(node) {
     return [...this.iterator()].indexOf(node)
   }
 
-  remove (node) {
+  remove(node) {
     // If linkedList does not contain this node, just return
     if (!this.contains(node)) return
     if (node.prev) {
@@ -82,7 +82,7 @@ class LinkedList {
     this.length -= 1
   }
 
-  find (index) {
+  find(index) {
     if (index < 0 || index >= this.length) {
       return null
     }
@@ -90,11 +90,11 @@ class LinkedList {
     return [...this.iterator()][index]
   }
 
-  forEach (callback) {
+  forEach(callback) {
     return [...this.iterator()].forEach(callback)
   }
 
-  forEachAt (index, length, callback) {
+  forEachAt(index, length, callback) {
     const curNode = this.find(index)
 
     return [...this.iterator(curNode, length)].forEach((node, i) => {
@@ -102,13 +102,13 @@ class LinkedList {
     })
   }
 
-  map (callback) {
+  map(callback) {
     return this.reduce((acc, node, i) => {
       return [...acc, callback(node, i)]
     }, [])
   }
 
-  reduce (callback, initialValue = this.head) {
+  reduce(callback, initialValue = this.head) {
     return [...this.iterator()].reduce(callback, initialValue)
   }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import EventCenter from '@/lib/event/index'
 import Editor from '@/lib/editor'
 import Ui from '@/lib/ui'

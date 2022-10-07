@@ -38,7 +38,7 @@ const DIAGRAM_ICONS = {
   'vega-lite': vegaIcon
 }
 
-export const getIcon = block => {
+export const getIcon = (block) => {
   const { blockName } = block
   switch (blockName) {
     case 'frontmatter':

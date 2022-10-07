@@ -5,55 +5,55 @@ import { EVENT_KEYS, isOsx } from '@/lib/config'
 class TableCellContent extends Format {
   static blockName = 'table.cell.content'
 
-  static create (muya, text) {
+  static create(muya, text) {
     const content = new TableCellContent(muya, text)
 
     return content
   }
 
-  get table () {
+  get table() {
     return this.closestBlock('table')
   }
 
-  get tableInner () {
+  get tableInner() {
     return this.closestBlock('table.inner')
   }
 
-  get row () {
+  get row() {
     return this.closestBlock('table.row')
   }
 
-  get cell () {
+  get cell() {
     return this.closestBlock('table.cell')
   }
 
-  constructor (muya, text) {
+  constructor(muya, text) {
     super(muya, text)
     this.classList = [...this.classList, 'mu-table-cell-content']
     this.createDomNode()
   }
 
-  getAnchor () {
+  getAnchor() {
     return this.table
   }
 
-  update (cursor, highlights = []) {
+  update(cursor, highlights = []) {
     return this.inlineRenderer.patch(this, cursor, highlights)
   }
 
-  findNextRow () {
+  findNextRow() {
     const { row } = this
 
     return row.next || null
   }
 
-  findPreviousRow () {
+  findPreviousRow() {
     const { row } = this
 
     return row.prev || null
   }
 
-  shiftEnter (event) {
+  shiftEnter(event) {
     event.preventDefault()
 
     const { start, end } = this.getCursor()
@@ -61,19 +61,22 @@ class TableCellContent extends Format {
 
     const br = '<br/>'
 
-    this.text = text.substring(0, start.offset) + br + text.substring(end.offset)
+    this.text =
+      text.substring(0, start.offset) + br + text.substring(end.offset)
     const offset = start.offset + br.length
     this.setCursor(offset, offset, true)
   }
 
-  commandEnter (event) {
+  commandEnter(event) {
     event.preventDefault()
     const offset = this.tableInner.offset(this.row)
-    const cursorBlock = this.table.insertRow(offset + 1/* Because insert after the current row */)
+    const cursorBlock = this.table.insertRow(
+      offset + 1 /* Because insert after the current row */
+    )
     cursorBlock.setCursor(0, 0)
   }
 
-  normalEnter (event) {
+  normalEnter(event) {
     event.preventDefault()
     const nextRow = this.findNextRow()
     const { row } = this
@@ -91,7 +94,10 @@ class TableCellContent extends Format {
           text: ''
         }
 
-        const newParagraphBlock = ScrollPage.loadBlock('paragraph').create(this.muya, state)
+        const newParagraphBlock = ScrollPage.loadBlock('paragraph').create(
+          this.muya,
+          state
+        )
         this.scrollPage.append(newParagraphBlock, 'user')
         cursorBlock = newParagraphBlock.firstContentInDescendant()
       }
@@ -100,7 +106,7 @@ class TableCellContent extends Format {
     cursorBlock.setCursor(0, 0, true)
   }
 
-  enterHandler (event) {
+  enterHandler(event) {
     if (event.shiftKey) {
       return this.shiftEnter(event)
     } else if ((isOsx && event.metaKey) || (!isOsx && event.ctrlKey)) {
@@ -110,13 +116,17 @@ class TableCellContent extends Format {
     }
   }
 
-  arrowHandler (event) {
+  arrowHandler(event) {
     const previousRow = this.findPreviousRow()
     const nextRow = this.findNextRow()
     const { table, cell, row } = this
     const offset = row.offset(cell)
-    const tablePrevContent = table.prev ? table.prev.lastContentInDescendant() : null
-    const tableNextContent = table.next ? table.next.firstContentInDescendant() : null
+    const tablePrevContent = table.prev
+      ? table.prev.lastContentInDescendant()
+      : null
+    const tableNextContent = table.next
+      ? table.next.firstContentInDescendant()
+      : null
 
     if (event.key === EVENT_KEYS.ArrowUp) {
       event.preventDefault()
@@ -144,7 +154,10 @@ class TableCellContent extends Format {
             text: ''
           }
 
-          const newParagraphBlock = ScrollPage.loadBlock('paragraph').create(this.muya, state)
+          const newParagraphBlock = ScrollPage.loadBlock('paragraph').create(
+            this.muya,
+            state
+          )
           this.scrollPage.append(newParagraphBlock, 'user')
           cursorBlock = newParagraphBlock.firstContentInDescendant()
         }
@@ -156,7 +169,7 @@ class TableCellContent extends Format {
     }
   }
 
-  backspaceHandler (event) {
+  backspaceHandler(event) {
     const { start, end } = this.getCursor()
     const previousContentBlock = this.previousContentInContext()
     const offset = previousContentBlock.text.length
@@ -168,12 +181,18 @@ class TableCellContent extends Format {
     event.preventDefault()
     event.stopPropagation()
 
-    if (previousContentBlock.blockName !== 'table.cell.content' && this.table.isEmpty) {
+    if (
+      previousContentBlock.blockName !== 'table.cell.content' &&
+      this.table.isEmpty
+    ) {
       const state = {
         name: 'paragraph',
         text: ''
       }
-      const newParagraphBlock = ScrollPage.loadBlock('paragraph').create(this.muya, state)
+      const newParagraphBlock = ScrollPage.loadBlock('paragraph').create(
+        this.muya,
+        state
+      )
       this.table.replaceWith(newParagraphBlock)
       newParagraphBlock.firstChild.setCursor(0, 0)
     } else {
@@ -181,7 +200,7 @@ class TableCellContent extends Format {
     }
   }
 
-  tabHandler (event) {
+  tabHandler(event) {
     event.preventDefault()
     event.stopPropagation()
 

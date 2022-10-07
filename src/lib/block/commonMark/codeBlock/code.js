@@ -8,25 +8,36 @@ const debug = logger('code:')
 
 const renderCopyButton = () => {
   const selector = 'a.mu-code-copy'
-  const iconVnode = h('i.icon', h('i.icon-inner', {
-    style: {
-      background: `url(${copyIcon}) no-repeat`,
-      'background-size': '100%'
-    }
-  }, ''))
+  const iconVnode = h(
+    'i.icon',
+    h(
+      'i.icon-inner',
+      {
+        style: {
+          background: `url(${copyIcon}) no-repeat`,
+          'background-size': '100%'
+        }
+      },
+      ''
+    )
+  )
 
-  return h(selector, {
-    attrs: {
-      title: 'Copy content',
-      contenteditable: 'false'
-    }
-  }, iconVnode)
+  return h(
+    selector,
+    {
+      attrs: {
+        title: 'Copy content',
+        contenteditable: 'false'
+      }
+    },
+    iconVnode
+  )
 }
 
 class Code extends Parent {
   static blockName = 'code'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const code = new Code(muya, state)
 
     code.append(ScrollPage.loadBlock('codeblock.content').create(muya, state))
@@ -34,13 +45,13 @@ class Code extends Parent {
     return code
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
 
     return [...pPath]
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     this.tagName = 'code'
     this.classList = ['mu-code']
@@ -49,29 +60,37 @@ class Code extends Parent {
     this.listen()
   }
 
-  getState () {
+  getState() {
     debug.warn('You can never call `getState` in code')
   }
 
-  createCopyNode () {
+  createCopyNode() {
     this.domNode.innerHTML = toHTML(renderCopyButton())
   }
 
-  listen () {
+  listen() {
     const { eventCenter, editor } = this.muya
-    const clickHandler = event => {
+    const clickHandler = (event) => {
       event.preventDefault()
       event.stopPropagation()
       const codeContent = this.firstContentInDescendant()
       editor.clipboard.copy('copyCodeContent', codeContent.text)
     }
 
-    const mousedownHandler = event => {
+    const mousedownHandler = (event) => {
       event.preventDefault()
     }
 
-    eventCenter.attachDOMEvent(this.domNode.firstElementChild, 'click', clickHandler)
-    eventCenter.attachDOMEvent(this.domNode.firstElementChild, 'mousedown', mousedownHandler)
+    eventCenter.attachDOMEvent(
+      this.domNode.firstElementChild,
+      'click',
+      clickHandler
+    )
+    eventCenter.attachDOMEvent(
+      this.domNode.firstElementChild,
+      'mousedown',
+      mousedownHandler
+    )
   }
 }
 

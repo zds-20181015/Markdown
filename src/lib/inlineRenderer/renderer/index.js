@@ -68,7 +68,7 @@ const inlineSyntaxRenderer = {
 }
 
 class Renderer {
-  constructor (muya, parent) {
+  constructor(muya, parent) {
     this.muya = muya
     this.parent = parent
     this.loadMathMap = new Map()
@@ -76,7 +76,7 @@ class Renderer {
     this.urlMap = new Map()
   }
 
-  checkConflicted (block, token, cursor = {}) {
+  checkConflicted(block, token, cursor = {}) {
     // cursor start.block === end.block, so we only need to check start
     const anchor = cursor.anchor || cursor.start
     const focus = cursor.focus || cursor.end
@@ -86,19 +86,33 @@ class Renderer {
 
     const { start, end } = token.range
 
-    return conflict([start, end], [anchor.offset, anchor.offset]) || conflict([start, end], [focus.offset, focus.offset])
+    return (
+      conflict([start, end], [anchor.offset, anchor.offset]) ||
+      conflict([start, end], [focus.offset, focus.offset])
+    )
   }
 
-  getClassName (outerClass, block, token, cursor) {
-    return outerClass || (this.checkConflicted(block, token, cursor) ? CLASS_NAMES.MU_GRAY : CLASS_NAMES.MU_HIDE)
+  getClassName(outerClass, block, token, cursor) {
+    return (
+      outerClass ||
+      (this.checkConflicted(block, token, cursor)
+        ? CLASS_NAMES.MU_GRAY
+        : CLASS_NAMES.MU_HIDE)
+    )
   }
 
-  getHighlightClassName (active) {
+  getHighlightClassName(active) {
     return active ? CLASS_NAMES.MU_HIGHLIGHT : CLASS_NAMES.MU_SELECTION
   }
 
-  output (tokens, block, cursor) {
-    const children = tokens.reduce((acc, token) => [...acc, ...this[snakeToCamel(token.type)](h, cursor, block, token)], [])
+  output(tokens, block, cursor) {
+    const children = tokens.reduce(
+      (acc, token) => [
+        ...acc,
+        ...this[snakeToCamel(token.type)](h, cursor, block, token)
+      ],
+      []
+    )
     const vNode = h('span', children)
     const rawHtml = toHTML(vNode)
 

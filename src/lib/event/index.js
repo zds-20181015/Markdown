@@ -1,11 +1,11 @@
 class EventCenter {
-  constructor () {
+  constructor() {
     this.events = []
     this.listeners = {}
     this.id = 0
   }
 
-  get eventId () {
+  get eventId() {
     return `eventId-${this.id++}`
   }
 
@@ -13,7 +13,7 @@ class EventCenter {
    * [attachDOMEvent] bind event listener to target, and return a unique ID,
    * this ID
    */
-  attachDOMEvent (target, event, listener, capture) {
+  attachDOMEvent(target, event, listener, capture) {
     if (this.checkHasBind(target, event, listener, capture)) {
       return false
     }
@@ -35,16 +35,16 @@ class EventCenter {
    * [detachDOMEvent removeEventListener]
    * @param  {[type]} eventId [unique eventId]
    */
-  detachDOMEvent (eventId) {
+  detachDOMEvent(eventId) {
     if (!eventId) {
       return false
     }
 
-    const removeEvent = this.events.find(e => e.eventId === eventId)
+    const removeEvent = this.events.find((e) => e.eventId === eventId)
     if (removeEvent) {
       const { target, event, listener, capture } = removeEvent
       target.removeEventListener(event, listener, capture)
-      const index = this.events.findIndex(e => e.eventId === eventId)
+      const index = this.events.findIndex((e) => e.eventId === eventId)
       this.events.splice(index, 1)
     }
   }
@@ -52,7 +52,7 @@ class EventCenter {
   /**
    * [detachAllDomEvents remove all the DOM events handler]
    */
-  detachAllDomEvents () {
+  detachAllDomEvents() {
     for (const removedEvent of this.events) {
       const { target, event, listener, capture } = removedEvent
       target.removeEventListener(event, listener, capture)
@@ -64,7 +64,7 @@ class EventCenter {
   /**
    * inner method for on and once
    */
-  subscribe (event, listener, once = false) {
+  subscribe(event, listener, once = false) {
     const listeners = this.listeners[event]
     const handler = { listener, once }
     if (listeners && Array.isArray(listeners)) {
@@ -77,17 +77,20 @@ class EventCenter {
   /**
    * [on] on custom event
    */
-  on (event, listener) {
+  on(event, listener) {
     this.subscribe(event, listener)
   }
 
   /**
    * [off] off custom event
    */
-  off (event, listener) {
+  off(event, listener) {
     const listeners = this.listeners[event]
-    if (Array.isArray(listeners) && listeners.find(l => l.listener === listener)) {
-      const index = listeners.findIndex(l => l.listener === listener)
+    if (
+      Array.isArray(listeners) &&
+      listeners.find((l) => l.listener === listener)
+    ) {
+      const index = listeners.findIndex((l) => l.listener === listener)
       listeners.splice(index, 1)
     }
   }
@@ -95,14 +98,14 @@ class EventCenter {
   /**
    * [once] usbscribe event and listen once
    */
-  once (event, listener) {
+  once(event, listener) {
     this.subscribe(event, listener, true)
   }
 
   /**
    * emit custom event
    */
-  emit (event, ...data) {
+  emit(event, ...data) {
     const eventListener = this.listeners[event]
 
     if (eventListener && Array.isArray(eventListener)) {
@@ -116,9 +119,14 @@ class EventCenter {
   }
 
   // Determine whether the event has been bind
-  checkHasBind (cTarget, cEvent, cListener, cCapture) {
+  checkHasBind(cTarget, cEvent, cListener, cCapture) {
     for (const { target, event, listener, capture } of this.events) {
-      if (target === cTarget && event === cEvent && listener === cListener && capture === cCapture) {
+      if (
+        target === cTarget &&
+        event === cEvent &&
+        listener === cListener &&
+        capture === cCapture
+      ) {
         return true
       }
     }

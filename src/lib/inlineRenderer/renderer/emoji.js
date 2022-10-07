@@ -1,15 +1,18 @@
+/* eslint-disable */
+
 import { CLASS_NAMES } from '@/lib/config'
 import { validEmoji } from '@/lib/utils/emoji'
 
 // render token of emoji to vdom
-export default function emoji (h, cursor, block, token, outerClass) {
+export default function emoji(h, cursor, block, token, outerClass) {
   const { start: rStart, end: rEnd } = token.range
   const className = this.getClassName(outerClass, block, token, cursor)
   const validation = validEmoji(token.content)
   const finalClass = validation ? className : CLASS_NAMES.MU_WARN
-  const contentSelector = finalClass !== CLASS_NAMES.MU_GRAY
-    ? `span.${finalClass}.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_EMOJI_MARKED_TEXT}`
-    : `span.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_EMOJI_MARKED_TEXT}`
+  const contentSelector =
+    finalClass !== CLASS_NAMES.MU_GRAY
+      ? `span.${finalClass}.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_EMOJI_MARKED_TEXT}`
+      : `span.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_EMOJI_MARKED_TEXT}`
 
   let startMarkerSelector = `span.${finalClass}.${CLASS_NAMES.MU_EMOJI_MARKER}`
   let endMarkerSelector = startMarkerSelector
@@ -37,7 +40,9 @@ export default function emoji (h, cursor, block, token, outerClass) {
       }
 
       if (start < end) {
-        content.push(h(`span.${HIGHLIGHT_CLASSNAME}`, block.text.substring(start, end)))
+        content.push(
+          h(`span.${HIGHLIGHT_CLASSNAME}`, block.text.substring(start, end))
+        )
       }
       pos = end
     }
@@ -48,14 +53,18 @@ export default function emoji (h, cursor, block, token, outerClass) {
   }
 
   const emojiVdom = validation
-    ? h(contentSelector, {
-      attrs: {
-        spellcheck: 'false'
-      },
-      dataset: {
-        emoji: validation.emoji
-      }
-    }, content)
+    ? h(
+        contentSelector,
+        {
+          attrs: {
+            spellcheck: 'false'
+          },
+          dataset: {
+            emoji: validation.emoji
+          }
+        },
+        content
+      )
     : h(contentSelector, content)
 
   return [

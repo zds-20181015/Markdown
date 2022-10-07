@@ -5,7 +5,7 @@ import { cleanUrl, escape } from './utils'
  * Renderer
  */
 
-function Renderer (options = {}) {
+function Renderer(options = {}) {
   this.options = options || defaultOptions
 }
 
@@ -47,16 +47,32 @@ Renderer.prototype.script = function (content, marker) {
   return `<${tagName}>${content}</${tagName}>`
 }
 
-Renderer.prototype.footnoteIdentifier = function (identifier, { footnoteId, footnoteIdentifierId, order }) {
-  return `<a href="#${footnoteId ? `fn${footnoteId}` : ''}" class="footnote-ref" id="fnref${footnoteIdentifierId}" role="doc-noteref"><sup>${order || identifier}</sup></a>`
+Renderer.prototype.footnoteIdentifier = function (
+  identifier,
+  { footnoteId, footnoteIdentifierId, order }
+) {
+  return `<a href="#${
+    footnoteId ? `fn${footnoteId}` : ''
+  }" class="footnote-ref" id="fnref${footnoteIdentifierId}" role="doc-noteref"><sup>${
+    order || identifier
+  }</sup></a>`
 }
 
 Renderer.prototype.footnote = function (footnote) {
-  return '<section class="footnotes" role="doc-endnotes">\n<hr />\n<ol>\n' + footnote + '</ol>\n</section>\n'
+  return (
+    '<section class="footnotes" role="doc-endnotes">\n<hr />\n<ol>\n' +
+    footnote +
+    '</ol>\n</section>\n'
+  )
 }
 
-Renderer.prototype.footnoteItem = function (content, { footnoteId, footnoteIdentifierId }) {
-  return `<li id="fn${footnoteId}" role="doc-endnote">${content}<a href="#${footnoteIdentifierId ? `fnref${footnoteIdentifierId}` : ''}" class="footnote-back" role="doc-backlink">↩︎</a></li>`
+Renderer.prototype.footnoteItem = function (
+  content,
+  { footnoteId, footnoteIdentifierId }
+) {
+  return `<li id="fn${footnoteId}" role="doc-endnote">${content}<a href="#${
+    footnoteIdentifierId ? `fnref${footnoteIdentifierId}` : ''
+  }" class="footnote-back" role="doc-backlink">↩︎</a></li>`
 }
 
 Renderer.prototype.code = function (code, infostring, escaped, codeBlockStyle) {
@@ -69,14 +85,19 @@ Renderer.prototype.code = function (code, infostring, escaped, codeBlockStyle) {
     }
   }
 
-  let className = codeBlockStyle === 'fenced' ? 'fenced-code-block' : 'indented-code-block'
-  className = lang ? `${className} ${this.options.langPrefix}${escape(lang, true)}` : className
+  let className =
+    codeBlockStyle === 'fenced' ? 'fenced-code-block' : 'indented-code-block'
+  className = lang
+    ? `${className} ${this.options.langPrefix}${escape(lang, true)}`
+    : className
 
-  return '<pre><code class="' +
+  return (
+    '<pre><code class="' +
     className +
     '">' +
     (escaped ? code : escape(code, true)) +
     '</code></pre>\n'
+  )
 }
 
 Renderer.prototype.blockquote = function (quote) {
@@ -87,9 +108,16 @@ Renderer.prototype.html = function (html) {
   return html
 }
 
-Renderer.prototype.heading = function (text, level, raw, slugger, headingStyle) {
+Renderer.prototype.heading = function (
+  text,
+  level,
+  raw,
+  slugger,
+  headingStyle
+) {
   if (this.options.headerIds) {
-    return '<h' +
+    return (
+      '<h' +
       level +
       ' id="' +
       this.options.headerPrefix +
@@ -101,6 +129,7 @@ Renderer.prototype.heading = function (text, level, raw, slugger, headingStyle) 
       '</h' +
       level +
       '>\n'
+    )
   }
 
   // ignore IDs
@@ -113,7 +142,7 @@ Renderer.prototype.hr = function () {
 
 Renderer.prototype.list = function (body, ordered, start, taskList) {
   const type = ordered ? 'ol' : 'ul'
-  const startatt = (ordered && start !== 1) ? (' start="' + start + '"') : ''
+  const startatt = ordered && start !== 1 ? ' start="' + start + '"' : ''
 
   return '<' + type + startatt + '>\n' + body + '</' + type + '>\n'
 }
@@ -125,13 +154,15 @@ Renderer.prototype.listitem = function (text, checked) {
   }
 
   // task list
-  return '<li class="task-list-item"><input type="checkbox"' +
+  return (
+    '<li class="task-list-item"><input type="checkbox"' +
     (checked ? ' checked=""' : '') +
     ' disabled=""' +
     (this.options.xhtml ? ' /' : '') +
     '> ' +
     text +
     '</li>\n'
+  )
 }
 
 Renderer.prototype.paragraph = function (text) {
@@ -141,12 +172,7 @@ Renderer.prototype.paragraph = function (text) {
 Renderer.prototype.table = function (header, body) {
   if (body) body = '<tbody>' + body + '</tbody>'
 
-  return '<table>\n' +
-    '<thead>\n' +
-    header +
-    '</thead>\n' +
-    body +
-    '</table>\n'
+  return '<table>\n' + '<thead>\n' + header + '</thead>\n' + body + '</table>\n'
 }
 
 Renderer.prototype.tablerow = function (content) {

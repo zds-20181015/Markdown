@@ -3,7 +3,7 @@ import logger from '@/lib/utils/logger'
 const debug = logger('paragraph:content')
 
 export default {
-  paragraphParentType () {
+  paragraphParentType() {
     if (this.blockName !== 'paragraph.content') {
       debug.warn('Only paragraph content can call paragraphParentType')
 
@@ -29,7 +29,7 @@ export default {
     return type
   },
 
-  handleBackspaceInParagraph () {
+  handleBackspaceInParagraph() {
     const previousContentBlock = this.previousContentInContext()
     // Handle no previous content block, the first paragraph in document.
     if (!previousContentBlock) {
@@ -49,7 +49,7 @@ export default {
     this.selection.setSelection(cursor)
   },
 
-  handleBackspaceInBlockQuote () {
+  handleBackspaceInBlockQuote() {
     const { parent } = this
     const blockQuote = parent.parent
     let cursorBlock
@@ -71,7 +71,7 @@ export default {
     cursorBlock.setCursor(0, 0, true)
   },
 
-  handleBackspaceInList () {
+  handleBackspaceInList() {
     const { parent } = this
     const listItem = parent.parent
     const list = listItem.parent

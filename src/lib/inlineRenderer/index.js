@@ -6,13 +6,13 @@ import { beginRules } from '@/lib/inlineRenderer/rules'
 const debug = logger('inlinerenderer:')
 
 class InlineRenderer {
-  constructor (muya) {
+  constructor(muya) {
     this.muya = muya
     this.labels = new Map()
     this.renderer = new Renderer(muya, this)
   }
 
-  tokenizer (block, highlights) {
+  tokenizer(block, highlights) {
     const { options } = this.muya
     const { text } = block
     const { labels } = this
@@ -20,12 +20,15 @@ class InlineRenderer {
     // TODO: different content block should have different rules.
     // eg: atxheading.content has no soft|hard line break
     // setextheading.content has no heading rules.
-    const hasBeginRules = /thematicbreak\.content|paragraph\.content|atxheading\.content/.test(block.blockName)
+    const hasBeginRules =
+      /thematicbreak\.content|paragraph\.content|atxheading\.content/.test(
+        block.blockName
+      )
 
     return tokenizer(text, { hasBeginRules, labels, options, highlights })
   }
 
-  patch (block, cursor, highlights = []) {
+  patch(block, cursor, highlights = []) {
     this.collectReferenceDefinitions()
     const { domNode } = block
     if (block.isLeafBlock) {
@@ -33,15 +36,19 @@ class InlineRenderer {
     }
 
     const tokens = this.tokenizer(block, highlights)
-    const html = this.renderer.output(tokens, block, cursor && cursor.block === block ? cursor : {})
+    const html = this.renderer.output(
+      tokens,
+      block,
+      cursor && cursor.block === block ? cursor : {}
+    )
     domNode.innerHTML = html
   }
 
-  collectReferenceDefinitions () {
+  collectReferenceDefinitions() {
     const state = this.muya.editor.jsonState.getState()
     const labels = new Map()
 
-    const travel = sts => {
+    const travel = (sts) => {
       if (Array.isArray(sts) && sts.length) {
         for (const st of sts) {
           if (st.name === 'paragraph') {
@@ -61,7 +68,7 @@ class InlineRenderer {
     this.labels = labels
   }
 
-  getLabelInfo (block) {
+  getLabelInfo(block) {
     const { text } = block
     const tokens = beginRules.reference_definition.exec(text)
     let label = null

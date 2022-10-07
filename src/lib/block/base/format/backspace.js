@@ -1,7 +1,7 @@
 import { tokenizer, generator } from '@/lib/inlineRenderer/lexer'
 
 export default {
-  backspaceHandler (event) {
+  backspaceHandler(event) {
     const { start, end } = this.getCursor()
     // Let input handler to handle this case.
     if (start.offset !== end.offset) {
@@ -18,10 +18,7 @@ export default {
 
     for (const token of tokens) {
       // handle delete the second $ in inline_math.
-      if (
-        token.range.end === start.offset &&
-        token.type === 'inline_math'
-      ) {
+      if (token.range.end === start.offset && token.type === 'inline_math') {
         needRender = true
         token.raw = token.raw.substr(0, token.raw.length - 1)
         break

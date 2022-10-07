@@ -3,17 +3,36 @@ import { getCursorReference } from '@/lib/utils'
 import { CLASS_NAMES } from '@/lib/config'
 
 export default {
-  inputHandler (event) {
+  inputHandler(event) {
     if (this.isComposed) {
       return
     }
     const { domNode } = this
     const { start, end } = this.getCursor()
-    const textContent = getTextContent(domNode, [CLASS_NAMES.MU_MATH_RENDER, CLASS_NAMES.MU_RUBY_RENDER])
-    const isInInlineMath = this.checkCursorInTokenType(textContent, start.offset, 'inline_math')
-    const isInInlineCode = this.checkCursorInTokenType(textContent, start.offset, 'inline_code')
+    const textContent = getTextContent(domNode, [
+      CLASS_NAMES.MU_MATH_RENDER,
+      CLASS_NAMES.MU_RUBY_RENDER
+    ])
+    const isInInlineMath = this.checkCursorInTokenType(
+      textContent,
+      start.offset,
+      'inline_math'
+    )
+    const isInInlineCode = this.checkCursorInTokenType(
+      textContent,
+      start.offset,
+      'inline_code'
+    )
 
-    let { needRender, text } = this.autoPair(event, textContent, start, end, isInInlineMath, isInInlineCode, 'format')
+    let { needRender, text } = this.autoPair(
+      event,
+      textContent,
+      start,
+      end,
+      isInInlineMath,
+      isInInlineCode,
+      'format'
+    )
 
     if (this.checkNotSameToken(this.text, text)) {
       needRender = true
@@ -40,8 +59,15 @@ export default {
 
     this.selection.setSelection(cursor)
     // check edit emoji
-    if (event.inputType !== 'insertFromPaste' && event.inputType !== 'deleteByCut') {
-      const editEmoji = this.checkCursorInTokenType(this.text, start.offset, 'emoji')
+    if (
+      event.inputType !== 'insertFromPaste' &&
+      event.inputType !== 'deleteByCut'
+    ) {
+      const editEmoji = this.checkCursorInTokenType(
+        this.text,
+        start.offset,
+        'emoji'
+      )
       if (editEmoji) {
         const { content: emojiText } = editEmoji
         const reference = getCursorReference()

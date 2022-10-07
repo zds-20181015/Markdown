@@ -9,7 +9,7 @@ const debug = logger('table:')
 class Table extends Parent {
   static blockName = 'table'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const table = new Table(muya, state)
 
     table.append(ScrollPage.loadBlock('table.inner').create(muya, state))
@@ -17,17 +17,17 @@ class Table extends Parent {
     return table
   }
 
-  static createWithRowAndColumn (muya, row, column) {
+  static createWithRowAndColumn(muya, row, column) {
     // TODO
   }
 
-  static createWithHeader (muya, header) {
+  static createWithHeader(muya, header) {
     const state = {
       name: 'table',
       children: [
         {
           name: 'table.row',
-          children: header.map(c => ({
+          children: header.map((c) => ({
             name: 'table.cell',
             meta: { align: 'none' },
             text: c
@@ -35,7 +35,7 @@ class Table extends Parent {
         },
         {
           name: 'table.row',
-          children: header.map(_ => ({
+          children: header.map((_) => ({
             name: 'table.cell',
             meta: { align: 'none' },
             text: ''
@@ -47,28 +47,30 @@ class Table extends Parent {
     return this.create(muya, state)
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset]
   }
 
-  get isEmpty () {
+  get isEmpty() {
     const state = this.getState()
 
-    return state.children.every(row => row.children.every(cell => cell.text === ''))
+    return state.children.every((row) =>
+      row.children.every((cell) => cell.text === '')
+    )
   }
 
-  get rowCount () {
+  get rowCount() {
     return this.firstChild.length()
   }
 
-  get columnCount () {
+  get columnCount() {
     return this.firstChild.firstChild.length()
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     this.tagName = 'figure'
 
@@ -76,14 +78,17 @@ class Table extends Parent {
     this.createDomNode()
   }
 
-  queryBlock (path) {
+  queryBlock(path) {
     return this.firstChild.queryBlock(path)
   }
 
-  insertRow (offset) {
+  insertRow(offset) {
     const { columnCount } = this
     const firstRowState = this.getState().children[0]
-    const currentRow = offset > 0 ? this.firstChild.find(offset - 1) : this.firstChild.find(offset)
+    const currentRow =
+      offset > 0
+        ? this.firstChild.find(offset - 1)
+        : this.firstChild.find(offset)
     const state = {
       name: 'table.row',
       children: [...new Array(columnCount)].map((_, i) => {
@@ -108,10 +113,10 @@ class Table extends Parent {
     return rowBlock.firstContentInDescendant()
   }
 
-  insertColumn (offset, align = 'none') {
+  insertColumn(offset, align = 'none') {
     const tableInner = this.firstChild
     let firstCellInNewColumn = null
-    tableInner.forEach(row => {
+    tableInner.forEach((row) => {
       const state = {
         name: 'table.cell',
         meta: { align },
@@ -128,12 +133,12 @@ class Table extends Parent {
     return firstCellInNewColumn.firstChild
   }
 
-  removeRow (offset) {
+  removeRow(offset) {
     const row = this.firstChild.find(offset)
     row.remove()
   }
 
-  removeColumn (offset) {
+  removeColumn(offset) {
     const { columnCount } = this
     if (offset < 0 || offset >= columnCount) {
       debug.warn(`column at ${offset} is not existed.`)
@@ -144,7 +149,7 @@ class Table extends Parent {
       return this.remove()
     }
 
-    table.forEach(row => {
+    table.forEach((row) => {
       const cell = row.find(offset)
       if (cell) {
         cell.remove()
@@ -152,14 +157,14 @@ class Table extends Parent {
     })
   }
 
-  alignColumn (offset, value) {
+  alignColumn(offset, value) {
     const { columnCount } = this
     if (offset < 0 || offset >= columnCount) {
       debug.warn(`Column at ${offset} is not existed.`)
     }
 
     const table = this.firstChild
-    table.forEach(row => {
+    table.forEach((row) => {
       const cell = row.find(offset)
       if (cell) {
         const { align: oldValue } = cell
@@ -168,12 +173,17 @@ class Table extends Parent {
         const diffs = diff(oldValue, value)
         const { path } = cell
         path.push('meta', 'align')
-        this.jsonState.pushOperation('editOp', path, 'text-unicode', diffToTextOp(diffs))
+        this.jsonState.pushOperation(
+          'editOp',
+          path,
+          'text-unicode',
+          diffToTextOp(diffs)
+        )
       }
     })
   }
 
-  getState () {
+  getState() {
     return this.firstChild.getState()
   }
 }

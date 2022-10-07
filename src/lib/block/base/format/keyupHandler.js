@@ -1,8 +1,7 @@
-
 import { getCursorReference } from '@/lib/utils'
 
 export default {
-  keyupHandler (event) {
+  keyupHandler(event) {
     if (this.isComposed) {
       return
     }
@@ -10,8 +9,12 @@ export default {
     const { anchor, focus } = this.getCursor()
     const { anchor: oldAnchor, focus: oldFocus } = this.selection
 
-    if (anchor.offset !== oldAnchor.offset || focus.offset !== oldFocus.offset) {
-      const needUpdate = this.checkNeedRender({ anchor, focus }) || this.checkNeedRender()
+    if (
+      anchor.offset !== oldAnchor.offset ||
+      focus.offset !== oldFocus.offset
+    ) {
+      const needUpdate =
+        this.checkNeedRender({ anchor, focus }) || this.checkNeedRender()
       const cursor = { anchor, focus, block: this, path: this.path }
 
       if (needUpdate) {
@@ -22,7 +25,11 @@ export default {
     }
 
     // Check not edit emiji
-    const editEmoji = this.checkCursorInTokenType(this.text, anchor.offset, 'emoji')
+    const editEmoji = this.checkCursorInTokenType(
+      this.text,
+      anchor.offset,
+      'emoji'
+    )
     if (!editEmoji) {
       this.muya.eventCenter.emit('muya-emoji-picker', {
         emojiText: ''

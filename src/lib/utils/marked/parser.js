@@ -8,7 +8,7 @@ import defaultOptions from './options'
  * Parsing & Compiling
  */
 
-function Parser (options) {
+function Parser(options) {
   this.tokens = []
   this.token = null
   this.footnotes = null
@@ -127,7 +127,8 @@ Parser.prototype.tok = function () {
 
       for (i = 0; i < this.token.header.length; i++) {
         cell += this.renderer.tablecell(
-          this.inline.output(this.token.header[i]), {
+          this.inline.output(this.token.header[i]),
+          {
             header: true,
             align: this.token.align[i]
           }
@@ -141,12 +142,10 @@ Parser.prototype.tok = function () {
         cell = ''
 
         for (j = 0; j < row.length; j++) {
-          cell += this.renderer.tablecell(
-            this.inline.output(row[j]), {
-              header: false,
-              align: this.token.align[j]
-            }
-          )
+          cell += this.renderer.tablecell(this.inline.output(row[j]), {
+            header: false,
+            align: this.token.align[j]
+          })
         }
 
         body += this.renderer.tablerow(cell)

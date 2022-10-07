@@ -1,6 +1,6 @@
-import purify from "dompurify";
-const isValidAttribute = purify().isValidAttribute;
-const sanitize = purify.sanitize;
+import purify from 'dompurify'
+const isValidAttribute = purify().isValidAttribute
+const sanitize = purify.sanitize
 
-export { isValidAttribute };
-export default sanitize;
+export { isValidAttribute }
+export default sanitize

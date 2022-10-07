@@ -1,5 +1,5 @@
 export default {
-  queryBlock (path) {
+  queryBlock(path) {
     if (/children|meta|align|type|lang/.test(path[0])) {
       path.shift()
     }

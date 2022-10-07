@@ -15,7 +15,7 @@
 .mu-container table,
 .mu-container figure {
   margin: 0;
-  padding: .5em 0;
+  padding: 0.5em 0;
 }
 
 .mu-container h1,
@@ -28,7 +28,7 @@
 
   margin-top: 0;
   margin-bottom: 0;
-  padding: .5em 0;
+  padding: 0.5em 0;
 
   color: var(--editorColor80);
   font-weight: bold;
@@ -62,7 +62,7 @@
 }
 
 /* block quote */
-.mu-container  blockquote {
+.mu-container blockquote {
   position: relative;
 
   margin-right: 0;
@@ -72,7 +72,7 @@
   font-size: 1.1em;
 }
 
-.mu-container  blockquote::before {
+.mu-container blockquote::before {
   position: absolute;
   top: 0;
   left: 0;
@@ -130,7 +130,8 @@
 
   color: var(--editorColor50);
   font-size: 90%;
-  font-family: "DejaVu Sans Mono", "Source Code Pro", "Droid Sans Mono", Consolas, monospace;
+  font-family: 'DejaVu Sans Mono', 'Source Code Pro', 'Droid Sans Mono',
+    Consolas, monospace;
   line-height: 1.6;
 
   background: var(--codeBlockBgColor);
@@ -140,8 +141,8 @@
 
 .mu-code-copy {
   position: absolute;
-  top: .5em;
-  right: .5em;
+  top: 0.5em;
+  right: 0.5em;
   z-index: 1;
 
   width: 20px;
@@ -151,11 +152,11 @@
   cursor: pointer;
   opacity: 0;
 
-  transition: opacity .2s ease-in-out;
+  transition: opacity 0.2s ease-in-out;
 }
 
 .mu-code.mu-active .mu-code-copy {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 code.mu-code .mu-code-copy:hover {
@@ -163,7 +164,7 @@ code.mu-code .mu-code-copy:hover {
 }
 
 .mu-code:not(.mu-active):hover .mu-code-copy {
-  opacity: .5;
+  opacity: 0.5;
 }
 
 .mu-code-copy i.icon {
@@ -176,7 +177,7 @@ code.mu-code .mu-code-copy:hover {
   overflow: hidden;
 }
 
-.mu-code-copy i.icon > i[class^=icon-] {
+.mu-code-copy i.icon > i[class^='icon-'] {
   position: absolute;
   left: -16px;
 
@@ -197,7 +198,7 @@ code.mu-code .mu-code-copy:hover {
 .mu-fenced-code.mu-active .mu-code::after,
 .mu-indented-code.mu-active .mu-code::after {
   position: absolute;
-  right: .5em;
+  right: 0.5em;
   bottom: 0;
   z-index: 1;
 
@@ -213,7 +214,7 @@ span.mu-language-input {
   min-width: 20em;
 
   font-weight: 600;
-  font-size: .8em;
+  font-size: 0.8em;
 
   opacity: 0;
 }
@@ -268,9 +269,9 @@ li.mu-task-list-item {
   list-style-type: none;
 }
 
-li.mu-task-list-item > input[type="checkbox"] {
+li.mu-task-list-item > input[type='checkbox'] {
   position: absolute;
-  top: .2em;
+  top: 0.2em;
   left: -23px;
 
   width: 12px;
@@ -279,14 +280,14 @@ li.mu-task-list-item > input[type="checkbox"] {
   transform-origin: center;
   cursor: pointer;
 
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 }
 
 li.mu-task-list-item > input.mu-checkbox-checked ~ * {
   color: var(--editorColor50);
 }
 
-li.mu-task-list-item > input[type="checkbox"]::before {
+li.mu-task-list-item > input[type='checkbox']::before {
   position: absolute;
   top: -2px;
   left: -2px;
@@ -300,7 +301,7 @@ li.mu-task-list-item > input[type="checkbox"]::before {
   border: 2px solid var(--editorColor50);
   border-radius: 50%;
 
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 
   content: '';
 }
@@ -320,13 +321,13 @@ li.mu-task-list-item > input::after {
   transform: rotate(-45deg) scale(0);
   transform-origin: bottom;
 
-  transition: all .2s ease;
+  transition: all 0.2s ease;
 
   content: '';
 }
 
 li.mu-task-list-item > input.mu-checkbox-checked::after {
-  transform: rotate(-45deg)  scale(1);
+  transform: rotate(-45deg) scale(1);
 }
 
 li.mu-task-list-item > input.mu-checkbox-checked::before {
@@ -400,15 +401,15 @@ li.mu-task-list-item > input.mu-checkbox-checked::before {
   margin-bottom: 0;
 }
 
-.mu-table-inner td[data-align="left"] {
+.mu-table-inner td[data-align='left'] {
   text-align: left;
 }
 
-.mu-table-inner td[data-align="center"] {
+.mu-table-inner td[data-align='center'] {
   text-align: center;
 }
 
-.mu-table-inner td[data-align="right"] {
+.mu-table-inner td[data-align='right'] {
   text-align: right;
 }
 
@@ -443,7 +444,8 @@ figure.mu-active.mu-diagram-block .mu-diagram-container {
   opacity: 1;
 }
 
-figure:not(.mu-active):not(.mu-disable-html-render).mu-html-block .mu-html-container,
+figure:not(.mu-active):not(.mu-disable-html-render).mu-html-block
+  .mu-html-container,
 figure:not(.mu-active).mu-math-block .mu-math-container,
 figure:not(.mu-active).mu-diagram-block .mu-diagram-container {
   overflow: hidden;
@@ -507,7 +509,7 @@ figure.mu-active.mu-diagram-block > div.mu-diagram-preview {
 
   box-sizing: border-box;
   width: 100%;
-  padding: .5rem;
+  padding: 0.5rem;
 
   background: var(--floatBgColor);
   border: 1px solid var(--floatBorderColor);
@@ -539,41 +541,41 @@ pre.mu-active.mu-math-container::after {
   content: '$$';
 }
 
-pre.mu-active[data-role="mermaid"]::before {
+pre.mu-active[data-role='mermaid']::before {
   content: '``` mermaid';
 }
 
-pre.mu-active[data-role="flowchart"]::before {
+pre.mu-active[data-role='flowchart']::before {
   content: '``` flowchart';
 }
 
-pre.mu-active[data-role="sequence"]::before {
+pre.mu-active[data-role='sequence']::before {
   content: '``` sequence';
 }
 
-pre.mu-active[data-role="vega-lite"]::before {
+pre.mu-active[data-role='vega-lite']::before {
   content: '``` vega-lite';
 }
 
 pre.mu-active.mu-fenced-code::before,
 pre.mu-active.mu-fenced-code::after,
-pre.mu-active[data-role="mermaid"]::after,
-pre.mu-active[data-role="flowchart"]::after,
-pre.mu-active[data-role="sequence"]::after,
-pre.mu-active[data-role="vega-lite"]::after {
+pre.mu-active[data-role='mermaid']::after,
+pre.mu-active[data-role='flowchart']::after,
+pre.mu-active[data-role='sequence']::after,
+pre.mu-active[data-role='vega-lite']::after {
   content: '```';
 }
 
 pre.mu-active.mu-front-matter::before,
 pre.mu-active.mu-front-matter::after,
-pre.mu-active[data-role="mermaid"]::before,
-pre.mu-active[data-role="mermaid"]::after,
-pre.mu-active[data-role="flowchart"]::before,
-pre.mu-active[data-role="flowchart"]::after,
-pre.mu-active[data-role="sequence"]::before,
-pre.mu-active[data-role="sequence"]::after,
-pre.mu-active[data-role="vega-lite"]::before,
-pre.mu-active[data-role="vega-lite"]::after,
+pre.mu-active[data-role='mermaid']::before,
+pre.mu-active[data-role='mermaid']::after,
+pre.mu-active[data-role='flowchart']::before,
+pre.mu-active[data-role='flowchart']::after,
+pre.mu-active[data-role='sequence']::before,
+pre.mu-active[data-role='sequence']::after,
+pre.mu-active[data-role='vega-lite']::before,
+pre.mu-active[data-role='vega-lite']::after,
 pre.mu-active.mu-fenced-code::before,
 pre.mu-active.mu-fenced-code::after,
 pre.mu-active.mu-math-container::before,
@@ -586,20 +588,20 @@ pre.mu-active.mu-math-container::after {
 }
 
 pre.mu-active.mu-front-matter::before,
-pre.mu-active[data-role="mermaid"]::before,
-pre.mu-active[data-role="flowchart"]::before,
-pre.mu-active[data-role="sequence"]::before,
-pre.mu-active[data-role="vega-lite"]::before,
+pre.mu-active[data-role='mermaid']::before,
+pre.mu-active[data-role='flowchart']::before,
+pre.mu-active[data-role='sequence']::before,
+pre.mu-active[data-role='vega-lite']::before,
 pre.mu-active.mu-math-container::before,
 pre.mu-active.mu-fenced-code::before {
   top: -20px;
 }
 
 pre.mu-active.mu-front-matter::after,
-pre.mu-active[data-role="mermaid"]::after,
-pre.mu-active[data-role="flowchart"]::after,
-pre.mu-active[data-role="sequence"]::after,
-pre.mu-active[data-role="vega-lite"]::after,
+pre.mu-active[data-role='mermaid']::after,
+pre.mu-active[data-role='flowchart']::after,
+pre.mu-active[data-role='sequence']::after,
+pre.mu-active[data-role='vega-lite']::after,
 pre.mu-active.mu-math-container::after,
 pre.mu-active.mu-fenced-code::after {
   bottom: -23px;
@@ -625,7 +627,9 @@ pre.mu-active.mu-fenced-code::after {
   outline: none;
 }
 
-#editor.mu-show-quick-insert-hint .mu-paragraph.mu-active > .mu-paragraph-content:first-of-type::after {
+#editor.mu-show-quick-insert-hint
+  .mu-paragraph.mu-active
+  > .mu-paragraph-content:first-of-type::after {
   padding-left: 8px;
 
   color: var(--editorColor10);
@@ -633,7 +637,9 @@ pre.mu-active.mu-fenced-code::after {
   content: attr(placeholder);
 }
 
-#editor.mu-show-quick-insert-hint .mu-paragraph.mu-active > .mu-paragraph-content:first-of-type:empty::after {
+#editor.mu-show-quick-insert-hint
+  .mu-paragraph.mu-active
+  > .mu-paragraph-content:first-of-type:empty::after {
   color: var(--editorColor10);
 
   content: 'Type / to insert...';
@@ -642,4 +648,3 @@ pre.mu-active.mu-fenced-code::after {
 .mu-table-cell-content {
   min-width: 10em;
 }
-

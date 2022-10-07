@@ -4,23 +4,23 @@ import ScrollPage from '@/lib/block/scrollPage'
 class ThematicBreakContent extends Format {
   static blockName = 'thematicbreak.content'
 
-  static create (muya, text) {
+  static create(muya, text) {
     const content = new ThematicBreakContent(muya, text)
 
     return content
   }
 
-  constructor (muya, text) {
+  constructor(muya, text) {
     super(muya, text)
     this.classList = [...this.classList, 'mu-thematic-break-content']
     this.createDomNode()
   }
 
-  getAnchor () {
+  getAnchor() {
     return this.parent
   }
 
-  update (cursor, highlights = []) {
+  update(cursor, highlights = []) {
     return this.inlineRenderer.patch(this, cursor, highlights)
   }
 
@@ -28,7 +28,7 @@ class ThematicBreakContent extends Format {
    * Create an empty paragraph bellow.
    * @param {*} event
    */
-  enterHandler (event) {
+  enterHandler(event) {
     const { text, muya } = this
     const { start, end } = this.getCursor()
     if (start.offset === end.offset && start.offset === 0) {
@@ -36,7 +36,10 @@ class ThematicBreakContent extends Format {
         name: 'paragraph',
         text: ''
       }
-      const emptyParagraph = ScrollPage.loadBlock(newState.name).create(muya, newState)
+      const emptyParagraph = ScrollPage.loadBlock(newState.name).create(
+        muya,
+        newState
+      )
       const thematicBreak = this.parent
       thematicBreak.parent.insertBefore(emptyParagraph, thematicBreak)
     } else {
@@ -46,7 +49,7 @@ class ThematicBreakContent extends Format {
     }
   }
 
-  backspaceHandler (event) {
+  backspaceHandler(event) {
     const { start, end } = this.getCursor()
     if (start.offset === 0 && end.offset === 0) {
       // Remove the text content and convert it to paragraph

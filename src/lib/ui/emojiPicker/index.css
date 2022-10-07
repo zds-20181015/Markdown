@@ -29,9 +29,10 @@
   padding: 0 12px;
 }
 
-.mu-emoji-picker .active, .mu-emoji-picker .item:hover {
+.mu-emoji-picker .active,
+.mu-emoji-picker .item:hover {
   background-color: var(--floatHoverColor);
- }
+}
 
 .mu-emoji-picker section .emoji-wrapper .item {
   display: flex;
@@ -63,6 +64,5 @@
 
   transform-origin: center;
 
-  transition: transform .2s ease-in;
+  transition: transform 0.2s ease-in;
 }
- 

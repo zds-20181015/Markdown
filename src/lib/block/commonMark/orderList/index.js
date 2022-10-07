@@ -6,22 +6,26 @@ import containerQueryBlock from '@/lib/block/mixins/containerQueryBlock'
 class OrderList extends Parent {
   static blockName = 'order-list'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const orderList = new OrderList(muya, state)
 
-    orderList.append(...state.children.map(child => ScrollPage.loadBlock(child.name).create(muya, child)))
+    orderList.append(
+      ...state.children.map((child) =>
+        ScrollPage.loadBlock(child.name).create(muya, child)
+      )
+    )
 
     return orderList
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset, 'children']
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = 'ol'
     this.meta = meta
@@ -34,20 +38,17 @@ class OrderList extends Parent {
     this.createDomNode()
   }
 
-  getState () {
+  getState() {
     const state = {
       name: this.blockName,
       meta: { ...this.meta },
-      children: this.children.map(child => child.getState())
+      children: this.children.map((child) => child.getState())
     }
 
     return state
   }
 }
 
-mixins(
-  OrderList,
-  containerQueryBlock
-)
+mixins(OrderList, containerQueryBlock)
 
 export default OrderList

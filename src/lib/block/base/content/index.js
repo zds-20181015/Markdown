@@ -12,29 +12,29 @@ import arrowHandler from './arrow'
 class Content extends TreeNode {
   static blockName = 'content'
 
-  get hasFocus () {
+  get hasFocus() {
     return document.activeElement === this.domNode
   }
 
-  get selection () {
+  get selection() {
     return this.muya.editor.selection
   }
 
-  get inlineRenderer () {
+  get inlineRenderer() {
     return this.muya.editor.inlineRenderer
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
 
     return [...pPath, 'text']
   }
 
-  get text () {
+  get text() {
     return this._text
   }
 
-  set text (text) {
+  set text(text) {
     const oldText = this._text
     this._text = text
     const { path } = this
@@ -46,17 +46,22 @@ class Content extends TreeNode {
     // dispatch change to modify json state
     if (oldText !== text) {
       const diffs = diff(oldText, text)
-      this.jsonState.pushOperation('editOp', path, 'text-unicode', diffToTextOp(diffs))
+      this.jsonState.pushOperation(
+        'editOp',
+        path,
+        'text-unicode',
+        diffToTextOp(diffs)
+      )
     }
   }
 
-  get isCollapse () {
+  get isCollapse() {
     const { start, end } = this.getCursor()
 
     return start.offset === end.offset
   }
 
-  constructor (muya, text) {
+  constructor(muya, text) {
     super(muya)
     this.tagName = 'span'
     this.classList = ['mu-content']
@@ -68,7 +73,7 @@ class Content extends TreeNode {
     this.eventIds = []
   }
 
-  createDomNode () {
+  createDomNode() {
     super.createDomNode()
     this.listenDOMEvents()
     this.update()
@@ -77,7 +82,7 @@ class Content extends TreeNode {
   /**
    * get cursor if this block has focus.
    */
-  getCursor () {
+  getCursor() {
     return this.hasFocus ? Selection.getCursorOffsets(this.domNode) : {}
   }
 
@@ -87,7 +92,7 @@ class Content extends TreeNode {
    * @param {number} end
    * @param {boolean} needUpdate
    */
-  setCursor (begin, end, needUpdate = false) {
+  setCursor(begin, end, needUpdate = false) {
     const cursor = {
       block: this,
       path: this.path,
@@ -102,24 +107,52 @@ class Content extends TreeNode {
     this.selection.setSelection(cursor)
   }
 
-  update () {
+  update() {
     const { text } = this
     this.domNode.innerHTML = `<span class="mu-syntax-text">${text}</span>`
   }
 
-  listenDOMEvents () {
+  listenDOMEvents() {
     const { eventCenter } = this.muya
     const { domNode } = this
 
     const eventIds = [
-      eventCenter.attachDOMEvent(domNode, 'input', this.inputHandler.bind(this)),
-      eventCenter.attachDOMEvent(domNode, 'keydown', this.keydownHandler.bind(this)),
-      eventCenter.attachDOMEvent(domNode, 'keyup', this.keyupHandler.bind(this)),
-      eventCenter.attachDOMEvent(domNode, 'click', this.clickHandler.bind(this)),
+      eventCenter.attachDOMEvent(
+        domNode,
+        'input',
+        this.inputHandler.bind(this)
+      ),
+      eventCenter.attachDOMEvent(
+        domNode,
+        'keydown',
+        this.keydownHandler.bind(this)
+      ),
+      eventCenter.attachDOMEvent(
+        domNode,
+        'keyup',
+        this.keyupHandler.bind(this)
+      ),
+      eventCenter.attachDOMEvent(
+        domNode,
+        'click',
+        this.clickHandler.bind(this)
+      ),
       eventCenter.attachDOMEvent(domNode, 'blur', this.blurHandler.bind(this)),
-      eventCenter.attachDOMEvent(domNode, 'focus', this.focusHandler.bind(this)),
-      eventCenter.attachDOMEvent(domNode, 'compositionend', this.composeHandler.bind(this)),
-      eventCenter.attachDOMEvent(domNode, 'compositionstart', this.composeHandler.bind(this))
+      eventCenter.attachDOMEvent(
+        domNode,
+        'focus',
+        this.focusHandler.bind(this)
+      ),
+      eventCenter.attachDOMEvent(
+        domNode,
+        'compositionend',
+        this.composeHandler.bind(this)
+      ),
+      eventCenter.attachDOMEvent(
+        domNode,
+        'compositionstart',
+        this.composeHandler.bind(this)
+      )
     ]
     this.eventIds.push(...eventIds)
   }
@@ -134,7 +167,7 @@ class Content extends TreeNode {
     }
   }
 
-  detachDOMEvents () {
+  detachDOMEvents() {
     for (const id of this.eventIds) {
       this.muya.eventCenter.detachDOMEvent(id)
     }
@@ -144,18 +177,24 @@ class Content extends TreeNode {
    * used in input handler
    * @param {input event} event
    */
-  autoPair (event, text, start, end, isInInlineMath = false, isInInlineCode = false, type = 'format') {
+  autoPair(
+    event,
+    text,
+    start,
+    end,
+    isInInlineMath = false,
+    isInInlineCode = false,
+    type = 'format'
+  ) {
     const { start: oldStart } = this.selection
 
     let needRender = false
 
     if (this.text !== text) {
-      if (
-        start.offset === end.offset &&
-        event.type === 'input'
-      ) {
+      if (start.offset === end.offset && event.type === 'input') {
         const { offset } = start
-        const { autoPairBracket, autoPairMarkdownSyntax, autoPairQuote } = this.muya.options
+        const { autoPairBracket, autoPairMarkdownSyntax, autoPairQuote } =
+          this.muya.options
         const inputChar = text.charAt(+offset - 1)
         const preInputChar = text.charAt(+offset - 2)
         const prePreInputChar = text.charAt(+offset - 3)
@@ -164,12 +203,18 @@ class Content extends TreeNode {
         if (/^delete/.test(event.inputType)) {
           // handle `deleteContentBackward` or `deleteContentForward`
           const deletedChar = this.text[offset]
-          if (event.inputType === 'deleteContentBackward' && postInputChar === BRACKET_HASH[deletedChar]) {
+          if (
+            event.inputType === 'deleteContentBackward' &&
+            postInputChar === BRACKET_HASH[deletedChar]
+          ) {
             needRender = true
             text = text.substring(0, offset) + text.substring(offset + 1)
           }
 
-          if (event.inputType === 'deleteContentForward' && inputChar === BACK_HASH[deletedChar]) {
+          if (
+            event.inputType === 'deleteContentForward' &&
+            inputChar === BACK_HASH[deletedChar]
+          ) {
             needRender = true
             start.offset -= 1
             end.offset -= 1
@@ -177,15 +222,15 @@ class Content extends TreeNode {
           }
           /* eslint-disable no-useless-escape */
         } else if (
-          (event.inputType.indexOf('delete') === -1) &&
-          (inputChar === postInputChar) &&
-          (
-            (autoPairQuote && /[']{1}/.test(inputChar)) ||
+          event.inputType.indexOf('delete') === -1 &&
+          inputChar === postInputChar &&
+          ((autoPairQuote && /[']{1}/.test(inputChar)) ||
             (autoPairQuote && /["]{1}/.test(inputChar)) ||
             (autoPairBracket && /[\}\]\)]{1}/.test(inputChar)) ||
             (autoPairMarkdownSyntax && /[$]{1}/.test(inputChar)) ||
-            (autoPairMarkdownSyntax && /[*$`~_]{1}/.test(inputChar)) && /[_*~]{1}/.test(prePreInputChar)
-          )
+            (autoPairMarkdownSyntax &&
+              /[*$`~_]{1}/.test(inputChar) &&
+              /[_*~]{1}/.test(prePreInputChar)))
         ) {
           needRender = true
           text = text.substring(0, offset) + text.substring(offset + 1)
@@ -195,14 +240,23 @@ class Content extends TreeNode {
 
           if (
             !/\\/.test(preInputChar) &&
-            ((autoPairQuote && /[']{1}/.test(inputChar) && !(/[a-zA-Z\d]{1}/.test(preInputChar))) ||
-            (autoPairQuote && /["]{1}/.test(inputChar)) ||
-            (autoPairBracket && /[\{\[\(]{1}/.test(inputChar)) ||
-            (type === 'format' && !isInInlineMath && !isInInlineCode && autoPairMarkdownSyntax && !/[a-z0-9]{1}/i.test(preInputChar) && /[*$`~_]{1}/.test(inputChar)))
+            ((autoPairQuote &&
+              /[']{1}/.test(inputChar) &&
+              !/[a-zA-Z\d]{1}/.test(preInputChar)) ||
+              (autoPairQuote && /["]{1}/.test(inputChar)) ||
+              (autoPairBracket && /[\{\[\(]{1}/.test(inputChar)) ||
+              (type === 'format' &&
+                !isInInlineMath &&
+                !isInInlineCode &&
+                autoPairMarkdownSyntax &&
+                !/[a-z0-9]{1}/i.test(preInputChar) &&
+                /[*$`~_]{1}/.test(inputChar)))
           ) {
             needRender = true
             text = BRACKET_HASH[event.data]
-              ? text.substring(0, offset) + BRACKET_HASH[inputChar] + text.substring(offset)
+              ? text.substring(0, offset) +
+                BRACKET_HASH[inputChar] +
+                text.substring(offset)
               : text
           }
 
@@ -244,14 +298,17 @@ class Content extends TreeNode {
     return { text, needRender }
   }
 
-  insertTab () {
+  insertTab() {
     const { muya, text } = this
     const { tabSize } = muya.options
     const tabCharacter = String.fromCharCode(160).repeat(tabSize)
     const { start, end } = this.getCursor()
 
     if (this.isCollapse) {
-      this.text = text.substring(0, start.offset) + tabCharacter + text.substring(end.offset)
+      this.text =
+        text.substring(0, start.offset) +
+        tabCharacter +
+        text.substring(end.offset)
       const offset = start.offset + tabCharacter.length
 
       this.setCursor(offset, offset, true)
@@ -259,19 +316,17 @@ class Content extends TreeNode {
   }
 
   // Do nothing, because this method will implemented in sub class.
-  inputHandler () {}
+  inputHandler() {}
 
   keydownHandler = (event) => {
     // TODO: move codes bellow to muya.ui ?
     if (
       this.muya.ui.shownFloat.size > 0 &&
-      (
-        event.key === EVENT_KEYS.Enter ||
+      (event.key === EVENT_KEYS.Enter ||
         event.key === EVENT_KEYS.Escape ||
         event.key === EVENT_KEYS.Tab ||
         event.key === EVENT_KEYS.ArrowUp ||
-        event.key === EVENT_KEYS.ArrowDown
-      )
+        event.key === EVENT_KEYS.ArrowDown)
     ) {
       let needPreventDefault = false
 
@@ -332,19 +387,19 @@ class Content extends TreeNode {
     }
   }
 
-  keyupHandler () {}
+  keyupHandler() {}
 
-  clickHandler () {}
+  clickHandler() {}
 
-  blurHandler () {
+  blurHandler() {
     this.scrollPage.handleBlurFromContent(this)
   }
 
-  focusHandler () {
+  focusHandler() {
     this.scrollPage.handleFocusFromContent(this)
   }
 
-  getAncestors () {
+  getAncestors() {
     const ancestors = []
     let block = this.parent
 
@@ -356,7 +411,7 @@ class Content extends TreeNode {
     return ancestors
   }
 
-  getCommonAncestors (block) {
+  getCommonAncestors(block) {
     const myAncestors = this.getAncestors()
     const blockAncestors = block.getAncestors()
 
@@ -371,7 +426,7 @@ class Content extends TreeNode {
     return commonAncestors
   }
 
-  remove () {
+  remove() {
     this.detachDOMEvents()
     super.remove()
     this.domNode.remove()
@@ -379,9 +434,6 @@ class Content extends TreeNode {
   }
 }
 
-mixins(
-  Content,
-  arrowHandler
-)
+mixins(Content, arrowHandler)
 
 export default Content

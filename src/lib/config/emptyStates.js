@@ -1,4 +1,3 @@
-
 const emptyStates = {
   paragraph: {
     name: 'paragraph',
@@ -87,10 +86,13 @@ const emptyStates = {
   },
   'block-quote': {
     name: 'block-quote',
-    children: [{ // Can contains any type and number of leaf blocks.
-      name: 'paragraph',
-      text: ''
-    }]
+    children: [
+      {
+        // Can contains any type and number of leaf blocks.
+        name: 'paragraph',
+        text: ''
+      }
+    ]
   },
   'order-list': {
     name: 'order-list',
@@ -143,10 +145,12 @@ const emptyStates = {
         meta: {
           checked: true // true or false
         },
-        children: [{
-          name: 'paragraph',
-          text: ''
-        }]
+        children: [
+          {
+            name: 'paragraph',
+            text: ''
+          }
+        ]
       }
     ]
   },

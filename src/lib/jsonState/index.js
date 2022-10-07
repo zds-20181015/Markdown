@@ -7,19 +7,19 @@ import { deepCopyArray } from '@/lib/utils'
 const debug = logger('jsonstate:')
 
 class JSONState {
-  static invert (op) {
+  static invert(op) {
     return json1.type.invert(op)
   }
 
-  static compose (op1, op2) {
+  static compose(op1, op2) {
     return json1.type.compose(op1, op2)
   }
 
-  static transform (op, otherOp, type) {
+  static transform(op, otherOp, type) {
     return json1.type.transform(op, otherOp, type)
   }
 
-  constructor (muya, state) {
+  constructor(muya, state) {
     this.muya = muya
     const {
       footnote,
@@ -29,29 +29,30 @@ class JSONState {
       frontMatter
     } = this.muya.options
 
-    this.state = typeof state === 'object'
-      ? state
-      : new MarkdownToState({
-        footnote,
-        isGitlabCompatibilityEnabled,
-        superSubScript,
-        trimUnnecessaryCodeBlockEmptyLines,
-        frontMatter
-      }).generate(state)
+    this.state =
+      typeof state === 'object'
+        ? state
+        : new MarkdownToState({
+            footnote,
+            isGitlabCompatibilityEnabled,
+            superSubScript,
+            trimUnnecessaryCodeBlockEmptyLines,
+            frontMatter
+          }).generate(state)
 
     this.operationCache = []
     this.isGoing = false
   }
 
-  apply (op) {
+  apply(op) {
     this.state = json1.type.apply(this.state, op)
   }
 
-  getState () {
+  getState() {
     return deepCopyArray(this.state)
   }
 
-  setState (state) {
+  setState(state) {
     this.state = state
   }
 
@@ -60,7 +61,7 @@ class JSONState {
    * @param {string} method json1 operation method insertOp, removeOp, replaceOp, editOp
    * @param  {...any} args
    */
-  pushOperation (method, ...args) {
+  pushOperation(method, ...args) {
     const operation = json1[method](...args)
     this.operationCache.push(operation)
 
@@ -82,7 +83,7 @@ class JSONState {
     }
   }
 
-  dispatch (op, source = 'user'/* user, api */) {
+  dispatch(op, source = 'user' /* user, api */) {
     this.apply(op)
     // TODO: remove doc in future
     const doc = this.getState()
@@ -94,7 +95,7 @@ class JSONState {
     })
   }
 
-  getMarkdown () {
+  getMarkdown() {
     const state = this.getState()
     const mdGenerator = new StateToMarkdown()
 

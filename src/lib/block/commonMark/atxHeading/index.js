@@ -6,22 +6,24 @@ import leafQueryBlock from '@/lib/block/mixins/leafQueryBlock'
 class AtxHeading extends Parent {
   static blockName = 'atx-heading'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const heading = new AtxHeading(muya, state)
 
-    heading.append(ScrollPage.loadBlock('atxheading.content').create(muya, state.text))
+    heading.append(
+      ScrollPage.loadBlock('atxheading.content').create(muya, state.text)
+    )
 
     return heading
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset]
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = `h${meta.level}`
     this.meta = meta
@@ -29,7 +31,7 @@ class AtxHeading extends Parent {
     this.createDomNode()
   }
 
-  getState () {
+  getState() {
     return {
       name: 'atx-heading',
       meta: this.meta,
@@ -38,9 +40,6 @@ class AtxHeading extends Parent {
   }
 }
 
-mixins(
-  AtxHeading,
-  leafQueryBlock
-)
+mixins(AtxHeading, leafQueryBlock)
 
 export default AtxHeading

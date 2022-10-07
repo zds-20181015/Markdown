@@ -20,15 +20,23 @@ const defaultOptions = () => ({
   showArrow: false
 })
 
-const renderIcon = i => h('i.icon', h('i.icon-inner', {
-  style: {
-    background: `url(${i}) no-repeat`,
-    'background-size': '100%'
-  }
-}, ''))
+const renderIcon = (i) =>
+  h(
+    'i.icon',
+    h(
+      'i.icon-inner',
+      {
+        style: {
+          background: `url(${i}) no-repeat`,
+          'background-size': '100%'
+        }
+      },
+      ''
+    )
+  )
 
 class FrontButton {
-  constructor (muya, options = {}) {
+  constructor(muya, options = {}) {
     this.name = 'mu-front-button'
     this.options = Object.assign({}, defaultOptions(), options)
     this.muya = muya
@@ -50,7 +58,7 @@ class FrontButton {
     this.listen()
   }
 
-  init () {
+  init() {
     const floatBox = document.createElement('div')
     const container = document.createElement('div')
     const iconWrapper = document.createElement('div')
@@ -64,9 +72,12 @@ class FrontButton {
     })
 
     // use polyfill
-    erd.listenTo(container, ele => {
+    erd.listenTo(container, (ele) => {
       const { offsetWidth, offsetHeight } = ele
-      Object.assign(floatBox.style, { width: `${offsetWidth}px`, height: `${offsetHeight}px` })
+      Object.assign(floatBox.style, {
+        width: `${offsetWidth}px`,
+        height: `${offsetHeight}px`
+      })
       this.popper && this.popper.update()
     })
     document.body.appendChild(floatBox)
@@ -76,16 +87,22 @@ class FrontButton {
     this.iconWrapper = iconWrapper
   }
 
-  listen () {
+  listen() {
     const { container } = this
     const { eventCenter } = this.muya
-    const mousemoveHandler = throttle(event => {
+    const mousemoveHandler = throttle((event) => {
       if (this.disableListen) {
         return
       }
       const { x, y } = event
-      const eles = [...document.elementsFromPoint(x, y), ...document.elementsFromPoint(x + LEFT_OFFSET, y)]
-      const outMostElement = eles.find(ele => ele[BLOCK_DOM_PROPERTY] && ele[BLOCK_DOM_PROPERTY].isOutMostBlock)
+      const eles = [
+        ...document.elementsFromPoint(x, y),
+        ...document.elementsFromPoint(x + LEFT_OFFSET, y)
+      ]
+      const outMostElement = eles.find(
+        (ele) =>
+          ele[BLOCK_DOM_PROPERTY] && ele[BLOCK_DOM_PROPERTY].isOutMostBlock
+      )
       if (outMostElement) {
         this.show(outMostElement[BLOCK_DOM_PROPERTY])
         this.render()
@@ -94,7 +111,7 @@ class FrontButton {
       }
     }, 300)
 
-    const enterLeaveHandler = event => {
+    const enterLeaveHandler = (event) => {
       if (event.type === 'mouseenter') {
         if (this.timer) {
           clearTimeout(this.timer)
@@ -143,12 +160,18 @@ class FrontButton {
     event.preventDefault()
 
     const { x, y } = event
-    const eles = [...document.elementsFromPoint(x, y), ...document.elementsFromPoint(x + LEFT_OFFSET, y)]
-    const outMostElement = eles.find(ele => ele[BLOCK_DOM_PROPERTY] && ele[BLOCK_DOM_PROPERTY].isOutMostBlock)
+    const eles = [
+      ...document.elementsFromPoint(x, y),
+      ...document.elementsFromPoint(x + LEFT_OFFSET, y)
+    ]
+    const outMostElement = eles.find(
+      (ele) => ele[BLOCK_DOM_PROPERTY] && ele[BLOCK_DOM_PROPERTY].isOutMostBlock
+    )
     this.moveShadow(event)
 
     if (
-      outMostElement && outMostElement[BLOCK_DOM_PROPERTY] !== this.dragInfo.block &&
+      outMostElement &&
+      outMostElement[BLOCK_DOM_PROPERTY] !== this.dragInfo.block &&
       outMostElement[BLOCK_DOM_PROPERTY].blockName !== 'frontmatter'
     ) {
       const block = outMostElement[BLOCK_DOM_PROPERTY]
@@ -175,7 +198,7 @@ class FrontButton {
     event.stopPropagation()
     this.disableListen = false
     const { eventCenter } = this.muya
-    this.dragEvents.forEach(eventId => eventCenter.detachDOMEvent(eventId))
+    this.dragEvents.forEach((eventId) => eventCenter.detachDOMEvent(eventId))
     this.dragEvents = []
     if (this.ghost) {
       this.ghost.remove()
@@ -186,7 +209,10 @@ class FrontButton {
     const { block, target, position } = this.dragInfo
 
     if (target && position) {
-      if (position === 'down' && block.prev === target || position === 'up' && block.next === target) {
+      if (
+        (position === 'down' && block.prev === target) ||
+        (position === 'up' && block.next === target)
+      ) {
         return
       }
 
@@ -223,12 +249,16 @@ class FrontButton {
     document.body.style.cursor = 'grabbing'
 
     this.dragEvents = [
-      eventCenter.attachDOMEvent(document, 'mousemove', throttle(this.mouseMove, 100)),
+      eventCenter.attachDOMEvent(
+        document,
+        'mousemove',
+        throttle(this.mouseMove, 100)
+      ),
       eventCenter.attachDOMEvent(document, 'mouseup', this.mouseUp)
     ]
   }
 
-  createStyledGhost (rect, position) {
+  createStyledGhost(rect, position) {
     let ghost = this.ghost
     if (!ghost) {
       ghost = document.createElement('div')
@@ -244,7 +274,7 @@ class FrontButton {
     })
   }
 
-  createStyledShadow () {
+  createStyledShadow() {
     const { domNode } = this.block
     const { width, top, left } = domNode.getBoundingClientRect()
     const shadow = document.createElement('div')
@@ -259,7 +289,7 @@ class FrontButton {
     this.shadow = shadow
   }
 
-  moveShadow (event) {
+  moveShadow(event) {
     const { shadow } = this
     // The shadow already be removed.
     if (!shadow) {
@@ -271,7 +301,7 @@ class FrontButton {
     })
   }
 
-  destroyShadow () {
+  destroyShadow() {
     const { shadow } = this
     if (shadow) {
       shadow.remove()
@@ -279,7 +309,7 @@ class FrontButton {
     }
   }
 
-  render () {
+  render() {
     const { container, iconWrapper, block, oldVnode } = this
 
     const iconWrapperSelector = 'div.mu-icon-wrapper'
@@ -301,7 +331,7 @@ class FrontButton {
     container.style.height = lineHeight
   }
 
-  hide () {
+  hide() {
     if (!this.status) {
       return
     }
@@ -312,7 +342,7 @@ class FrontButton {
     }
   }
 
-  show (block) {
+  show(block) {
     if (this.block && this.block === block) {
       return
     }
@@ -336,7 +366,7 @@ class FrontButton {
     this.status = true
   }
 
-  destroy () {
+  destroy() {
     if (this.popper && this.popper.destroy) {
       this.popper.destroy()
     }

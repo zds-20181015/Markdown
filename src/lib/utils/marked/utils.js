@@ -6,14 +6,18 @@ let uniqueIdCounter = 0
 
 export const getUniqueId = () => ++uniqueIdCounter
 
-export const escape = function escape (html, encode) {
+export const escape = function escape(html, encode) {
   if (encode) {
     if (escape.escapeTest.test(html)) {
-      return html.replace(escape.escapeReplace, function (ch) { return escape.replacements[ch] })
+      return html.replace(escape.escapeReplace, function (ch) {
+        return escape.replacements[ch]
+      })
     }
   } else {
     if (escape.escapeTestNoEncode.test(html)) {
-      return html.replace(escape.escapeReplaceNoEncode, function (ch) { return escape.replacements[ch] })
+      return html.replace(escape.escapeReplaceNoEncode, function (ch) {
+        return escape.replacements[ch]
+      })
     }
   }
 
@@ -33,22 +37,25 @@ escape.replacements = {
 escape.escapeTestNoEncode = /[<>"']|&(?!#?\w+;)/
 escape.escapeReplaceNoEncode = /[<>"']|&(?!#?\w+;)/g
 
-export const unescape = function unescape (html) {
+export const unescape = function unescape(html) {
   // explicitly match decimal, hex, and named HTML entities
-  return html.replace(/&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig, function (_, n) {
-    n = n.toLowerCase()
-    if (n === 'colon') return ':'
-    if (n.charAt(0) === '#') {
-      return n.charAt(1) === 'x'
-        ? String.fromCharCode(parseInt(n.substring(2), 16))
-        : String.fromCharCode(+n.substring(1))
-    }
+  return html.replace(
+    /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/gi,
+    function (_, n) {
+      n = n.toLowerCase()
+      if (n === 'colon') return ':'
+      if (n.charAt(0) === '#') {
+        return n.charAt(1) === 'x'
+          ? String.fromCharCode(parseInt(n.substring(2), 16))
+          : String.fromCharCode(+n.substring(1))
+      }
 
-    return ''
-  })
+      return ''
+    }
+  )
 }
 
-export const edit = function edit (regex, opt) {
+export const edit = function edit(regex, opt) {
   regex = regex.source || regex
   opt = opt || ''
 
@@ -66,7 +73,7 @@ export const edit = function edit (regex, opt) {
   }
 }
 
-export const cleanUrl = function cleanUrl (sanitize, base, href) {
+export const cleanUrl = function cleanUrl(sanitize, base, href) {
   if (sanitize) {
     let prot = ''
 
@@ -78,7 +85,11 @@ export const cleanUrl = function cleanUrl (sanitize, base, href) {
       return null
     }
 
-    if (prot.indexOf('javascript:') === 0 || prot.indexOf('vbscript:') === 0 || prot.indexOf('data:') === 0) {
+    if (
+      prot.indexOf('javascript:') === 0 ||
+      prot.indexOf('vbscript:') === 0 ||
+      prot.indexOf('data:') === 0
+    ) {
       return null
     }
   }
@@ -96,7 +107,7 @@ export const cleanUrl = function cleanUrl (sanitize, base, href) {
   return href
 }
 
-const resolveUrl = function resolveUrl (base, href) {
+const resolveUrl = function resolveUrl(base, href) {
   if (!baseUrls[' ' + base]) {
     // we can ignore everything in base after the last slash of its path component,
     // but we might need to add _that_
@@ -129,10 +140,10 @@ const resolveUrl = function resolveUrl (base, href) {
 const baseUrls = {}
 const originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i
 
-export const noop = function noop () {}
+export const noop = function noop() {}
 noop.exec = noop
 
-export const splitCells = function splitCells (tableRow, count) {
+export const splitCells = function splitCells(tableRow, count) {
   // ensure that every cell-delimiting pipe has a space
   // before it to distinguish it from an escaped pipe
   const row = tableRow.replace(/\|/g, function (match, offset, str) {
@@ -168,7 +179,7 @@ export const splitCells = function splitCells (tableRow, count) {
 // Remove trailing 'c's. Equivalent to str.replace(/c*$/, '').
 // /c*$/ is vulnerable to REDOS.
 // invert: Remove suffix of non-c chars instead. Default falsey.
-export const rtrim = function rtrim (str, c, invert) {
+export const rtrim = function rtrim(str, c, invert) {
   if (str.length === 0) {
     return ''
   }
@@ -191,7 +202,7 @@ export const rtrim = function rtrim (str, c, invert) {
   return str.substr(0, str.length - suffLen)
 }
 
-export const findClosingBracket = function findClosingBracket (str, b) {
+export const findClosingBracket = function findClosingBracket(str, b) {
   if (str.indexOf(b[1]) === -1) {
     return -1
   }

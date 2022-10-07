@@ -6,29 +6,31 @@ import leafQueryBlock from '@/lib/block/mixins/leafQueryBlock'
 class Paragraph extends Parent {
   static blockName = 'paragraph'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const paragraph = new Paragraph(muya)
 
-    paragraph.append(ScrollPage.loadBlock('paragraph.content').create(muya, state.text))
+    paragraph.append(
+      ScrollPage.loadBlock('paragraph.content').create(muya, state.text)
+    )
 
     return paragraph
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset]
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     this.tagName = 'p'
     this.classList = ['mu-paragraph']
     this.createDomNode()
   }
 
-  getState () {
+  getState() {
     return {
       name: 'paragraph',
       text: this.children.head.text
@@ -36,9 +38,6 @@ class Paragraph extends Parent {
   }
 }
 
-mixins(
-  Paragraph,
-  leafQueryBlock
-)
+mixins(Paragraph, leafQueryBlock)
 
 export default Paragraph

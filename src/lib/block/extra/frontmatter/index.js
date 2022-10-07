@@ -11,7 +11,7 @@ const debug = logger('frontmatter:')
 class Frontmatter extends Parent {
   static blockName = 'frontmatter'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const frontmatter = new Frontmatter(muya, state)
     const { lang } = state.meta
     const code = ScrollPage.loadBlock('code').create(muya, state)
@@ -25,11 +25,11 @@ class Frontmatter extends Parent {
     return frontmatter
   }
 
-  get lang () {
+  get lang() {
     return this.meta.lang
   }
 
-  set lang (value) {
+  set lang(value) {
     this.meta.lang = value
 
     // TODO update json state
@@ -45,29 +45,31 @@ class Frontmatter extends Parent {
     // }
 
     loadLanguage(value)
-      .then(infoList => {
+      .then((infoList) => {
         if (!Array.isArray(infoList)) return
         // There are three status `loaded`, `noexist` and `cached`.
         // if the status is `loaded`, indicated that it's a new loaded language
-        const needRender = infoList.some(({ status }) => status === 'loaded' || status === 'cached')
+        const needRender = infoList.some(
+          ({ status }) => status === 'loaded' || status === 'cached'
+        )
         if (needRender) {
           this.lastContentInDescendant().update()
         }
       })
-      .catch(err => {
+      .catch((err) => {
         // if no parameter provided, will cause error.
         debug.warn(err)
       })
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset]
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = 'pre'
     this.meta = meta
@@ -75,7 +77,7 @@ class Frontmatter extends Parent {
     this.createDomNode()
   }
 
-  queryBlock (path) {
+  queryBlock(path) {
     if (path.length === 0) {
       return this
     } else {
@@ -90,7 +92,7 @@ class Frontmatter extends Parent {
     }
   }
 
-  getState () {
+  getState() {
     const state = {
       name: 'frontmatter',
       meta: { ...this.meta },

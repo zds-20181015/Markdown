@@ -2,27 +2,29 @@ import { DEFAULT_TURNDOWN_CONFIG } from '@/lib/config'
 import TurndownService, { usePluginAddRules } from '@/lib/utils/turndownService'
 
 // Just because turndown change `\n`(soft line break) to space, So we add `span.ag-soft-line-break` to workaround.
-const turnSoftBreakToSpan = html => {
+const turnSoftBreakToSpan = (html) => {
   const parser = new DOMParser()
   const doc = parser.parseFromString(
     `<x-mt id="turn-root">${html}</x-mt>`,
     'text/html'
   )
   const root = doc.querySelector('#turn-root')
-  const travel = childNodes => {
+  const travel = (childNodes) => {
     for (const node of childNodes) {
       if (node.nodeType === 3 && node.parentNode.tagName !== 'CODE') {
         let startLen = 0
         let endLen = 0
-        const text = node.nodeValue.replace(/^(\n+)/, (_, p) => {
-          startLen = p.length
+        const text = node.nodeValue
+          .replace(/^(\n+)/, (_, p) => {
+            startLen = p.length
 
-          return ''
-        }).replace(/(\n+)$/, (_, p) => {
-          endLen = p.length
+            return ''
+          })
+          .replace(/(\n+)$/, (_, p) => {
+            endLen = p.length
 
-          return ''
-        })
+            return ''
+          })
         if (/\n/.test(text)) {
           const tokens = text.split('\n')
           const params = []
@@ -56,11 +58,11 @@ const turnSoftBreakToSpan = html => {
 }
 
 export default class HtmlToMarkdown {
-  constructor (options = {}) {
+  constructor(options = {}) {
     this.options = Object.assign({}, DEFAULT_TURNDOWN_CONFIG, options)
   }
 
-  generate (html, keeps = []) {
+  generate(html, keeps = []) {
     // turn html to markdown
     const { options } = this
     const turndownService = new TurndownService(options)

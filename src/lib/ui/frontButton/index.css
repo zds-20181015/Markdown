@@ -20,7 +20,7 @@
   border-radius: 4px;
 
   cursor: grab;
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .mu-icon-wrapper i.icon {
@@ -33,10 +33,10 @@
 
   color: var(--iconColor);
 
-  transition: all .25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
-.mu-icon-wrapper i.icon > i[class^="icon-"] { 
+.mu-icon-wrapper i.icon > i[class^='icon-'] {
   position: relative;
   left: -16px;
 
@@ -69,7 +69,7 @@
   background: var(--editorBgColor);
   box-shadow: var(--floatShadow);
   transform: translateX(-30px);
-  opacity: .8;
+  opacity: 0.8;
 }
 
 .mu-shadow > * {

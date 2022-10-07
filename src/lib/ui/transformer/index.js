@@ -1,17 +1,12 @@
 import './index.css'
 
-const CIRCLES = [
-  'top-left',
-  'top-right',
-  'bottom-left',
-  'bottom-right'
-]
+const CIRCLES = ['top-left', 'top-right', 'bottom-left', 'bottom-right']
 
 const CIRCLE_RADIO = 6
 
 class Transformer {
   static pluginName = 'transformer'
-  constructor (muya, options) {
+  constructor(muya, options) {
     this.muya = muya
     this.options = options
     this.reference = null
@@ -23,15 +18,15 @@ class Transformer {
     this.eventId = []
     this.lastScrollTop = null
     this.resizing = false
-    const container = this.container = document.createElement('div')
+    const container = (this.container = document.createElement('div'))
     container.classList.add('mu-transformer')
     document.body.appendChild(container)
     this.listen()
   }
 
-  listen () {
+  listen() {
     const { eventCenter, domNode } = this.muya
-    const scrollHandler = event => {
+    const scrollHandler = (event) => {
       if (typeof this.lastScrollTop !== 'number') {
         this.lastScrollTop = event.target.scrollTop
 
@@ -39,7 +34,11 @@ class Transformer {
       }
 
       // only when scoll distance great than 50px, then hide the float box.
-      if (!this.resizing && this.status && Math.abs(event.target.scrollTop - this.lastScrollTop) > 50) {
+      if (
+        !this.resizing &&
+        this.status &&
+        Math.abs(event.target.scrollTop - this.lastScrollTop) > 50
+      ) {
         this.hide()
       }
     }
@@ -59,11 +58,13 @@ class Transformer {
 
     eventCenter.attachDOMEvent(document, 'click', this.hide.bind(this))
     eventCenter.attachDOMEvent(domNode, 'scroll', scrollHandler)
-    eventCenter.attachDOMEvent(this.container, 'dragstart', event => event.preventDefault())
+    eventCenter.attachDOMEvent(this.container, 'dragstart', (event) =>
+      event.preventDefault()
+    )
     eventCenter.attachDOMEvent(document.body, 'mousedown', this.mouseDown)
   }
 
-  render () {
+  render() {
     const { eventCenter } = this.muya
     if (this.status) {
       this.hide()
@@ -75,8 +76,8 @@ class Transformer {
     eventCenter.emit('muya-float', this, true)
   }
 
-  createElements () {
-    CIRCLES.forEach(c => {
+  createElements() {
+    CIRCLES.forEach((c) => {
       const circle = document.createElement('div')
       circle.classList.add('circle')
       circle.classList.add(c)
@@ -85,9 +86,9 @@ class Transformer {
     })
   }
 
-  update () {
+  update() {
     const rect = this.reference.getBoundingClientRect()
-    CIRCLES.forEach(c => {
+    CIRCLES.forEach((c) => {
       const circle = this.container.querySelector(`.${c}`)
 
       switch (c) {
@@ -122,8 +123,16 @@ class Transformer {
 
     const { eventCenter } = this.muya
     this.movingAnchor = target.getAttribute('data-position')
-    const mouseMoveId = eventCenter.attachDOMEvent(document.body, 'mousemove', this.mouseMove)
-    const mouseUpId = eventCenter.attachDOMEvent(document.body, 'mouseup', this.mouseUp)
+    const mouseMoveId = eventCenter.attachDOMEvent(
+      document.body,
+      'mousemove',
+      this.mouseMove
+    )
+    const mouseUpId = eventCenter.attachDOMEvent(
+      document.body,
+      'mouseup',
+      this.mouseUp
+    )
     this.resizing = true
     // Hide image toolbar
     eventCenter.emit('muya-image-toolbar', { reference: null })
@@ -145,14 +154,20 @@ class Transformer {
 
       case 'bottom-left':
         relativeAnchor = this.container.querySelector('.top-right')
-        width = Math.max(relativeAnchor.getBoundingClientRect().left + CIRCLE_RADIO - clientX, 50)
+        width = Math.max(
+          relativeAnchor.getBoundingClientRect().left + CIRCLE_RADIO - clientX,
+          50
+        )
         break
 
       case 'top-right':
 
       case 'bottom-right':
         relativeAnchor = this.container.querySelector('.top-left')
-        width = Math.max(clientX - relativeAnchor.getBoundingClientRect().left - CIRCLE_RADIO, 50)
+        width = Math.max(
+          clientX - relativeAnchor.getBoundingClientRect().left - CIRCLE_RADIO,
+          50
+        )
         break
     }
     // Image width/height attribute must be an integer.
@@ -182,10 +197,10 @@ class Transformer {
     this.movingAnchor = null
   }
 
-  hide () {
+  hide() {
     const { eventCenter } = this.muya
     const circles = this.container.querySelectorAll('.circle')
-    Array.from(circles).forEach(c => c.remove())
+    Array.from(circles).forEach((c) => c.remove())
     this.status = false
     eventCenter.emit('muya-float', this, false)
   }

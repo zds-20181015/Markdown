@@ -1,7 +1,7 @@
 import { CLASS_NAMES } from '@/lib/config'
 import { htmlToVNode } from '@/lib/utils/snabbdom'
 
-export default function htmlRuby (h, cursor, block, token, outerClass) {
+export default function htmlRuby(h, cursor, block, token, outerClass) {
   const className = this.getClassName(outerClass, block, token, cursor)
   const { children } = token
   const { start, end } = token.range
@@ -12,23 +12,33 @@ export default function htmlRuby (h, cursor, block, token, outerClass) {
   return children
     ? [
         h(`span.${className}.${CLASS_NAMES.MU_RUBY}`, [
-          h(`span.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_RUBY_TEXT}`, content),
-          h(previewSelector, {
-            attrs: {
-              contenteditable: 'false',
-              spellcheck: 'false'
+          h(
+            `span.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_RUBY_TEXT}`,
+            content
+          ),
+          h(
+            previewSelector,
+            {
+              attrs: {
+                contenteditable: 'false',
+                spellcheck: 'false'
+              },
+              dataset: {
+                start: start + 6, // '<buby>'.length
+                end: end - 7 // '</ruby>'.length
+              }
             },
-            dataset: {
-              start: start + 6, // '<buby>'.length
-              end: end - 7 // '</ruby>'.length
-            }
-          }, vNode)
+            vNode
+          )
         ])
-      // if children is empty string, no need to render ruby charactors...
+        // if children is empty string, no need to render ruby charactors...
       ]
     : [
         h(`span.${className}.${CLASS_NAMES.MU_RUBY}`, [
-          h(`span.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_RUBY_TEXT}`, content)
+          h(
+            `span.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_RUBY_TEXT}`,
+            content
+          )
         ])
       ]
 }

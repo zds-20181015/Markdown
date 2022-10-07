@@ -14,10 +14,10 @@
 
 .mu-transformer .top-left,
 .mu-transformer .bottom-right {
-  cursor: nwse-resize
+  cursor: nwse-resize;
 }
 
 .mu-transformer .top-right,
 .mu-transformer .bottom-left {
-  cursor: nesw-resize
+  cursor: nesw-resize;
 }

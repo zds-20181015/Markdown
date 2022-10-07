@@ -60,7 +60,7 @@
   color: var(--iconColor);
 }
 
-.mu-front-menu li .icon-wrapper i.icon > i[class^="icon-"] { 
+.mu-front-menu li .icon-wrapper i.icon > i[class^='icon-'] {
   position: relative;
   left: -18px;
 

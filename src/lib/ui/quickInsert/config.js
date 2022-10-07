@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+/* eslint-disable no-fallthrough */
 import paragraphIcon from '@/lib/assets/icons/paragraph/2.png'
 import htmlIcon from '@/lib/assets/icons/html/2.png'
 import hrIcon from '@/lib/assets/icons/horizontal_line/2.png'

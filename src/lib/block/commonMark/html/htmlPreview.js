@@ -6,13 +6,13 @@ import { getImageSrc } from '@/lib/utils/image'
 class HTMLPreview extends Parent {
   static blockName = 'html-preview'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const htmlBlock = new HTMLPreview(muya, state)
 
     return htmlBlock
   }
 
-  constructor (muya, { text }) {
+  constructor(muya, { text }) {
     super(muya)
     this.tagName = 'div'
     this.html = text
@@ -21,7 +21,7 @@ class HTMLPreview extends Parent {
     this.update()
   }
 
-  update (html = this.html) {
+  update(html = this.html) {
     if (this.html !== html) {
       this.html = html
     }
@@ -31,7 +31,8 @@ class HTMLPreview extends Parent {
 
     // handle empty html bock
     if (/^<([a-z][a-z\d]*)[^>]*?>(\s*)<\/\1>$/.test(htmlContent.trim())) {
-      this.domNode.innerHTML = '<div class="mu-empty">&lt;Empty HTML Block&gt;</div>'
+      this.domNode.innerHTML =
+        '<div class="mu-empty">&lt;Empty HTML Block&gt;</div>'
     } else {
       const parser = new DOMParser()
       const doc = parser.parseFromString(htmlContent, 'text/html')
@@ -43,7 +44,8 @@ class HTMLPreview extends Parent {
         img.setAttribute('src', imageInfo.src)
       }
 
-      this.domNode.innerHTML = doc.documentElement.querySelector('body').innerHTML
+      this.domNode.innerHTML =
+        doc.documentElement.querySelector('body').innerHTML
     }
   }
 }

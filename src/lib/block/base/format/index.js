@@ -14,7 +14,7 @@ import { tokenizer } from '@/lib/inlineRenderer/lexer'
 class Format extends Content {
   static blockName = 'format'
 
-  checkCursorInTokenType (text, offset, type) {
+  checkCursorInTokenType(text, offset, type) {
     const tokens = tokenizer(text, {
       hasBeginRules: false,
       options: this.muya.options
@@ -22,13 +22,17 @@ class Format extends Content {
 
     let result = null
 
-    const travel = tokens => {
+    const travel = (tokens) => {
       for (const token of tokens) {
         if (token.range.start > offset) {
           break
         }
 
-        if (token.type === type && offset > token.range.start && offset < token.range.end) {
+        if (
+          token.type === type &&
+          offset > token.range.start &&
+          offset < token.range.end
+        ) {
           result = token
           break
         } else if (token.children) {
@@ -42,7 +46,7 @@ class Format extends Content {
     return result
   }
 
-  checkNotSameToken (oldText, text) {
+  checkNotSameToken(oldText, text) {
     const { options } = this.muya
     const oldTokens = tokenizer(oldText, {
       options
@@ -83,7 +87,7 @@ class Format extends Content {
     return false
   }
 
-  checkNeedRender (cursor = this.selection) {
+  checkNeedRender(cursor = this.selection) {
     const { labels } = this.inlineRenderer
     const { text } = this
     const { start: cStart, end: cEnd, anchor, focus } = cursor
@@ -99,8 +103,14 @@ class Format extends Content {
       const { start, end } = token.range
       const textLen = text.length
       if (
-        conflict([Math.max(0, start - 1), Math.min(textLen, end + 1)], [startOffset, startOffset]) ||
-        conflict([Math.max(0, start - 1), Math.min(textLen, end + 1)], [endOffset, endOffset])
+        conflict(
+          [Math.max(0, start - 1), Math.min(textLen, end + 1)],
+          [startOffset, startOffset]
+        ) ||
+        conflict(
+          [Math.max(0, start - 1), Math.min(textLen, end + 1)],
+          [endOffset, endOffset]
+        )
       ) {
         return true
       }
@@ -109,7 +119,7 @@ class Format extends Content {
     return false
   }
 
-  blurHandler () {
+  blurHandler() {
     super.blurHandler()
     const needRender = this.checkNeedRender()
     if (needRender) {
@@ -117,7 +127,7 @@ class Format extends Content {
     }
   }
 
-  tabHandler (event) {
+  tabHandler(event) {
     console.log('tab')
   }
 
@@ -125,19 +135,24 @@ class Format extends Content {
    * Update emoji text if cursor is in emoji syntax.
    * @param {string} text emoji text
    */
-  setEmoji (text) {
+  setEmoji(text) {
     const { anchor } = this.selection
-    const editEmoji = this.checkCursorInTokenType(this.text, anchor.offset, 'emoji')
+    const editEmoji = this.checkCursorInTokenType(
+      this.text,
+      anchor.offset,
+      'emoji'
+    )
     if (editEmoji) {
       const { start, end } = editEmoji.range
       const oldText = this.text
-      this.text = oldText.substring(0, start) + `:${text}:` + oldText.substring(end)
+      this.text =
+        oldText.substring(0, start) + `:${text}:` + oldText.substring(end)
       const offset = start + text.length + 2
       this.setCursor(offset, offset, true)
     }
   }
 
-  replaceImage ({ token }, { alt = '', src = '', title = '' }) {
+  replaceImage({ token }, { alt = '', src = '', title = '' }) {
     const { type } = token
     const { start, end } = token.range
     const oldText = this.text
@@ -149,7 +164,9 @@ class Format extends Content {
       }
       imageText += ']('
       if (src) {
-        imageText += src.replace(/ /g, encodeURI(' ')).replace(/#/g, encodeURIComponent('#'))
+        imageText += src
+          .replace(/ /g, encodeURI(' '))
+          .replace(/#/g, encodeURIComponent('#'))
       }
 
       if (title) {
@@ -177,7 +194,8 @@ class Format extends Content {
     this.update()
   }
 
-  updateImage ({ imageId, token }, attrName, attrValue) { // inline/left/center/right
+  updateImage({ imageId, token }, attrName, attrValue) {
+    // inline/left/center/right
     const { start, end } = token.range
     const oldText = this.text
     let imageText = ''
@@ -199,7 +217,9 @@ class Format extends Content {
 
     this.update()
 
-    const selector = `#${imageId.indexOf('_') > -1 ? imageId : imageId + '_' + token.range.start} img`
+    const selector = `#${
+      imageId.indexOf('_') > -1 ? imageId : imageId + '_' + token.range.start
+    } img`
     const image = document.querySelector(selector)
 
     if (image) {
@@ -207,7 +227,7 @@ class Format extends Content {
     }
   }
 
-  deleteImage ({ token }) {
+  deleteImage({ token }) {
     const oldText = this.text
     const { start, end } = token.range
     const { eventCenter } = this.muya

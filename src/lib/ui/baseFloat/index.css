@@ -17,7 +17,7 @@
   transform-origin: top;
   opacity: 0;
 
-  transition: opacity .25s ease-in-out;
+  transition: opacity 0.25s ease-in-out;
 }
 
 .mu-float-container::-webkit-scrollbar:vertical {
@@ -40,14 +40,14 @@
   transform: rotate(45deg);
 }
 
-[x-placement="bottom-start"] > .mu-popper-arrow {
+[x-placement='bottom-start'] > .mu-popper-arrow {
   top: -9px;
 
   border-right: none;
   border-bottom: none;
 }
 
-[x-placement="top-start"] > .mu-popper-arrow {
+[x-placement='top-start'] > .mu-popper-arrow {
   bottom: -9px;
 
   border-top: none;

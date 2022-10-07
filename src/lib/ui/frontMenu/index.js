@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import BaseFloat from '@/lib/ui/baseFloat'
 import { patch, h } from '@/lib/utils/snabbdom'
 import { deepCopy } from '@/lib/utils'
@@ -8,12 +10,20 @@ import { replaceBlockByLabel } from '@/lib/ui/quickInsert/config'
 
 import './index.css'
 
-const renderIcon = ({ label, icon }) => h('i.icon', h(`i.icon-${label.replace(/\s/g, '-')}`, {
-  style: {
-    background: `url(${icon}) no-repeat`,
-    'background-size': '100%'
-  }
-}, ''))
+const renderIcon = ({ label, icon }) =>
+  h(
+    'i.icon',
+    h(
+      `i.icon-${label.replace(/\s/g, '-')}`,
+      {
+        style: {
+          background: `url(${icon}) no-repeat`,
+          'background-size': '100%'
+        }
+      },
+      ''
+    )
+  )
 
 const defaultOptions = {
   placement: 'bottom',
@@ -28,7 +38,7 @@ const defaultOptions = {
 class FrontMenu extends BaseFloat {
   static pluginName = 'frontMenu'
 
-  constructor (muya, options = {}) {
+  constructor(muya, options = {}) {
     const name = 'mu-front-menu'
     const opts = Object.assign({}, defaultOptions, options)
     super(muya, name, opts)
@@ -37,7 +47,8 @@ class FrontMenu extends BaseFloat {
     this.options = opts
     this.reference = null
     this.isHover = false
-    const frontMenuContainer = this.frontMenuContainer = document.createElement('div')
+    const frontMenuContainer = (this.frontMenuContainer =
+      document.createElement('div'))
     Object.assign(this.container.parentNode.style, {
       overflow: 'visible'
     })
@@ -45,7 +56,7 @@ class FrontMenu extends BaseFloat {
     this.listen()
   }
 
-  listen () {
+  listen() {
     const { container } = this
     const { eventCenter } = this.muya
     super.listen()
@@ -64,7 +75,7 @@ class FrontMenu extends BaseFloat {
       }
     })
 
-    const enterLeaveHandler = event => {
+    const enterLeaveHandler = (event) => {
       if (event.type === 'mouseleave') {
         this.hide()
         this.isHover = false
@@ -78,59 +89,74 @@ class FrontMenu extends BaseFloat {
     eventCenter.attachDOMEvent(container, 'mouseleave', enterLeaveHandler)
   }
 
-  renderSubMenu (subMenu) {
+  renderSubMenu(subMenu) {
     const { block } = this
-    const children = subMenu.map(menuItem => {
+    const children = subMenu.map((menuItem) => {
       const { title, label, shortCut, subTitle } = menuItem
       const iconWrapperSelector = 'div.icon-wrapper'
-      const iconWrapper = h(iconWrapperSelector, {
-        props: {
-          title: /diagram/.test(label) ? `${title}\n${subTitle}` : `${title}\n${shortCut}`
-        }
-      }, renderIcon(menuItem))
+      const iconWrapper = h(
+        iconWrapperSelector,
+        {
+          props: {
+            title: /diagram/.test(label)
+              ? `${title}\n${subTitle}`
+              : `${title}\n${shortCut}`
+          }
+        },
+        renderIcon(menuItem)
+      )
 
       let itemSelector = `div.turn-into-item.${label}`
       if (block.blockName === 'atx-heading') {
-        if (label.startsWith(block.blockName) && label.endsWith(block.meta.level)) {
+        if (
+          label.startsWith(block.blockName) &&
+          label.endsWith(block.meta.level)
+        ) {
           itemSelector += '.active'
         }
       } else if (label === block.blockName) {
         itemSelector += '.active'
       }
 
-      return h(itemSelector, {
-        on: {
-          click: event => {
-            this.selectItem(event, { label })
+      return h(
+        itemSelector,
+        {
+          on: {
+            click: (event) => {
+              this.selectItem(event, { label })
+            }
           }
-        }
-      }, [iconWrapper])
+        },
+        [iconWrapper]
+      )
     })
     const subMenuSelector = 'li.turn-into-menu'
 
     return h(subMenuSelector, children)
   }
 
-  render () {
+  render() {
     const { oldVnode, frontMenuContainer, block } = this
     const { blockName } = block
     const children = FRONT_MENU.map(({ icon, label, text, shortCut }) => {
       const iconWrapperSelector = 'div.icon-wrapper'
       const iconWrapper = h(iconWrapperSelector, renderIcon({ icon, label }))
       const textWrapper = h('span.text', text)
-      const shortCutWrapper = h('div.short-cut', [
-        h('span', shortCut)
-      ])
+      const shortCutWrapper = h('div.short-cut', [h('span', shortCut)])
       const itemSelector = `li.item.${label}`
       const itemChildren = [iconWrapper, textWrapper, shortCutWrapper]
 
-      return h(itemSelector, {
-        on: {
-          click: event => {
-            this.selectItem(event, { label })
+      return h(
+        itemSelector,
+        {
+          on: {
+            click: (event) => {
+              this.selectItem(event, { label })
+            }
           }
-        }
-      }, itemChildren)
+        },
+        itemChildren
+      )
     })
 
     // Frontmatter can not be duplicated
@@ -155,17 +181,14 @@ class FrontMenu extends BaseFloat {
     this.oldVnode = vnode
   }
 
-  selectItem (event, { label }) {
+  selectItem(event, { label }) {
     event.preventDefault()
     event.stopPropagation()
     const { block, muya } = this
     const oldState = block.getState()
     let cursorBlock = null
     let state = null
-    const {
-      bulletListMarker,
-      orderListDelimiter
-    } = muya.options
+    const { bulletListMarker, orderListDelimiter } = muya.options
 
     if (/duplicate|new|delete/.test(label)) {
       switch (label) {
@@ -192,7 +215,10 @@ class FrontMenu extends BaseFloat {
             cursorBlock = block.next.firstContentInDescendant()
           } else {
             state = deepCopy(emptyStates.paragraph)
-            const newBlock = ScrollPage.loadBlock('paragraph').create(muya, state)
+            const newBlock = ScrollPage.loadBlock('paragraph').create(
+              muya,
+              state
+            )
             block.parent.insertAfter(newBlock, block)
             cursorBlock = newBlock.lastContentInDescendant()
           }
@@ -208,11 +234,17 @@ class FrontMenu extends BaseFloat {
             break
           }
 
-          if (block.blockName === 'atx-heading' && label.split(' ')[1] === String(oldState.meta.level)) {
+          if (
+            block.blockName === 'atx-heading' &&
+            label.split(' ')[1] === String(oldState.meta.level)
+          ) {
             break
           }
           const rawText = oldState.text
-          const text = block.blockName === 'paragraph' ? rawText : rawText.replace(/^ {0,3}#{1,6}(?:\s{1,}|$)/, '')
+          const text =
+            block.blockName === 'paragraph'
+              ? rawText
+              : rawText.replace(/^ {0,3}#{1,6}(?:\s{1,}|$)/, '')
           replaceBlockByLabel({
             block,
             label,
@@ -232,14 +264,18 @@ class FrontMenu extends BaseFloat {
           }
           state = deepCopy(oldState)
           if (block.blockName === 'task-list') {
-            state.children.forEach(listItem => {
+            state.children.forEach((listItem) => {
               listItem.name = 'list-item'
               delete listItem.meta
             })
           }
-          const { loose, delimiter = orderListDelimiter, marker = bulletListMarker } = state.meta
+          const {
+            loose,
+            delimiter = orderListDelimiter,
+            marker = bulletListMarker
+          } = state.meta
           if (label === 'task-list') {
-            state.children.forEach(listItem => {
+            state.children.forEach((listItem) => {
               listItem.name = 'task-list-item'
               listItem.meta = {
                 checked: false

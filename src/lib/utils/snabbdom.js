@@ -7,8 +7,8 @@ import {
   styleModule,
   eventListenersModule,
   h as sh,
-  toVNode as sToVNode,
-} from "snabbdom";
+  toVNode as sToVNode
+} from 'snabbdom'
 
 export const patch = init([
   classModule,
@@ -16,19 +16,19 @@ export const patch = init([
   styleModule,
   propsModule,
   datasetModule,
-  eventListenersModule,
-]);
+  eventListenersModule
+])
 
-export const h = sh;
-export const toVnode = sToVNode;
+export const h = sh
+export const toVnode = sToVNode
 
-import _toHTML from "snabbdom-to-html";
-export const toHTML = _toHTML;
+import _toHTML from 'snabbdom-to-html'
+export const toHTML = _toHTML
 // export const toHTML = import("snabbdom-to-html"); // helper function for convert vnode to HTML string
 export const htmlToVNode = (html) => {
   // helper function for convert html to vnode
-  const wrapper = document.createElement("div");
-  wrapper.innerHTML = html;
+  const wrapper = document.createElement('div')
+  wrapper.innerHTML = html
 
-  return toVnode(wrapper).children;
-};
+  return toVnode(wrapper).children
+}

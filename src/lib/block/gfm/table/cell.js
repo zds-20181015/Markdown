@@ -6,47 +6,49 @@ import leafQueryBlock from '@/lib/block/mixins/leafQueryBlock'
 class TableBodyCell extends Parent {
   static blockName = 'table.cell'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const cell = new TableBodyCell(muya, state)
 
-    cell.append(ScrollPage.loadBlock('table.cell.content').create(muya, state.text))
+    cell.append(
+      ScrollPage.loadBlock('table.cell.content').create(muya, state.text)
+    )
 
     return cell
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, 'children', offset]
   }
 
-  get table () {
+  get table() {
     return this.closestBlock('table')
   }
 
-  get row () {
+  get row() {
     return this.closestBlock('table.row')
   }
 
-  get rowOffset () {
+  get rowOffset() {
     return this.table.firstChild.offset(this.row)
   }
 
-  get columnOffset () {
+  get columnOffset() {
     return this.row.offset(this)
   }
 
-  get align () {
+  get align() {
     return this.meta.align
   }
 
-  set align (value) {
+  set align(value) {
     this.domNode.dataset.align = value
     this.meta.align = value
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = 'td'
     this.meta = meta
@@ -57,7 +59,7 @@ class TableBodyCell extends Parent {
     this.createDomNode()
   }
 
-  getState () {
+  getState() {
     const state = {
       name: 'table.cell',
       meta: { ...this.meta },
@@ -68,9 +70,6 @@ class TableBodyCell extends Parent {
   }
 }
 
-mixins(
-  TableBodyCell,
-  leafQueryBlock
-)
+mixins(TableBodyCell, leafQueryBlock)
 
 export default TableBodyCell

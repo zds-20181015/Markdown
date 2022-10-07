@@ -16,7 +16,7 @@ const INLINE_UPDATE_FRAGMENTS = [
 const INLINE_UPDATE_REG = new RegExp(INLINE_UPDATE_FRAGMENTS.join('|'), 'i')
 
 export default {
-  convertIfNeeded () {
+  convertIfNeeded() {
     const { text } = this
 
     const [
@@ -32,7 +32,8 @@ export default {
     ] = text.match(INLINE_UPDATE_REG) || []
 
     switch (true) {
-      case (!!thematicBreak && new Set(thematicBreak.split('').filter(i => /\S/.test(i))).size === 1):
+      case !!thematicBreak &&
+        new Set(thematicBreak.split('').filter((i) => /\S/.test(i))).size === 1:
         this.convertToThematicBreak()
         break
 
@@ -72,7 +73,7 @@ export default {
   },
 
   // Thematic Break
-  convertToThematicBreak () {
+  convertToThematicBreak() {
     // If the block is already thematic break, no need to update.
     if (this.parent.blockName === 'thematic-break') {
       return
@@ -88,7 +89,8 @@ export default {
 
     for (const l of lines) {
       /* eslint-disable no-useless-escape */
-      const THEMATIC_BREAK_REG = / {0,3}(?:\* *\* *\*|- *- *-|_ *_ *_)[ \*\-\_]*$/
+      const THEMATIC_BREAK_REG =
+        / {0,3}(?:\* *\* *\*|- *- *-|_ *_ *_)[ \*\-\_]*$/
       /* eslint-enable no-useless-escape */
       if (THEMATIC_BREAK_REG.test(l) && !thematicLineHasPushed) {
         thematicLine = l
@@ -108,7 +110,9 @@ export default {
       const preParagraphState = Object.assign({}, PARAGRAPH_STATE, {
         text: preParagraphLines.join('\n')
       })
-      const preParagraphBlock = ScrollPage.loadBlock(preParagraphState.name).create(muya, preParagraphState)
+      const preParagraphBlock = ScrollPage.loadBlock(
+        preParagraphState.name
+      ).create(muya, preParagraphState)
       this.parent.parent.insertBefore(preParagraphBlock, this.parent)
     }
 
@@ -116,17 +120,25 @@ export default {
       const postParagraphState = Object.assign({}, PARAGRAPH_STATE, {
         text: postParagraphLines.join('\n')
       })
-      const postParagraphBlock = ScrollPage.loadBlock(postParagraphState.name).create(muya, postParagraphState)
+      const postParagraphBlock = ScrollPage.loadBlock(
+        postParagraphState.name
+      ).create(muya, postParagraphState)
       this.parent.parent.insertAfter(postParagraphBlock, this.parent)
     }
 
-    const thematicBlock = ScrollPage.loadBlock(newNodeState.name).create(muya, newNodeState)
+    const thematicBlock = ScrollPage.loadBlock(newNodeState.name).create(
+      muya,
+      newNodeState
+    )
 
     this.parent.replaceWith(thematicBlock)
 
     if (hasFocus) {
       const thematicBreakContent = thematicBlock.children.head
-      const preParagraphTextLength = preParagraphLines.reduce((acc, i) => acc + i.length + 1, 0) // Add one, because the `\n`
+      const preParagraphTextLength = preParagraphLines.reduce(
+        (acc, i) => acc + i.length + 1,
+        0
+      ) // Add one, because the `\n`
       const startOffset = Math.max(0, start.offset - preParagraphTextLength)
       const endOffset = Math.max(0, end.offset - preParagraphTextLength)
 
@@ -134,10 +146,12 @@ export default {
     }
   },
 
-  convertToList () {
+  convertToList() {
     const { text, parent, muya, hasFocus } = this
     const { preferLooseListItem } = muya.options
-    const matches = text.match(/^([\s\S]*?) {0,3}([*+-]|\d{1,9}(?:\.|\))) {1,4}([\s\S]*)$/)
+    const matches = text.match(
+      /^([\s\S]*?) {0,3}([*+-]|\d{1,9}(?:\.|\))) {1,4}([\s\S]*)$/
+    )
     const blockName = /\d/.test(matches[2]) ? 'order-list' : 'bullet-list'
 
     if (matches[1]) {
@@ -145,7 +159,10 @@ export default {
         name: 'paragraph',
         text: matches[1].trim()
       }
-      const paragraph = ScrollPage.loadBlock(paragraphState.name).create(muya, paragraphState)
+      const paragraph = ScrollPage.loadBlock(paragraphState.name).create(
+        muya,
+        paragraphState
+      )
       parent.parent.insertBefore(paragraph, parent)
     }
 
@@ -154,13 +171,17 @@ export default {
       meta: {
         loose: preferLooseListItem
       },
-      children: [{
-        name: 'list-item',
-        children: [{
-          name: 'paragraph',
-          text: matches[3]
-        }]
-      }]
+      children: [
+        {
+          name: 'list-item',
+          children: [
+            {
+              name: 'paragraph',
+              text: matches[3]
+            }
+          ]
+        }
+      ]
     }
 
     if (blockName === 'order-list') {
@@ -186,7 +207,7 @@ export default {
     }
   },
 
-  convertToTaskList () {
+  convertToTaskList() {
     const { text, parent, muya, hasFocus } = this
     const { preferLooseListItem } = muya.options
     const listItem = parent.parent
@@ -203,25 +224,30 @@ export default {
         loose: preferLooseListItem,
         marker: list.meta.marker
       },
-      children: [{
-        name: 'task-list-item',
-        meta: {
-          checked: matches[1] !== ' '
-        },
-        children: listItem.map(node => {
-          if (node === parent) {
-            return {
-              name: 'paragraph',
-              text: matches[2]
+      children: [
+        {
+          name: 'task-list-item',
+          meta: {
+            checked: matches[1] !== ' '
+          },
+          children: listItem.map((node) => {
+            if (node === parent) {
+              return {
+                name: 'paragraph',
+                text: matches[2]
+              }
+            } else {
+              return node.getState()
             }
-          } else {
-            return node.getState()
-          }
-        })
-      }]
+          })
+        }
+      ]
     }
 
-    const newTaskList = ScrollPage.loadBlock(listState.name).create(muya, listState)
+    const newTaskList = ScrollPage.loadBlock(listState.name).create(
+      muya,
+      listState
+    )
 
     switch (true) {
       case listItem.isOnlyChild():
@@ -248,12 +274,15 @@ export default {
           children: []
         }
         const offset = list.offset(listItem)
-        list.forEachAt(offset + 1, undefined, node => {
+        list.forEachAt(offset + 1, undefined, (node) => {
           bulletListState.children.push(node.getState())
           node.remove()
         })
 
-        const bulletList = ScrollPage.loadBlock(bulletListState.name).create(muya, bulletListState)
+        const bulletList = ScrollPage.loadBlock(bulletListState.name).create(
+          muya,
+          bulletListState
+        )
         list.parent.insertAfter(newTaskList, list)
         newTaskList.parent.insertAfter(bulletList, newTaskList)
         listItem.remove()
@@ -267,7 +296,7 @@ export default {
   },
 
   // ATX Heading
-  convertToAtxHeading (atxHeading) {
+  convertToAtxHeading(atxHeading) {
     const level = atxHeading.length
     if (
       this.parent.blockName === 'atx-heading' &&
@@ -301,7 +330,9 @@ export default {
         name: 'paragraph',
         text: preParagraphLines.join('\n')
       }
-      const preParagraphBlock = ScrollPage.loadBlock(preParagraphState.name).create(muya, preParagraphState)
+      const preParagraphBlock = ScrollPage.loadBlock(
+        preParagraphState.name
+      ).create(muya, preParagraphState)
       this.parent.parent.insertBefore(preParagraphBlock, this.parent)
     }
 
@@ -310,7 +341,9 @@ export default {
         name: 'paragraph',
         text: postParagraphLines.join('\n')
       }
-      const postParagraphBlock = ScrollPage.loadBlock(postParagraphState.name).create(muya, postParagraphState)
+      const postParagraphBlock = ScrollPage.loadBlock(
+        postParagraphState.name
+      ).create(muya, postParagraphState)
       this.parent.parent.insertAfter(postParagraphBlock, this.parent)
     }
 
@@ -322,13 +355,19 @@ export default {
       text: atxLine
     }
 
-    const atxHeadingBlock = ScrollPage.loadBlock(newNodeState.name).create(muya, newNodeState)
+    const atxHeadingBlock = ScrollPage.loadBlock(newNodeState.name).create(
+      muya,
+      newNodeState
+    )
 
     this.parent.replaceWith(atxHeadingBlock)
 
     if (hasFocus) {
       const atxHeadingContent = atxHeadingBlock.children.head
-      const preParagraphTextLength = preParagraphLines.reduce((acc, i) => acc + i.length + 1, 0) // Add one, because the `\n`
+      const preParagraphTextLength = preParagraphLines.reduce(
+        (acc, i) => acc + i.length + 1,
+        0
+      ) // Add one, because the `\n`
       const startOffset = Math.max(0, start.offset - preParagraphTextLength)
       const endOffset = Math.max(0, end.offset - preParagraphTextLength)
       atxHeadingContent.setCursor(startOffset, endOffset, true)
@@ -336,7 +375,7 @@ export default {
   },
 
   // Setext Heading
-  convertToSetextHeading (setextHeading) {
+  convertToSetextHeading(setextHeading) {
     const level = /=/.test(setextHeading) ? 2 : 1
     if (
       this.parent.blockName === 'setext-heading' &&
@@ -371,7 +410,10 @@ export default {
       text: setextLines.join('\n')
     }
 
-    const setextHeadingBlock = ScrollPage.loadBlock(newNodeState.name).create(muya, newNodeState)
+    const setextHeadingBlock = ScrollPage.loadBlock(newNodeState.name).create(
+      muya,
+      newNodeState
+    )
 
     this.parent.replaceWith(setextHeadingBlock)
 
@@ -380,8 +422,13 @@ export default {
         name: 'paragraph',
         text: postParagraphLines.join('\n')
       }
-      const postParagraphBlock = ScrollPage.loadBlock(postParagraphState.name).create(muya, postParagraphState)
-      setextHeadingBlock.parent.insertAfter(postParagraphBlock, setextHeadingBlock)
+      const postParagraphBlock = ScrollPage.loadBlock(
+        postParagraphState.name
+      ).create(muya, postParagraphState)
+      setextHeadingBlock.parent.insertAfter(
+        postParagraphBlock,
+        setextHeadingBlock
+      )
     }
 
     if (hasFocus) {
@@ -392,7 +439,7 @@ export default {
   },
 
   // Block Quote
-  convertToBlockQuote () {
+  convertToBlockQuote() {
     const { text, muya, hasFocus } = this
     const { start, end } = hasFocus ? this.getCursor() : {}
     const lines = text.split('\n')
@@ -436,7 +483,10 @@ export default {
       children: [quoteParagraphState]
     }
 
-    const quoteBlock = ScrollPage.loadBlock(newNodeState.name).create(muya, newNodeState)
+    const quoteBlock = ScrollPage.loadBlock(newNodeState.name).create(
+      muya,
+      newNodeState
+    )
 
     this.parent.replaceWith(quoteBlock)
 
@@ -445,19 +495,25 @@ export default {
         name: 'paragraph',
         text: preParagraphLines.join('\n')
       }
-      const preParagraphBlock = ScrollPage.loadBlock(preParagraphState.name).create(muya, preParagraphState)
+      const preParagraphBlock = ScrollPage.loadBlock(
+        preParagraphState.name
+      ).create(muya, preParagraphState)
       quoteBlock.parent.insertBefore(preParagraphBlock, quoteBlock)
     }
 
     if (hasFocus) {
       // TODO: USE `firstContentInDecendent`
       const cursorBlock = quoteBlock.children.head.children.head
-      cursorBlock.setCursor(Math.max(0, start.offset - 1), Math.max(0, end.offset - 1), true)
+      cursorBlock.setCursor(
+        Math.max(0, start.offset - 1),
+        Math.max(0, end.offset - 1),
+        true
+      )
     }
   },
 
   // Indented Code Block
-  convertToIndentedCodeBlock () {
+  convertToIndentedCodeBlock() {
     const { text, muya, hasFocus } = this
     const lines = text.split('\n')
     const codeLines = []
@@ -482,7 +538,10 @@ export default {
       text: codeLines.join('\n')
     }
 
-    const codeBlock = ScrollPage.loadBlock(codeState.name).create(muya, codeState)
+    const codeBlock = ScrollPage.loadBlock(codeState.name).create(
+      muya,
+      codeState
+    )
     this.parent.replaceWith(codeBlock)
 
     if (paragraphLines.length > 0) {
@@ -490,7 +549,10 @@ export default {
         name: 'paragraph',
         text: paragraphLines.join('\n')
       }
-      const paragraphBlock = ScrollPage.loadBlock(paragraphState.name).create(muya, paragraphState)
+      const paragraphBlock = ScrollPage.loadBlock(paragraphState.name).create(
+        muya,
+        paragraphState
+      )
       codeBlock.parent.insertAfter(paragraphBlock, codeBlock)
     }
 
@@ -501,13 +563,11 @@ export default {
   },
 
   // Paragraph
-  convertToParagraph (force = false) {
+  convertToParagraph(force = false) {
     if (
       !force &&
-      (
-        this.parent.blockName === 'setext-heading' ||
-        this.parent.blockName === 'paragraph'
-      )
+      (this.parent.blockName === 'setext-heading' ||
+        this.parent.blockName === 'paragraph')
     ) {
       return
     }
@@ -520,7 +580,10 @@ export default {
       text
     }
 
-    const paragraphBlock = ScrollPage.loadBlock(newNodeState.name).create(muya, newNodeState)
+    const paragraphBlock = ScrollPage.loadBlock(newNodeState.name).create(
+      muya,
+      newNodeState
+    )
 
     this.parent.replaceWith(paragraphBlock)
 

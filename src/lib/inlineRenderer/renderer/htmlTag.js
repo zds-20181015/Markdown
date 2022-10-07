@@ -2,23 +2,39 @@ import { CLASS_NAMES, BLOCK_TYPE6 } from '@/lib/config'
 import { snakeToCamel } from '@/lib/utils'
 import sanitize, { isValidAttribute } from '@/lib/utils/dompurify'
 
-export default function htmlTag (h, cursor, block, token, outerClass) {
+export default function htmlTag(h, cursor, block, token, outerClass) {
   const { tag, openTag, closeTag, children, attrs } = token
-  const className = children ? this.getClassName(outerClass, block, token, cursor) : CLASS_NAMES.MU_GRAY
-  const tagClassName = className === CLASS_NAMES.MU_HIDE ? className : CLASS_NAMES.MU_HTML_TAG
+  const className = children
+    ? this.getClassName(outerClass, block, token, cursor)
+    : CLASS_NAMES.MU_GRAY
+  const tagClassName =
+    className === CLASS_NAMES.MU_HIDE ? className : CLASS_NAMES.MU_HTML_TAG
   const { start, end } = token.range
-  const openContent = this.highlight(h, block, start, start + openTag.length, token)
+  const openContent = this.highlight(
+    h,
+    block,
+    start,
+    start + openTag.length,
+    token
+  )
   const closeContent = closeTag
     ? this.highlight(h, block, end - closeTag.length, end, token)
     : ''
 
-  const anchor = Array.isArray(children) && tag !== 'ruby' // important
-    ? children.reduce((acc, to) => {
-      const chunk = this[snakeToCamel(to.type)](h, cursor, block, to, className)
+  const anchor =
+    Array.isArray(children) && tag !== 'ruby' // important
+      ? children.reduce((acc, to) => {
+          const chunk = this[snakeToCamel(to.type)](
+            h,
+            cursor,
+            block,
+            to,
+            className
+          )
 
-      return Array.isArray(chunk) ? [...acc, ...chunk] : [...acc, chunk]
-    }, [])
-    : ''
+          return Array.isArray(chunk) ? [...acc, ...chunk] : [...acc, chunk]
+        }, [])
+      : ''
 
   switch (tag) {
     // Handle html img.
@@ -41,7 +57,8 @@ export default function htmlTag (h, cursor, block, token, outerClass) {
         // Because we can not nest a block level element in span element(line is span element)
         // we also recommand user not use block level element in paragraph. use block element in html block.
         // Use code !sanitize(`<${tag}>`) to filter some malicious tags. for example: <embed>.
-        let selector = BLOCK_TYPE6.includes(tag) || !sanitize(`<${tag}>`) ? 'span' : tag
+        let selector =
+          BLOCK_TYPE6.includes(tag) || !sanitize(`<${tag}>`) ? 'span' : tag
         selector += `.${CLASS_NAMES.MU_INLINE_RULE}.${CLASS_NAMES.MU_RAW_HTML}`
         const data = {
           attrs: {},
@@ -79,17 +96,25 @@ export default function htmlTag (h, cursor, block, token, outerClass) {
         }
 
         return [
-          h(`span.${tagClassName}.${CLASS_NAMES.MU_OUTPUT_REMOVE}`, {
-            attrs: {
-              spellcheck: 'false'
-            }
-          }, openContent),
+          h(
+            `span.${tagClassName}.${CLASS_NAMES.MU_OUTPUT_REMOVE}`,
+            {
+              attrs: {
+                spellcheck: 'false'
+              }
+            },
+            openContent
+          ),
           h(`${selector}`, data, anchor),
-          h(`span.${tagClassName}.${CLASS_NAMES.MU_OUTPUT_REMOVE}`, {
-            attrs: {
-              spellcheck: 'false'
-            }
-          }, closeContent)
+          h(
+            `span.${tagClassName}.${CLASS_NAMES.MU_OUTPUT_REMOVE}`,
+            {
+              attrs: {
+                spellcheck: 'false'
+              }
+            },
+            closeContent
+          )
         ]
       }
   }

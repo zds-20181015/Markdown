@@ -4,17 +4,14 @@ import { EVENT_KEYS } from '@/lib/config'
 import { adjustOffset } from '@/lib/utils'
 
 export default {
-  arrowHandler (event) {
+  arrowHandler(event) {
     const previousContentBlock = this.previousContentInContext()
     const nextContentBlock = this.nextContentInContext()
     const { start, end } = this.getCursor()
     const { topOffset, bottomOffset } = Selection.getCursorYOffset(this.domNode)
 
     // Just do nothing if the cursor is not collapsed or `shiftKey` pressed
-    if (
-      start.offset !== end.offset ||
-      event.shiftKey
-    ) {
+    if (start.offset !== end.offset || event.shiftKey) {
       return
     }
 
@@ -30,7 +27,7 @@ export default {
     let offset = 0
 
     if (
-      (event.key === EVENT_KEYS.ArrowUp) ||
+      event.key === EVENT_KEYS.ArrowUp ||
       (event.key === EVENT_KEYS.ArrowLeft && start.offset === 0)
     ) {
       event.preventDefault()
@@ -42,7 +39,7 @@ export default {
       cursorBlock = previousContentBlock
       offset = previousContentBlock.text.length
     } else if (
-      (event.key === EVENT_KEYS.ArrowDown) ||
+      event.key === EVENT_KEYS.ArrowDown ||
       (event.key === EVENT_KEYS.ArrowRight && start.offset === this.text.length)
     ) {
       event.preventDefault()
@@ -54,7 +51,10 @@ export default {
           name: 'paragraph',
           text: ''
         }
-        const newNode = ScrollPage.loadBlock(newNodeState.name).create(muya, newNodeState)
+        const newNode = ScrollPage.loadBlock(newNodeState.name).create(
+          muya,
+          newNodeState
+        )
         this.scrollPage.append(newNode, 'user')
         cursorBlock = newNode.children.head
       }

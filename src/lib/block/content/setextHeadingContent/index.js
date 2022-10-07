@@ -4,27 +4,27 @@ import ScrollPage from '@/lib/block'
 class SetextHeadingContent extends Format {
   static blockName = 'setextheading.content'
 
-  static create (muya, text) {
+  static create(muya, text) {
     const content = new SetextHeadingContent(muya, text)
 
     return content
   }
 
-  constructor (muya, text) {
+  constructor(muya, text) {
     super(muya, text)
     this.classList = [...this.classList, 'mu-setextheading-content']
     this.createDomNode()
   }
 
-  getAnchor () {
+  getAnchor() {
     return this.parent
   }
 
-  update (cursor, highlights = []) {
+  update(cursor, highlights = []) {
     return this.inlineRenderer.patch(this, cursor, highlights)
   }
 
-  enterHandler (event) {
+  enterHandler(event) {
     if (event.shiftKey) {
       event.preventDefault()
       event.stopPropagation()
@@ -51,7 +51,10 @@ class SetextHeadingContent extends Format {
         text: ''
       }
 
-      const newParagraphBlock = ScrollPage.loadBlock(newNodeState.name).create(this.muya, newNodeState)
+      const newParagraphBlock = ScrollPage.loadBlock(newNodeState.name).create(
+        this.muya,
+        newNodeState
+      )
       this.parent.parent.insertBefore(newParagraphBlock, this.parent)
       this.setCursor(start.offset, end.offset, true)
     } else {
@@ -59,7 +62,7 @@ class SetextHeadingContent extends Format {
     }
   }
 
-  backspaceHandler (event) {
+  backspaceHandler(event) {
     const { start, end } = this.getCursor()
     if (start.offset === 0 && end.offset === 0) {
       this.convertToParagraph(true)

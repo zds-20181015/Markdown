@@ -6,18 +6,25 @@ import DeleteIcon from '@/lib/assets/icons/delete/2.png'
 
 const renderIcon = (h, className, icon) => {
   const selector = `a.${className}`
-  const iconVnode = h('i.icon', h('i.icon-inner', {
-    style: {
-      background: `url(${icon}) no-repeat`,
-      'background-size': '100%'
-    }
-  }, ''))
+  const iconVnode = h(
+    'i.icon',
+    h(
+      'i.icon-inner',
+      {
+        style: {
+          background: `url(${icon}) no-repeat`,
+          'background-size': '100%'
+        }
+      },
+      ''
+    )
+  )
 
   return h(selector, iconVnode)
 }
 
 // I dont want operate dom directly, is there any better way? need help!
-export default function image (h, cursor, block, token, outerClass) {
+export default function image(h, cursor, block, token, outerClass) {
   const imageInfo = getImageSrc(token.attrs.src)
   const { selectedImage } = this.muya.editor
   const data = {
@@ -37,11 +44,13 @@ export default function image (h, cursor, block, token, outerClass) {
   const height = token.attrs.height
 
   if (src) {
-    ({ id, isSuccess } = this.loadImageAsync(imageInfo, token.attrs))
+    ;({ id, isSuccess } = this.loadImageAsync(imageInfo, token.attrs))
   }
 
   let wrapperSelector = id
-    ? `span#${isSuccess ? id + '_' + token.range.start : id}.${CLASS_NAMES.MU_INLINE_IMAGE}`
+    ? `span#${isSuccess ? id + '_' + token.range.start : id}.${
+        CLASS_NAMES.MU_INLINE_IMAGE
+      }`
     : `span.${CLASS_NAMES.MU_INLINE_IMAGE}`
 
   const imageIcons = [
@@ -69,7 +78,11 @@ export default function image (h, cursor, block, token, outerClass) {
   if (this.urlMap.has(src)) {
     // fix: it will generate a new id if the image is not loaded.
     const { selectedImage } = this.muya.editor
-    if (selectedImage && selectedImage.token.attrs.src === src && selectedImage.imageId !== id) {
+    if (
+      selectedImage &&
+      selectedImage.token.attrs.src === src &&
+      selectedImage.imageId !== id
+    ) {
       selectedImage.imageId = id
     }
     src = this.urlMap.get(src)
@@ -111,7 +124,11 @@ export default function image (h, cursor, block, token, outerClass) {
 
     const renderImage = () => {
       const data = {
-        props: { alt: alt.replace(/[`*{}[\]()#+\-.!_>~:|<>$]/g, ''), src, title }
+        props: {
+          alt: alt.replace(/[`*{}[\]()#+\-.!_>~:|<>$]/g, ''),
+          src,
+          title
+        }
       }
 
       if (typeof width === 'number') {
@@ -130,26 +147,16 @@ export default function image (h, cursor, block, token, outerClass) {
           h(wrapperSelector, data, [
             ...imageIcons,
             renderImageContainer(
-            // An image description has inline elements as its contents.
-            // When an image is rendered to HTML, this is standardly used as the image’s alt attribute.
+              // An image description has inline elements as its contents.
+              // When an image is rendered to HTML, this is standardly used as the image’s alt attribute.
               renderImage()
             )
           ])
         ]
-      : [
-          h(wrapperSelector, data, [
-            ...imageIcons,
-            renderImageContainer()
-          ])
-        ]
+      : [h(wrapperSelector, data, [...imageIcons, renderImageContainer()])]
   } else {
     wrapperSelector += `.${CLASS_NAMES.MU_EMPTY_IMAGE}`
 
-    return [
-      h(wrapperSelector, data, [
-        ...imageIcons,
-        renderImageContainer()
-      ])
-    ]
+    return [h(wrapperSelector, data, [...imageIcons, renderImageContainer()])]
   }
 }

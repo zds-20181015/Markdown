@@ -34,7 +34,7 @@
 
 .mu-quick-insert .active,
 .mu-quick-insert div.item:hover {
- background-color: var(--floatHoverColor);
+  background-color: var(--floatHoverColor);
 }
 
 .mu-quick-insert:hover .active {
@@ -67,17 +67,17 @@
 
   display: inline-block;
   width: 20px;
-  height:20px;
+  height: 20px;
   overflow: hidden;
 
   color: var(--iconColor);
 
-  opacity: .5;
+  opacity: 0.5;
 
-  transition: all .25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
-.mu-quick-insert .icon-container > i.icon > i[class^="icon-"] {
+.mu-quick-insert .icon-container > i.icon > i[class^='icon-'] {
   position: relative;
   left: -20px;
 

@@ -1,12 +1,14 @@
+/* eslint-disable */
+
 import { DEFAULT_SEARCH_OPTIONS } from '@/lib/config'
 import { matchString, buildRegexValue } from '@/lib/utils/search'
 
 class Search {
-  get scrollPage () {
+  get scrollPage() {
     return this.muya.editor.scrollPage
   }
 
-  constructor (muya, options = {}) {
+  constructor(muya, options = {}) {
     this.muya = muya
     this.options = options
     this.value = ''
@@ -14,14 +16,14 @@ class Search {
     this.index = -1
   }
 
-  replaceOne (match, value) {
+  replaceOne(match, value) {
     const { start, end, block } = match
     const { text } = block
 
     block.text = text.substring(0, start) + value + text.substring(end)
   }
 
-  replace (replaceValue, opt = { isSingle: true, isRegexp: false }) {
+  replace(replaceValue, opt = { isSingle: true, isRegexp: false }) {
     const { isSingle, isRegexp, ...rest } = opt
     const options = Object.assign({}, DEFAULT_SEARCH_OPTIONS, rest)
     const { matches, value, index } = this
@@ -41,7 +43,10 @@ class Search {
       }
       const highlightIndex = index < matches.length - 1 ? index : index - 1
 
-      this.search(value, { ...options, highlightIndex: isSingle ? highlightIndex : -1 })
+      this.search(value, {
+        ...options,
+        highlightIndex: isSingle ? highlightIndex : -1
+      })
     }
 
     return this
@@ -51,7 +56,7 @@ class Search {
    * Find preview or next value, and highlight it.
    * @param {string} action : previous or next.
    */
-  find (action) {
+  find(action) {
     let { matches, index } = this
     const len = matches.length
 
@@ -77,7 +82,7 @@ class Search {
     return this
   }
 
-  updateMatches (isClear = false) {
+  updateMatches(isClear = false) {
     const { matches, index } = this
     let i
     const len = matches.length
@@ -98,7 +103,7 @@ class Search {
     }
 
     for (const [block, highlights] of matchesMap.entries()) {
-      const isActive = highlights.some(h => h.active)
+      const isActive = highlights.some((h) => h.active)
 
       block.update(undefined, isClear ? [] : highlights)
 
@@ -117,7 +122,7 @@ class Search {
    * @param {string} value
    * @param {object} opts
    */
-  search (value, opts = {}) {
+  search(value, opts = {}) {
     const matches = []
     const options = Object.assign({}, DEFAULT_SEARCH_OPTIONS, opts)
     const { highlightIndex } = options
@@ -128,20 +133,22 @@ class Search {
 
     // Highlight current search.
     if (value) {
-      this.scrollPage.depthFirstTraverse(block => {
+      this.scrollPage.depthFirstTraverse((block) => {
         if (block.isContentBlock) {
           const { text } = block
           if (text && typeof text === 'string') {
             const strMatches = matchString(text, value, options)
-            matches.push(...strMatches.map(({ index, match, subMatches }) => {
-              return {
-                block,
-                start: index,
-                end: index + match.length,
-                match,
-                subMatches
-              }
-            }))
+            matches.push(
+              ...strMatches.map(({ index, match, subMatches }) => {
+                return {
+                  block,
+                  start: index,
+                  end: index + match.length,
+                  match,
+                  subMatches
+                }
+              })
+            )
           }
         }
       })

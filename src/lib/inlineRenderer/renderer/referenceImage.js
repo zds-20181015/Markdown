@@ -2,7 +2,7 @@ import { CLASS_NAMES } from '@/lib/config'
 import { getImageSrc } from '@/lib/utils/image'
 
 // reference_image
-export default function referenceImage (h, cursor, block, token, outerClass) {
+export default function referenceImage(h, cursor, block, token, outerClass) {
   const className = this.getClassName(outerClass, block, token, cursor)
   const imageClass = CLASS_NAMES.MU_IMAGE_MARKED_TEXT
   const { start, end } = token.range
@@ -11,8 +11,8 @@ export default function referenceImage (h, cursor, block, token, outerClass) {
   const rawSrc = label + backlash.second
   let href = ''
   let title = ''
-  if (this.parent.labels.has((rawSrc).toLowerCase())) {
-    ({ href, title } = this.parent.labels.get(rawSrc.toLowerCase()))
+  if (this.parent.labels.has(rawSrc.toLowerCase())) {
+    ;({ href, title } = this.parent.labels.get(rawSrc.toLowerCase()))
   }
   const imageInfo = getImageSrc(href)
   const { src } = imageInfo
@@ -20,7 +20,12 @@ export default function referenceImage (h, cursor, block, token, outerClass) {
   let isSuccess
   let selector
   if (src) {
-    ({ id, isSuccess } = this.loadImageAsync(imageInfo, { alt }, className, CLASS_NAMES.MU_COPY_REMOVE))
+    ;({ id, isSuccess } = this.loadImageAsync(
+      imageInfo,
+      { alt },
+      className,
+      CLASS_NAMES.MU_COPY_REMOVE
+    ))
   }
   selector = id ? `span#${id}.${imageClass}` : `span.${imageClass}`
   selector += `.${CLASS_NAMES.MU_OUTPUT_REMOVE}`

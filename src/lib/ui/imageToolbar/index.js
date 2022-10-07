@@ -1,3 +1,6 @@
+/* eslint-disable */
+
+/* eslint-disable no-fallthrough */
 import { patch, h } from '@/lib/utils/snabbdom'
 import BaseFloat from '../baseFloat'
 import icons from './config'
@@ -17,7 +20,7 @@ const defaultOptions = {
 class ImageToolbar extends BaseFloat {
   static pluginName = 'imageToolbar'
 
-  constructor (muya, options = {}) {
+  constructor(muya, options = {}) {
     const name = 'mu-image-toolbar'
     const opts = Object.assign({}, defaultOptions, options)
     super(muya, name, opts)
@@ -27,13 +30,14 @@ class ImageToolbar extends BaseFloat {
     this.icons = icons
     this.reference = null
     this.block = null
-    const toolbarContainer = this.toolbarContainer = document.createElement('div')
+    const toolbarContainer = (this.toolbarContainer =
+      document.createElement('div'))
     this.container.appendChild(toolbarContainer)
     this.floatBox.classList.add('mu-image-toolbar-container')
     this.listen()
   }
 
-  listen () {
+  listen() {
     const { eventCenter } = this.muya
     super.listen()
     eventCenter.on('muya-image-toolbar', ({ block, reference, imageInfo }) => {
@@ -51,22 +55,29 @@ class ImageToolbar extends BaseFloat {
     })
   }
 
-  render () {
+  render() {
     const { icons, oldVnode, toolbarContainer, imageInfo } = this
     const { attrs } = imageInfo.token
     const dataAlign = attrs['data-align']
-    const children = icons.map(i => {
+    const children = icons.map((i) => {
       let icon
       let iconWrapperSelector
       if (i.icon) {
         // SVG icon Asset
         iconWrapperSelector = 'div.icon-wrapper'
-        icon = h('i.icon', h('i.icon-inner', {
-          style: {
-            background: `url(${i.icon}) no-repeat`,
-            'background-size': '100%'
-          }
-        }, ''))
+        icon = h(
+          'i.icon',
+          h(
+            'i.icon-inner',
+            {
+              style: {
+                background: `url(${i.icon}) no-repeat`,
+                'background-size': '100%'
+              }
+            },
+            ''
+          )
+        )
       }
       const iconWrapper = h(iconWrapperSelector, icon)
       let itemSelector = `li.item.${i.type}`
@@ -75,16 +86,20 @@ class ImageToolbar extends BaseFloat {
         itemSelector += '.active'
       }
 
-      return h(itemSelector, {
-        dataset: {
-          tip: i.tooltip
-        },
-        on: {
-          click: event => {
-            this.selectItem(event, i)
+      return h(
+        itemSelector,
+        {
+          dataset: {
+            tip: i.tooltip
+          },
+          on: {
+            click: (event) => {
+              this.selectItem(event, i)
+            }
           }
-        }
-      }, [h('div.tooltip', i.tooltip), iconWrapper])
+        },
+        [h('div.tooltip', i.tooltip), iconWrapper]
+      )
     })
 
     const vnode = h('ul', children)
@@ -97,7 +112,7 @@ class ImageToolbar extends BaseFloat {
     this.oldVnode = vnode
   }
 
-  selectItem (event, item) {
+  selectItem(event, item) {
     event.preventDefault()
     event.stopPropagation()
 
@@ -117,7 +132,7 @@ class ImageToolbar extends BaseFloat {
       case 'edit': {
         const rect = this.reference.getBoundingClientRect()
         const reference = {
-          getBoundingClientRect () {
+          getBoundingClientRect() {
             rect.height = 0
 
             return rect

@@ -4,46 +4,48 @@ import { createDomNode } from '@/lib/utils/dom'
 import { BLOCK_DOM_PROPERTY } from '@/lib/config'
 
 class TreeNode extends LinkedNode {
-  get static () {
+  get static() {
     return this.constructor
   }
 
-  get blockName () {
+  get blockName() {
     return this.static.blockName
   }
 
-  get jsonState () {
+  get jsonState() {
     return this.muya.editor.jsonState
   }
 
-  get scrollPage () {
+  get scrollPage() {
     return this.muya.editor.scrollPage
   }
 
-  get isScrollPage () {
+  get isScrollPage() {
     return this.blockName === 'scrollpage'
   }
 
-  get isOutMostBlock () {
+  get isOutMostBlock() {
     return this.parent.isScrollPage
   }
 
   /**
    * Judge weather block is content block. paragraph content, atx heading content, setext heading content etc.
    */
-  get isContentBlock () {
+  get isContentBlock() {
     return typeof this.text === 'string'
   }
 
-  get isLeafBlock () {
+  get isLeafBlock() {
     return this.children instanceof LinkedList
   }
 
-  get isContainerBlock () {
-    return /block-quote|order-list|bullet-list|task-list|list-item|task-list-item/.test(this.blockName)
+  get isContainerBlock() {
+    return /block-quote|order-list|bullet-list|task-list|list-item|task-list-item/.test(
+      this.blockName
+    )
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super()
     this.muya = muya
     this.parent = null
@@ -57,7 +59,7 @@ class TreeNode extends LinkedNode {
   /**
    * create domNode
    */
-  createDomNode () {
+  createDomNode() {
     const { tagName, classList, attributes, datasets } = this
 
     const domNode = createDomNode(tagName, {
@@ -73,20 +75,22 @@ class TreeNode extends LinkedNode {
     return domNode
   }
 
-  previousContentInContext () {
+  previousContentInContext() {
     if (this.isScrollPage) {
       return null
     }
 
     const { parent } = this
     if (parent.prev) {
-      return parent.prev.isLeafBlock ? parent.prev.lastContentInDescendant() : parent.prev // language input
+      return parent.prev.isLeafBlock
+        ? parent.prev.lastContentInDescendant()
+        : parent.prev // language input
     } else {
       return parent.previousContentInContext()
     }
   }
 
-  nextContentInContext () {
+  nextContentInContext() {
     if (this.isScrollPage) {
       return null
     }
@@ -107,21 +111,21 @@ class TreeNode extends LinkedNode {
   /**
    * Weather `this` is the only child of its parent.
    */
-  isOnlyChild () {
+  isOnlyChild() {
     return this.isFirstChild() && this.isLastChild()
   }
 
   /**
    * Weather `this` is the first child of its parent.
    */
-  isFirstChild () {
+  isFirstChild() {
     return this.prev === null
   }
 
   /**
    * Weather `this` is the last child of its parent.
    */
-  isLastChild () {
+  isLastChild() {
     return this.next === null
   }
 
@@ -129,7 +133,7 @@ class TreeNode extends LinkedNode {
    * Wheather `this` is decendent of `block`
    * @param {*} block
    */
-  isInBlock (block) {
+  isInBlock(block) {
     let parent = this.parent
     while (parent) {
       if (parent === block) {
@@ -145,7 +149,7 @@ class TreeNode extends LinkedNode {
    * Find the closest block which blockName is `blockName`. return `null` if not found.
    * @param {string} blockName
    */
-  closestBlock (blockName) {
+  closestBlock(blockName) {
     if (this.blockName === blockName) {
       return this
     }
@@ -162,7 +166,7 @@ class TreeNode extends LinkedNode {
     return null
   }
 
-  insertInto (parent, refBlock) {
+  insertInto(parent, refBlock) {
     if (this.parent === parent && this.next === refBlock) {
       return
     }
@@ -177,7 +181,7 @@ class TreeNode extends LinkedNode {
   /**
    * Remove the current block in the block tree.
    */
-  remove () {
+  remove() {
     if (!this.parent) return
     this.parent.children.remove(this)
     this.parent = null
@@ -186,7 +190,7 @@ class TreeNode extends LinkedNode {
     return this
   }
 
-  breadthFirstTraverse (callback) {
+  breadthFirstTraverse(callback) {
     const queue = [this]
 
     while (queue.length) {
@@ -195,12 +199,12 @@ class TreeNode extends LinkedNode {
       callback(node)
 
       if (node.children) {
-        node.children.forEach(child => queue.push(child))
+        node.children.forEach((child) => queue.push(child))
       }
     }
   }
 
-  depthFirstTraverse (callback) {
+  depthFirstTraverse(callback) {
     const stack = [this]
 
     while (stack.length) {

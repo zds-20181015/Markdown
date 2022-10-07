@@ -1,17 +1,18 @@
 import ScrollPage from '@/lib/block'
 
 export default {
-  shiftEnterHandler (event) {
+  shiftEnterHandler(event) {
     event.preventDefault()
     event.stopPropagation()
 
     const { text: oldText } = this
     const { start, end } = this.getCursor()
-    this.text = oldText.substring(0, start.offset) + '\n' + oldText.substring(end.offset)
+    this.text =
+      oldText.substring(0, start.offset) + '\n' + oldText.substring(end.offset)
     this.setCursor(start.offset + 1, end.offset + 1, true)
   },
 
-  enterHandler (event) {
+  enterHandler(event) {
     event.preventDefault()
     const { text: oldText, muya, parent } = this
     const { start, end } = this.getCursor()
@@ -22,7 +23,10 @@ export default {
       text: textOfNewNode
     }
 
-    const newNode = ScrollPage.loadBlock(newParagraphState.name).create(muya, newParagraphState)
+    const newNode = ScrollPage.loadBlock(newParagraphState.name).create(
+      muya,
+      newParagraphState
+    )
 
     parent.parent.insertAfter(newNode, parent)
 

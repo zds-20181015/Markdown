@@ -1,5 +1,5 @@
 class LinkedNode {
-  constructor () {
+  constructor() {
     this.prev = this.next = null
   }
 }

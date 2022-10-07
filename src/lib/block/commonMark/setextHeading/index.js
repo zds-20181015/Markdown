@@ -6,22 +6,24 @@ import leafQueryBlock from '@/lib/block/mixins/leafQueryBlock'
 class SetextHeading extends Parent {
   static blockName = 'setext-heading'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const heading = new SetextHeading(muya, state)
 
-    heading.append(ScrollPage.loadBlock('setextheading.content').create(muya, state.text))
+    heading.append(
+      ScrollPage.loadBlock('setextheading.content').create(muya, state.text)
+    )
 
     return heading
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
     const offset = this.parent.offset(this)
 
     return [...pPath, offset]
   }
 
-  constructor (muya, { meta }) {
+  constructor(muya, { meta }) {
     super(muya)
     this.tagName = `h${meta.level}`
     this.meta = meta
@@ -29,7 +31,7 @@ class SetextHeading extends Parent {
     this.createDomNode()
   }
 
-  getState () {
+  getState() {
     return {
       name: 'setext-heading',
       meta: this.meta,
@@ -38,9 +40,6 @@ class SetextHeading extends Parent {
   }
 }
 
-mixins(
-  SetextHeading,
-  leafQueryBlock
-)
+mixins(SetextHeading, leafQueryBlock)
 
 export default SetextHeading

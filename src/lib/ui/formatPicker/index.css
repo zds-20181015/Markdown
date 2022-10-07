@@ -69,10 +69,10 @@
 
   color: var(--iconColor);
 
-  transition: all .25s ease-in-out;
+  transition: all 0.25s ease-in-out;
 }
 
-.mu-format-picker li.item .icon-wrapper i.icon > i[class^="icon-"] { 
+.mu-format-picker li.item .icon-wrapper i.icon > i[class^='icon-'] {
   position: relative;
   left: -16px;
 

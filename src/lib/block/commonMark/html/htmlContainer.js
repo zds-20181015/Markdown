@@ -4,7 +4,7 @@ import ScrollPage from '@/lib/block/scrollPage'
 class HTMLContainer extends Parent {
   static blockName = 'html-container'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const htmlContainer = new HTMLContainer(muya, state)
 
     const code = ScrollPage.loadBlock('code').create(muya, state)
@@ -14,17 +14,17 @@ class HTMLContainer extends Parent {
     return htmlContainer
   }
 
-  get lang () {
+  get lang() {
     return 'markup'
   }
 
-  get path () {
+  get path() {
     const { path: pPath } = this.parent
 
     return [...pPath]
   }
 
-  constructor (muya) {
+  constructor(muya) {
     super(muya)
     this.tagName = 'pre'
     this.classList = ['mu-html-container']

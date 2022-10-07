@@ -1,8 +1,10 @@
+/* eslint-disable */
+
 import BaseFloat from '@/lib/ui/baseFloat'
 import { EVENT_KEYS } from '@/lib/config'
 
 class BaseScrollFloat extends BaseFloat {
-  constructor (muya, name, options = {}) {
+  constructor(muya, name, options = {}) {
     super(muya, name, options)
     this.scrollElement = null
     this.reference = null
@@ -10,14 +12,14 @@ class BaseScrollFloat extends BaseFloat {
     this.createScrollElement()
   }
 
-  createScrollElement () {
+  createScrollElement() {
     const { container } = this
     const scrollElement = document.createElement('div')
     container.appendChild(scrollElement)
     this.scrollElement = scrollElement
   }
 
-  activeEleScrollIntoView (ele) {
+  activeEleScrollIntoView(ele) {
     if (ele) {
       ele.scrollIntoView({
         behavior: 'smooth',
@@ -27,10 +29,10 @@ class BaseScrollFloat extends BaseFloat {
     }
   }
 
-  listen () {
+  listen() {
     super.listen()
     const { eventCenter, domNode } = this.muya
-    const handler = event => {
+    const handler = (event) => {
       if (!this.status) return
       switch (event.key) {
         case EVENT_KEYS.ArrowUp:
@@ -54,25 +56,26 @@ class BaseScrollFloat extends BaseFloat {
     eventCenter.attachDOMEvent(domNode, 'keydown', handler)
   }
 
-  hide () {
+  hide() {
     super.hide()
     this.reference = null
   }
 
-  show (reference, cb) {
+  show(reference, cb) {
     this.cb = cb
     if (reference instanceof HTMLElement) {
       if (this.reference && this.reference === reference && this.status) return
     } else {
-      if (this.reference && this.reference.id === reference.id && this.status) return
+      if (this.reference && this.reference.id === reference.id && this.status)
+        return
     }
 
     this.reference = reference
     super.show(reference, cb)
   }
 
-  step (direction) {
-    let index = this.renderArray.findIndex(item => {
+  step(direction) {
+    let index = this.renderArray.findIndex((item) => {
       return item === this.activeItem
     })
     index = direction === 'next' ? index + 1 : index - 1
@@ -89,14 +92,14 @@ class BaseScrollFloat extends BaseFloat {
     this.activeEleScrollIntoView(activeEle)
   }
 
-  selectItem (item) {
+  selectItem(item) {
     const { cb } = this
     cb && cb(item)
     // Delay hide to avoid dispatch enter hander
     requestAnimationFrame(this.hide.bind(this))
   }
 
-  getItemElement () {}
+  getItemElement() {}
 }
 
 export default BaseScrollFloat

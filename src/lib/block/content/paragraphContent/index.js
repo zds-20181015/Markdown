@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import Format from '@/lib/block/base/format'
 import { mixins, isLengthEven } from '@/lib/utils'
 import backspaceHandler from './backspace'

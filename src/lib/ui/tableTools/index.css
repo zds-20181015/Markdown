@@ -24,11 +24,11 @@
   cursor: pointer;
 }
 
-.mu-table-bar-tools li.item[data-label="remove"] {
+.mu-table-bar-tools li.item[data-label='remove'] {
   margin-top: 10px;
 }
 
-.mu-table-bar-tools li.item[data-label="remove"]::before {
+.mu-table-bar-tools li.item[data-label='remove']::before {
   position: absolute;
   top: -5px;
   left: 8px;

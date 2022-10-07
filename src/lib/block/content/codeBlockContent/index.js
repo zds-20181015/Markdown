@@ -1,5 +1,8 @@
 import Content from '@/lib/block/base/content'
-import prism, { loadedLanguages, transfromAliasToOrigin } from '@/lib/utils/prism/'
+import prism, {
+  loadedLanguages,
+  transfromAliasToOrigin
+} from '@/lib/utils/prism/'
 import ScrollPage from '@/lib/block/scrollPage'
 import { escapeHTML, adjustOffset } from '@/lib/utils'
 import { getHighlightHtml, MARKER_HASK } from '@/lib/utils/highlightHTML'
@@ -11,7 +14,7 @@ const checkAutoIndent = (text, offset) => {
   return /^(\{\}|\[\]|\(\)|><)$/.test(pairStr)
 }
 
-const getIndentSpace = text => {
+const getIndentSpace = (text) => {
   const match = /^(\s*)\S/.exec(text)
 
   return match ? match[1] : ''
@@ -31,7 +34,10 @@ const parseSelector = (str = '') => {
   let cap
 
   for (const tagName of HTML_TAGS) {
-    if (str.startsWith(tagName) && (!str[tagName.length] || /#|\./.test(str[tagName.length]))) {
+    if (
+      str.startsWith(tagName) &&
+      (!str[tagName.length] || /#|\./.test(str[tagName.length]))
+    ) {
       tag = tagName
       if (VOID_HTML_TAGS.indexOf(tagName) > -1) isVoid = true
       str = str.substring(tagName.length)
@@ -61,13 +67,13 @@ const LANG_HASH = {
 class CodeBlockContent extends Content {
   static blockName = 'codeblock.content'
 
-  static create (muya, state) {
+  static create(muya, state) {
     const content = new CodeBlockContent(muya, state)
 
     return content
   }
 
-  get lang () {
+  get lang() {
     const { codeContainer } = this
 
     return codeContainer ? codeContainer.lang : this.initialLang
@@ -76,28 +82,30 @@ class CodeBlockContent extends Content {
   /**
    * Always be the `pre` element
    */
-  get codeContainer () {
+  get codeContainer() {
     return this.parent?.parent
   }
 
-  get outContainer () {
+  get outContainer() {
     const { codeContainer } = this
 
-    return /code-block|frontmatter/.test(codeContainer.blockName) ? codeContainer : codeContainer.parent
+    return /code-block|frontmatter/.test(codeContainer.blockName)
+      ? codeContainer
+      : codeContainer.parent
   }
 
-  constructor (muya, state) {
+  constructor(muya, state) {
     super(muya, state.text)
     this.initialLang = state.meta?.lang ?? LANG_HASH[state.name]
     this.classList = [...this.classList, 'mu-codeblock-content']
     this.createDomNode()
   }
 
-  getAnchor () {
+  getAnchor() {
     return this.outContainer
   }
 
-  update (_, highlights = []) {
+  update(_, highlights = []) {
     const { lang, text } = this
     // transfrom alias to original language
     const fullLengthLang = transfromAliasToOrigin([lang])[0]
@@ -108,7 +116,11 @@ class CodeBlockContent extends Content {
       .replace(new RegExp(MARKER_HASK['"'], 'g'), '"')
       .replace(new RegExp(MARKER_HASK["'"], 'g'), "'")
 
-    if (fullLengthLang && /\S/.test(code) && loadedLanguages.has(fullLengthLang)) {
+    if (
+      fullLengthLang &&
+      /\S/.test(code) &&
+      loadedLanguages.has(fullLengthLang)
+    ) {
       const wrapper = document.createElement('div')
       wrapper.classList.add(`language-${fullLengthLang}`)
       wrapper.innerHTML = code
@@ -120,14 +132,22 @@ class CodeBlockContent extends Content {
     }
   }
 
-  inputHandler (event) {
+  inputHandler(event) {
     if (this.isComposed) {
       return
     }
 
     const textContent = this.domNode.textContent
     const { start, end } = this.getCursor()
-    const { needRender, text } = this.autoPair(event, textContent, start, end, false, false, 'codeblock.content')
+    const { needRender, text } = this.autoPair(
+      event,
+      textContent,
+      start,
+      end,
+      false,
+      false,
+      'codeblock.content'
+    )
     this.text = text
 
     // Update html preview if the out container is `html-block`
@@ -143,7 +163,7 @@ class CodeBlockContent extends Content {
     }
   }
 
-  enterHandler (event) {
+  enterHandler(event) {
     event.preventDefault()
 
     // Shift + Enter to jump outof code block.
@@ -157,7 +177,10 @@ class CodeBlockContent extends Content {
           name: 'paragraph',
           text: ''
         }
-        const newNode = ScrollPage.loadBlock(newNodeState.name).create(this.muya, newNodeState)
+        const newNode = ScrollPage.loadBlock(newNodeState.name).create(
+          this.muya,
+          newNodeState
+        )
         this.scrollPage.append(newNode, 'user')
         cursorBlock = newNode.firstChild
       }
@@ -173,7 +196,8 @@ class CodeBlockContent extends Content {
     const autoIndent = checkAutoIndent(text, start.offset)
     const indent = getIndentSpace(text)
 
-    this.text = text.substring(0, start.offset) +
+    this.text =
+      text.substring(0, start.offset) +
       '\n' +
       (autoIndent ? indent + ' '.repeat(tabSize) + '\n' : '') +
       indent +
@@ -188,18 +212,24 @@ class CodeBlockContent extends Content {
     this.setCursor(offset, offset, true)
   }
 
-  tabHandler (event) {
+  tabHandler(event) {
     event.preventDefault()
     const { start, end } = this.getCursor()
     const { lang, text } = this
     const isMarkupCodeContent = /markup|html|xml|svg|mathml/.test(lang)
 
     if (isMarkupCodeContent) {
-      const lastWordBeforeCursor = text.substring(0, start.offset).split(/\s+/).pop()
+      const lastWordBeforeCursor = text
+        .substring(0, start.offset)
+        .split(/\s+/)
+        .pop()
       const { tag, isVoid, id, className } = parseSelector(lastWordBeforeCursor)
 
       if (tag) {
-        const preText = text.substring(0, start.offset - lastWordBeforeCursor.length)
+        const preText = text.substring(
+          0,
+          start.offset - lastWordBeforeCursor.length
+        )
         const postText = text.substring(end.offset)
         let html = `<${tag}`
         let startOffset = 0
@@ -247,7 +277,11 @@ class CodeBlockContent extends Content {
         }
 
         this.text = preText + html + postText
-        this.setCursor(startOffset + preText.length, endOffset + preText.length, true)
+        this.setCursor(
+          startOffset + preText.length,
+          endOffset + preText.length,
+          true
+        )
       } else {
         this.insertTab()
       }
@@ -256,7 +290,7 @@ class CodeBlockContent extends Content {
     }
   }
 
-  backspaceHandler () {
+  backspaceHandler() {
     const { start, end } = this.getCursor()
     if (start.offset === end.offset && start.offset === 0) {
       const { text, muya } = this
@@ -271,7 +305,7 @@ class CodeBlockContent extends Content {
     }
   }
 
-  keyupHandler () {
+  keyupHandler() {
     if (this.isComposed) {
       return
     }
@@ -279,7 +313,10 @@ class CodeBlockContent extends Content {
     const { anchor, focus } = this.getCursor()
     const { anchor: oldAnchor, focus: oldFocus } = this.selection
 
-    if (anchor.offset !== oldAnchor.offset || focus.offset !== oldFocus.offset) {
+    if (
+      anchor.offset !== oldAnchor.offset ||
+      focus.offset !== oldFocus.offset
+    ) {
       const cursor = { anchor, focus, block: this, path: this.path }
 
       this.selection.setSelection(cursor)
