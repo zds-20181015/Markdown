@@ -165,6 +165,11 @@ const enterCtrl = (ContentState: any) => {
   }
 
   ContentState.prototype.docEnterHandler = function (event: any) {
+    /**
+     * 发送目录信息
+     */
+    this.muya.eventCenter.dispatch('input-toc', this.getTOC())
+
     const { eventCenter } = this.muya
     const { selectedImage } = this
     // Show image selector when you press Enter key and there is already one image selected.

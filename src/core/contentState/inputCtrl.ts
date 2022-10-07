@@ -114,11 +114,6 @@ const inputCtrl = (ContentState: any) => {
     event: any,
     notEqual = false
   ) {
-    /**
-     * 发送目录信息
-     */
-    this.muya.eventCenter.dispatch('input-toc', this.getTOC())
-
     const { start, end } = selection.getCursorRange()
     if (!start || !end) {
       return

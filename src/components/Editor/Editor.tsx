@@ -8,19 +8,19 @@ import { ElButton } from 'element-plus'
 
 import { useTOCStore } from '@/store'
 
+import { useMarkCore } from '@/utils/useMarkCore'
+
 export default defineComponent({
   setup() {
-    const editor = ref<HTMLDivElement | null>(null)
+    const editor = ref<HTMLDivElement | undefined>(undefined)
     const tocStore = useTOCStore()
     onMounted(() => {
       console.log(editor.value)
-      const mark = new MarkCore(editor?.value, {})
-      mark.init()
-
+      const mark = useMarkCore(editor?.value)
       /**
        * 注册事件，当输入时响应
        */
-      mark.eventCenter.subscribe('input-toc', (toc: any) => {
+      mark?.eventCenter.subscribe('input-toc', (toc: any) => {
         tocStore.setTOC(toc)
       })
       const edit: HTMLDivElement = document.getElementsByClassName(
