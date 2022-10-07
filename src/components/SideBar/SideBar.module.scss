@@ -4,7 +4,6 @@
   display: flex;
   overflow: hidden;
   height: 100vh;
-  box-shadow: 0 2px 12px 2px #eee;
   .icon-bar {
     flex-basis: 3rem;
     position: relative;
@@ -41,7 +40,6 @@
     }
   }
   .tab {
-    background-color: v.$white;
     overflow: hidden;
     &.open {
       width: 15rem;

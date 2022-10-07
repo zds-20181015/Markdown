@@ -1,6 +1,5 @@
 @use 'src/styles/variables' as v;
 .root {
   height: 2.5rem;
-  background-color: v.$white;
-  border-bottom: 2px #eee solid;
+  box-shadow: var(--el-box-shadow-light);
 }

@@ -56,6 +56,7 @@
   "dependencies": {
     "@element-plus/icons-vue": "^2.0.9",
     "@marktext/file-icons": "^1.0.6",
+    "@vueuse/core": "^9.3.0",
     "dompurify": "^2.4.0",
     "element-plus": "^2.2.17",
     "element-resize-detector": "^1.2.4",
@@ -76,6 +77,8 @@
     "snapsvg": "^0.5.1",
     "turndown": "^7.1.1",
     "underscore": "^1.13.6",
+    "unocss": "^0.45.26",
+    "unplugin-vue-components": "^0.22.8",
     "unsplash-js": "^7.0.15",
     "vega": "^5.22.1",
     "vega-embed": "^6.21.0",

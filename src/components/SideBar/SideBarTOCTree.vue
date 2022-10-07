@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import { ElTree } from 'element-plus'
+import { computed, ref } from 'vue'
 import { useTOCStore } from '@/store'
-
+import { useThemeStore } from '@/store'
 interface TOCTree {
   label: string
   children?: TOCTree[]
-}
-const handleNodeClick = (data: TOCTree) => {
-  console.log(data)
 }
 
 const defaultToc: TOCTree[] = [
@@ -79,11 +75,20 @@ const props = defineProps<{
 }>()
 
 const tocStore = useTOCStore()
+const themeStore = useThemeStore()
+const treeClassName = computed(() => {
+  return themeStore.theme
+})
 </script>
 <template>
-  <div>
-    <ElTree :data="tocStore.toc" :props="defaultProps" />
-  </div>
+  <el-tree :data="tocStore.toc" :props="defaultProps" :class="treeClassName" />
 </template>
 
-<style scoped></style>
+<style scoped lang="scss">
+.light {
+  background-color: white;
+}
+.dark {
+  background-color: black;
+}
+</style>

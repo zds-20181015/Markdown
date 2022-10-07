@@ -7,7 +7,8 @@ import SideBarTOCTree from './SideBarTOCTree.vue'
 import SideBarFiles from './SideBarFiles.vue'
 import SideBarSearch from './SideBarSearch.vue'
 import { Component, ref } from 'vue'
-
+import { toggleDark } from '@/components/ElementPlus'
+import { useThemeStore } from '@/store'
 interface Tab {
   [key: string]: { component: Component; icon: Component }
 }
@@ -42,6 +43,7 @@ export default defineComponent({
     const changeTabShow = () => {
       tabShow.value = !tabShow.value
     }
+    const themeStore = useThemeStore()
     return () => (
       <div>
         <div class={styles.root}>
@@ -54,6 +56,15 @@ export default defineComponent({
               onClick={changeTabShow}
             >
               <ElIcons.Expand />
+            </div>
+            <div
+              class={`${styles.icon} ${styles.theme}`}
+              onClick={() => {
+                toggleDark()
+                themeStore.changeTheme()
+              }}
+            >
+              <ElIcons.Sunrise />
             </div>
           </div>
           <div class={tabStyle.value} ref="tab">

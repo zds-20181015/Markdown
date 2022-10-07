@@ -3,9 +3,9 @@ import App from './App.vue'
 
 // global css
 import 'normalize.css'
-import './styles/scrollBar.css'
-import './styles/element/index.scss'
 import 'element-plus/dist/index.css'
+import './styles/scrollBar.css'
+import './styles/index.scss'
 // import './samples/node-api'
 
 const app = createApp(App)

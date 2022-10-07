@@ -13,3 +13,14 @@ export const useTOCStore = defineStore('toc', () => {
     setTOC
   }
 })
+
+export const useThemeStore = defineStore('color', () => {
+  const theme = ref<'light' | 'dark'>('light')
+  const changeTheme = () => {
+    theme.value = theme.value === 'light' ? 'dark' : 'light'
+  }
+  return {
+    theme,
+    changeTheme
+  }
+})
