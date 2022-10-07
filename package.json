@@ -83,7 +83,14 @@
     "vega": "^5.22.1",
     "vega-embed": "^6.21.0",
     "vega-lite": "^5.5.0",
-    "webfontloader": "^1.6.28"
+    "webfontloader": "^1.6.28",
+    "axios": "^1.0.0",
+    "fast-diff": "^1.2.0",
+    "fuse.js": "^6.6.2",
+    "markbeta": "^0.0.2",
+    "ot-json1": "^1.0.2",
+    "ot-text-unicode": "^4.0.0",
+    "snapsvg-cjs": "^0.0.6"
   },
   "debug": {
     "env": {

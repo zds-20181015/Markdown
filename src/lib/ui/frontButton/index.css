@@ -1,0 +1,77 @@
+.mu-front-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 26px;
+}
+
+.mu-icon-wrapper {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 24px;
+  padding-bottom: 2px;
+  padding-left: 2px;
+
+  border: var(--buttonBorder);
+  border-radius: 4px;
+
+  cursor: grab;
+  opacity: .8;
+}
+
+.mu-icon-wrapper i.icon {
+  position: relative;
+
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  overflow: hidden;
+
+  color: var(--iconColor);
+
+  transition: all .25s ease-in-out;
+}
+
+.mu-icon-wrapper i.icon > i[class^="icon-"] { 
+  position: relative;
+  left: -16px;
+
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+
+  background-size: 100% !important;
+
+  filter: drop-shadow(16px 0 currentcolor);
+}
+
+.mu-icon-wrapper:hover {
+  background: var(--buttonBgColorHover);
+  opacity: 1;
+}
+
+.mu-line-ghost {
+  position: absolute;
+
+  height: 3px;
+
+  background: var(--editorColor30);
+}
+
+.mu-shadow {
+  position: absolute;
+  z-index: 1;
+
+  background: var(--editorBgColor);
+  box-shadow: var(--floatShadow);
+  transform: translateX(-30px);
+  opacity: .8;
+}
+
+.mu-shadow > * {
+  margin: 10px 0;
+}

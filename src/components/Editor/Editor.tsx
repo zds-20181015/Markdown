@@ -3,7 +3,7 @@ import styles from './Editor.module.scss'
 
 import _EditorTest from './_EditorTest'
 
-import MarkCore from '@/core'
+import Muya from '@/lib'
 import { ElButton } from 'element-plus'
 
 import { useTOCStore } from '@/store'
@@ -16,7 +16,8 @@ export default defineComponent({
     const tocStore = useTOCStore()
     onMounted(() => {
       console.log(editor.value)
-      const mark = useMarkCore(editor?.value)
+      const mark = new Muya(editor.value, {})
+      mark.init()
       /**
        * 注册事件，当输入时响应
        */
