@@ -65,7 +65,7 @@ let muya: Muya | undefined
 /**
  * 确保muya只有一个实例,输入container创建新实例，否则返回旧实例
  */
-export function useMuya(container: HTMLDivElement) {
+export function useMuya(container?: HTMLDivElement) {
   if (container) {
     muya = new Muya(container, {
       json: DEFAULT_STATE,

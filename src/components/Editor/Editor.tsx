@@ -10,10 +10,18 @@ import { useTOCStore } from '@/store'
 
 import { useMuya } from '@/utils/useMarkCore'
 
+import { block } from '@/lib/utils/marked/blockRules'
+import { stateToTOCTree, toTOCTree } from '../SideBar'
+
 export default defineComponent({
   setup() {
     const editor = ref<HTMLDivElement | undefined>(undefined)
     const tocStore = useTOCStore()
+    const setToc = (muya: Muya) => {
+      const state = muya.editor.jsonState.getState()
+      const tocTree = stateToTOCTree(state)
+      tocStore.setTOC(tocTree)
+    }
     onMounted(() => {
       if (editor.value) {
         const muya = useMuya(editor.value)
@@ -23,6 +31,10 @@ export default defineComponent({
         muya?.eventCenter.subscribe('input-toc', (toc: any) => {
           tocStore.setTOC(toc)
         })
+        setToc(muya)
+        muya.domNode.oninput = () => {
+          setToc(muya)
+        }
       }
       const edit: HTMLDivElement = document.getElementsByClassName(
         styles.editor
@@ -49,7 +61,13 @@ export default defineComponent({
       <div class={styles.root}>
         <ElButton class="button">更换主题</ElButton>
         <div class={styles.editor}>
-          <div class={styles.input} ref={editor}></div>
+          <div
+            class={styles.input}
+            ref={editor}
+            onInput={() => {
+              console.log('this is ')
+            }}
+          ></div>
         </div>
       </div>
     )
