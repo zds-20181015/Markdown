@@ -35,3 +35,8 @@ export const useSideBarStore = defineStore('sidebar', () => {
     changeTabShow
   }
 })
+
+export const useMarkdownStore = defineStore('markdown', () => {
+  const markdown = ref<string>('this is markdown')
+  return { markdown }
+})

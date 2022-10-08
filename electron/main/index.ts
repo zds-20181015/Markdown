@@ -75,23 +75,22 @@ async function createWindow() {
   })
 }
 
-const menu = new Menu()
-menu.append(
-  new MenuItem({
-    label: 'Electron',
-    submenu: [
-      {
-        role: 'help',
-        accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
-        click: () => {
-          console.log('Electron rocks!')
-          //调用file.ts中的saveFile方法
-          saveFile('hello world')
-        }
+export const menu = new Menu()
+export const saveFileMenu = new MenuItem({
+  label: 'Electron',
+  submenu: [
+    {
+      role: 'help',
+      accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
+      click: () => {
+        console.log('Electron rocks!')
+        //调用file.ts中的saveFile方法
+        saveFile('new file')
       }
-    ]
-  })
-)
+    }
+  ]
+})
+menu.append(saveFileMenu)
 
 Menu.setApplicationMenu(menu)
 app.whenReady().then(createWindow)
@@ -132,4 +131,8 @@ ipcMain.handle('open-win', (event, arg) => {
     childWindow.loadURL(`${url}/#${arg}`)
     // childWindow.webContents.openDevTools({ mode: "undocked", activate: true })
   }
+})
+
+ipcMain.handle('save-markdown', (_e: any, markdown: string) => {
+  return saveFile(markdown)
 })

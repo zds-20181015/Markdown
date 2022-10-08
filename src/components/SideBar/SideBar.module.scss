@@ -6,7 +6,7 @@
   height: 100vh;
   box-shadow: 0 2px 12px 2px #eee;
   .icon-bar {
-    flex-basis: 3rem;
+    flex-basis: 2rem;
     position: relative;
     box-sizing: border-box;
     padding: 0.5rem;
@@ -21,8 +21,8 @@
       align-items: center;
     }
     .expand {
-      width: 2rem;
-      height: 2rem;
+      width: 3rem;
+      height: 3rem;
       position: absolute;
       bottom: 0;
     }
