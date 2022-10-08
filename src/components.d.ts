@@ -10,8 +10,6 @@ declare module '@vue/runtime-core' {
     ElButton: typeof import('element-plus/es')['ElButton']
     ElIcon: typeof import('element-plus/es')['ElIcon']
     ElInput: typeof import('element-plus/es')['ElInput']
-    ElTree: typeof import('element-plus/es')['ElTree']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     SideBarFiles: typeof import('./components/SideBar/SideBarFiles.vue')['default']
     SideBarSearch: typeof import('./components/SideBar/SideBarSearch.vue')['default']
     SideBarTOCTree: typeof import('./components/SideBar/SideBarTOCTree.vue')['default']
