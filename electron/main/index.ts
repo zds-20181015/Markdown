@@ -76,18 +76,17 @@ async function createWindow() {
     return { action: 'deny' }
   })
 }
-// const muya = useMuya()
-// const markdown = muya.editor.jsonState.getMarkdown()
 export const menu = new Menu()
 export const saveFileMenu = new MenuItem({
-  label: '文件',
+  label: 'Electron',
   submenu: [
     {
-      role: '保存文件',
+      role: 'help',
       accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
       click: () => {
         console.log('Electron rocks!')
-        saveFile('markdown')
+        //调用file.ts中的saveFile方法
+        saveFile('new file')
       }
     }
   ]
