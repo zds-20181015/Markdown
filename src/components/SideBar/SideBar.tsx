@@ -7,7 +7,7 @@ import SideBarTOCTree from './SideBarTOCTree.vue'
 import SideBarFiles from './SideBarFiles.vue'
 import SideBarSearch from './SideBarSearch.vue'
 import { Component, ref } from 'vue'
-
+import { toggleDark } from '@/components/ElementPlus'
 interface Tab {
   [key: string]: { component: Component; icon: Component }
 }
@@ -49,6 +49,14 @@ export default defineComponent({
             <Icon name="files" />
             <Icon name="toc" />
             <Icon name="search" />
+            <div
+              class={styles.icon}
+              onClick={() => {
+                toggleDark()
+              }}
+            >
+              <ElIcons.Sunny />
+            </div>
             <div
               class={`${styles.icon} ${styles.expand}`}
               onClick={changeTabShow}
