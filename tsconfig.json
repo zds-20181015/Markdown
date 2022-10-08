@@ -19,6 +19,6 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true
   },
-  "include": ["env.d.ts", "src/**/*", "src/**/*.vue"],
+  "include": ["env.d.ts", "src/**/*", "src/**/*.vue", "electron/**/*"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

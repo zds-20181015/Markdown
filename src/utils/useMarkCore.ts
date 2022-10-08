@@ -58,7 +58,7 @@ export function useMuya(container?: HTMLDivElement) {
     ;(window as any).muya = muya
     muya.init()
   } else if (muya === undefined) {
-    throw Error('未初始化')
+    // throw Error('未初始化')
   }
   return muya
 }

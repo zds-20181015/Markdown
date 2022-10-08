@@ -8,7 +8,9 @@ import SideBarFiles from './SideBarFiles.vue'
 import SideBarSearch from './SideBarSearch.vue'
 import { Component, ref } from 'vue'
 import { toggleDark } from '@/components/ElementPlus'
-import { useThemeStore, useSideBarStore } from '@/store'
+import { useThemeStore, useSideBarStore, useMarkdownStore } from '@/store'
+import { ipcRenderer } from 'electron'
+import { useMuya } from '@/utils/useMarkCore'
 interface Tab {
   [key: string]: { component: Component; icon: Component }
 }
@@ -40,9 +42,6 @@ export default defineComponent({
       const tabState = () => (tabShow.value ? styles.open : styles.close)
       return styles.tab + ' ' + tabState()
     })
-    const changeTabShow = () => {
-      tabShow.value = !tabShow.value
-    }
     const themeStore = useThemeStore()
     const sideBarStore = useSideBarStore()
     return () => (
