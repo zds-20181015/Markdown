@@ -48,7 +48,6 @@ export default defineComponent({
       <div>
         <div class={styles.root}>
           <div class={styles['icon-bar']}>
-            <Icon name="files" />
             <Icon name="toc" />
             <Icon name="search" />
             <div
