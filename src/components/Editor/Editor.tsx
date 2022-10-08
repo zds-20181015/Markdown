@@ -50,11 +50,11 @@ export default defineComponent({
       }
     })
     return () => (
-      <el-main class={styles.root}>
+      <div class={styles.root}>
         <div class={styles.editor}>
           <div class={styles.input} ref={inputRef}></div>
         </div>
-      </el-main>
+      </div>
     )
   }
 })
