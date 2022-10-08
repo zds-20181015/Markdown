@@ -1,4 +1,5 @@
 // import SideBar from './SideBar'
+
 // export default SideBar
 export interface TOCTree {
   label: string
@@ -6,9 +7,8 @@ export interface TOCTree {
 }
 
 export interface TOC {
-  content: string
+  text: string
   lvl: number
-  slug?: string
   children?: TOC[]
 }
 
@@ -16,7 +16,7 @@ export interface TOC {
  * 比较深度
  */
 const isDeeper = (c: TOC, p: TOC) => c.lvl > p.lvl
-const toLabel = (c: TOC) => ({ label: c.content, ...c })
+const toLabel = (c: TOC) => ({ label: /\w.*/.exec(c.text), ...c })
 /**
  * 将扁平的TOC数组转化成树状的TOC数组
  */
@@ -48,4 +48,22 @@ export const toTOCTree = (flat: TOC[]): TOC[] => {
         }
   })
   return res
+}
+
+export function stateToTOCTree(state: any[]) {
+  const header = (state: any) => {
+    const res: any = []
+    for (const v of state) {
+      if (v.name === 'atx-heading' || v.name === 'setext-heading') {
+        res.push({
+          text: v.text,
+          lvl: v.meta.level
+        })
+      }
+    }
+    return res
+  }
+  const headers = header(state)
+  const tree = toTOCTree(headers)
+  return tree
 }

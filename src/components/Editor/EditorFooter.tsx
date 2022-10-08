@@ -4,9 +4,9 @@ import styles from './EditorFooter.module.scss'
 export default defineComponent({
   setup() {
     return () => (
-      <div class={styles.root}>
-        <ElButton class="button">更换主题</ElButton>
-      </div>
+      <el-footer class={styles.root}>
+        <h4>Footer</h4>
+      </el-footer>
     )
   }
 })

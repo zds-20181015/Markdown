@@ -10,6 +10,7 @@
     "sourceMap": true,
     "baseUrl": "./",
     "strict": true,
+    "allowJs": true,
     //volar支持element-plus
     "types": ["element-plus/global"],
     "paths": {

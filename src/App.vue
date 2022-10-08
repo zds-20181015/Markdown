@@ -11,7 +11,7 @@ import { ElContainer, ElAside, ElMain, ElHeader, ElFooter } from 'element-plus'
 <template>
   <div class="main">
     <el-container>
-      <el-aside width="200px"><SideBar /></el-aside>
+      <el-aside width="300px"><SideBar /></el-aside>
       <el-container>
         <el-header><EditorHeader /></el-header>
         <el-main><Editor /> </el-main>
