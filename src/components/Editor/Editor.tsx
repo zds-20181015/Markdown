@@ -35,10 +35,10 @@ export default defineComponent({
       return themeStore.theme
     })
     /**
-     * 换色，影响highlight
+     * 换色，会影响highlight
      */
-    watch(themeStore, () => {
-      const c = document.querySelectorAll(`.${styles.input} *`)
+    watchEffect(() => {
+      const c = document.querySelectorAll(`.${styles.input} .mu-container *`)
       if (themeStore.theme === 'dark') {
         c.forEach((v: any) => {
           v.style.color = '#eee'
