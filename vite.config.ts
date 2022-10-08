@@ -15,11 +15,6 @@ rmSync('dist', { recursive: true, force: true }) // v14.14.0
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  build: {
-    rollupOption: {
-      external: ['electron']
-    }
-  },
   plugins: [
     vue(),
     vueJsx({}),

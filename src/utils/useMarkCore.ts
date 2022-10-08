@@ -52,7 +52,6 @@ let muya: Muya | undefined
 export function useMuya(container?: HTMLDivElement) {
   if (container) {
     muya = new Muya(container, {
-      json: DEFAULT_STATE,
       disableHtml: true
     })
     ;(window as any).muya = muya

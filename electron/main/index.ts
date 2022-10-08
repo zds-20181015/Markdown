@@ -45,6 +45,8 @@ async function createWindow() {
   win = new BrowserWindow({
     title: 'Main window',
     icon: join(process.env.PUBLIC, 'favicon.ico'),
+    width: 1120,
+    height: 660,
     webPreferences: {
       preload,
       // Warning: Enable nodeIntegration and disable contextIsolation is not secure in production
@@ -74,18 +76,18 @@ async function createWindow() {
     return { action: 'deny' }
   })
 }
-
+// const muya = useMuya()
+// const markdown = muya.editor.jsonState.getMarkdown()
 export const menu = new Menu()
 export const saveFileMenu = new MenuItem({
-  label: 'Electron',
+  label: '文件',
   submenu: [
     {
-      role: 'help',
+      role: '保存文件',
       accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
       click: () => {
         console.log('Electron rocks!')
-        //调用file.ts中的saveFile方法
-        saveFile('new file')
+        saveFile('markdown')
       }
     }
   ]

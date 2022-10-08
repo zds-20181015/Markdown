@@ -26,6 +26,7 @@ export default defineComponent({
       const markdown = muya.editor.jsonState.getMarkdown()
       ipcRenderer.invoke('save-markdown', markdown)
     }
+
     let muya: any
     onMounted(() => {
       muya = useMuya(inputRef.value)
