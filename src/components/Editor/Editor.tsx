@@ -38,13 +38,13 @@ export default defineComponent({
      * 换色，影响highlight
      */
     watch(themeStore, () => {
-      const c = document.querySelectorAll(`.${styles.input} *:not(pre)`)
+      const c = document.querySelectorAll(`.${styles.input} *`)
       if (themeStore.theme === 'dark') {
-        c.forEach((v) => {
+        c.forEach((v: any) => {
           v.style.color = '#eee'
         })
       } else {
-        c.forEach((v) => {
+        c.forEach((v: any) => {
           v.style.color = '#111'
         })
       }
