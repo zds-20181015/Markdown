@@ -15,7 +15,6 @@ export default defineComponent({
     const editor = ref<HTMLDivElement | undefined>(undefined)
     const tocStore = useTOCStore()
     onMounted(() => {
-      console.log(editor.value)
       const mark = useMarkCore(editor?.value)
       /**
        * 注册事件，当输入时响应

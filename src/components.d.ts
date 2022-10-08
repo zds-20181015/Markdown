@@ -7,8 +7,6 @@ export {}
 
 declare module '@vue/runtime-core' {
   export interface GlobalComponents {
-    ElTree: typeof import('element-plus/es')['ElTree']
-    HelloWorld: typeof import('./components/HelloWorld.vue')['default']
     SideBarFiles: typeof import('./components/SideBar/SideBarFiles.vue')['default']
     SideBarSearch: typeof import('./components/SideBar/SideBarSearch.vue')['default']
     SideBarTOCTree: typeof import('./components/SideBar/SideBarTOCTree.vue')['default']

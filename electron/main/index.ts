@@ -14,9 +14,10 @@ process.env.PUBLIC = app.isPackaged
   ? process.env.DIST
   : join(process.env.DIST, '../public')
 
-import { app, BrowserWindow, shell, ipcMain } from 'electron'
+import { app, BrowserWindow, shell, ipcMain, Menu, MenuItem } from 'electron'
 import { release } from 'os'
 import { join } from 'path'
+import { saveFile } from '../filesystem/file'
 
 // Disable GPU Acceleration for Windows 7
 if (release().startsWith('6.1')) app.disableHardwareAcceleration()
@@ -74,6 +75,25 @@ async function createWindow() {
   })
 }
 
+const menu = new Menu()
+menu.append(
+  new MenuItem({
+    label: 'Electron',
+    submenu: [
+      {
+        role: 'help',
+        accelerator: process.platform === 'darwin' ? 'Cmd+S' : 'Ctrl+S',
+        click: () => {
+          console.log('Electron rocks!')
+          //调用file.ts中的saveFile方法
+          saveFile('hello world')
+        }
+      }
+    ]
+  })
+)
+
+Menu.setApplicationMenu(menu)
 app.whenReady().then(createWindow)
 
 app.on('window-all-closed', () => {
