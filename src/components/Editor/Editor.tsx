@@ -1,36 +1,60 @@
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, watchEffect } from 'vue'
 import styles from './Editor.module.scss'
 
 import _EditorTest from './_EditorTest'
 
-import MarkCore from '@/core'
-import { ElButton } from 'element-plus'
+import Muya from '@/lib'
 
-import { useTOCStore } from '@/store'
+import { useTOCStore, useThemeStore } from '@/store'
 
-import { useMarkCore } from '@/utils/useMarkCore'
+import { useMuya } from '@/utils/useMarkCore'
+
+import { stateToTOCTree } from '../SideBar'
 
 export default defineComponent({
   setup() {
-    const editor = ref<HTMLDivElement | undefined>(undefined)
+    const inputRef = ref<HTMLDivElement | undefined>(undefined)
     const tocStore = useTOCStore()
+    const setToc = (muya: Muya) => {
+      const state = muya.editor.jsonState.getState()
+      const tocTree = stateToTOCTree(state)
+      tocStore.setTOC(tocTree)
+    }
     onMounted(() => {
-      console.log(editor.value)
-      const mark = useMarkCore(editor?.value)
-      /**
-       * 注册事件，当输入时响应
-       */
-      mark?.eventCenter.subscribe('input-toc', (toc: any) => {
-        tocStore.setTOC(toc)
-      })
+      if (inputRef.value) {
+        const muya = useMuya(inputRef.value)
+        setToc(muya)
+        muya.domNode.oninput = () => {
+          setToc(muya)
+        }
+      }
     })
 
+    const themeStore = useThemeStore()
+    const theme = computed(() => {
+      return themeStore.theme
+    })
+    /**
+     * 换色，影响highlight
+     */
+    watch(themeStore, () => {
+      const c = document.querySelectorAll(`.${styles.input} *:not(pre)`)
+      if (themeStore.theme === 'dark') {
+        c.forEach((v) => {
+          v.style.color = '#eee'
+        })
+      } else {
+        c.forEach((v) => {
+          v.style.color = '#111'
+        })
+      }
+    })
     return () => (
-      <div class={styles.root}>
+      <el-main class={styles.root}>
         <div class={styles.editor}>
-          <div class={styles.input} ref={editor}></div>
+          <div class={styles.input} ref={inputRef}></div>
         </div>
-      </div>
+      </el-main>
     )
   }
 })
