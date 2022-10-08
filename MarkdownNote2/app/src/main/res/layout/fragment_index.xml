@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:background="@color/white"/>
+
+        <ListView
+            android:id="@+id/lv_fragment_index"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:dividerHeight="10dp"
+            android:listSelector="@color/purple_500" />
+
+        <!--    android:divider="@null"-->
+        <!--    android:listSelector="@color/teal_200" -->
+</LinearLayout>
