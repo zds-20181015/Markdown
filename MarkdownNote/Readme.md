@@ -6,3 +6,5 @@
 - 支持Markdown格式的基本语法
 - 支持文件实时预览
 - 支持文件删除与保存
+
+MarkdownNote是最开始设计的大体框架，MarkdownNote2是最终版。
