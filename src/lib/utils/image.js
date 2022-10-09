@@ -39,7 +39,7 @@ export const getImageSrc = (src) => {
     } else if (window && window.process && window.process.type === 'renderer') {
       return {
         isUnknownType: false,
-        src: 'file://' + require('path').resolve(window.DIRNAME, src)
+        src: 'file://' + import('path').resolve(window.DIRNAME, src)
       }
     }
   } else if (isUrl && !imageExtension) {

@@ -11,7 +11,6 @@ import { useMuya } from '@/utils/useMarkCore'
 
 import { stateToTOCTree } from '../SideBar'
 import { ElButton } from 'element-plus'
-import { ipcRenderer } from 'electron'
 
 export default defineComponent({
   setup() {
@@ -21,10 +20,6 @@ export default defineComponent({
       const state = muya.editor.jsonState.getState()
       const tocTree = stateToTOCTree(state)
       tocStore.setTOC(tocTree)
-    }
-    const saveFile = () => {
-      const markdown = muya.editor.jsonState.getMarkdown()
-      ipcRenderer.invoke('save-markdown', markdown)
     }
 
     let muya: any
@@ -57,7 +52,6 @@ export default defineComponent({
     })
     return () => (
       <div class={styles.root}>
-        <ElButton onclick={saveFile}>保存文件</ElButton>
         <div class={styles.editor}>
           <div class={styles.input} ref={inputRef}></div>
         </div>
