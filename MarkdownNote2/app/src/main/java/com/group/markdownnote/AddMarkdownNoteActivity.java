@@ -3,8 +3,10 @@ package com.group.markdownnote;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -32,6 +34,7 @@ public class AddMarkdownNoteActivity extends AppCompatActivity implements View.O
     private ImageButton bt_preview, bt_format, bt_listb, bt_listn, bt_link, bt_quote;
     private ImageButton bt_codeb, bt_bold, bt_bk, bt_image, bt_camera, bt_italic;
     private Button bt_txt, bt_h1, bt_h2, bt_h3, bt_h4, bt_h5, bt_h6;
+    private WebView wv_markdown_note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,7 @@ public class AddMarkdownNoteActivity extends AppCompatActivity implements View.O
         initListener();
         et_content.setVisibility(View.VISIBLE);
 
+        wv_markdown_note.loadUrl("file:///android_asset/index.html");
     }
 
     private void initUI() {
@@ -74,6 +78,8 @@ public class AddMarkdownNoteActivity extends AppCompatActivity implements View.O
         bt_h4 = findViewById(R.id.bt_h4);
         bt_h5 = findViewById(R.id.bt_h5);
         bt_h6 = findViewById(R.id.bt_h6);
+
+        wv_markdown_note = findViewById(R.id.wv_markdown_note);
     }
 
     private void initListener() {
@@ -102,6 +108,8 @@ public class AddMarkdownNoteActivity extends AppCompatActivity implements View.O
         bt_h4.setOnClickListener(this);
         bt_h5.setOnClickListener(this);
         bt_h6.setOnClickListener(this);
+
+        wv_markdown_note.setOnClickListener(this);
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -134,9 +142,39 @@ public class AddMarkdownNoteActivity extends AppCompatActivity implements View.O
                 break;
             }
 
+            case R.id.bt_bold:{
+
+                sendToJS("**Text**");
+            }
+
             default:
                 break;
         }
     }
+
+    public void sendToJS(String msg) {
+        if (msg == null) return;
+        if (true) {
+            int index = et_content.getSelectionStart();
+            Editable editable = et_content.getText();
+            editable.insert(index, msg);
+        } else {
+            msg = convert(msg);
+            wv_markdown_note.loadUrl("javascript:insert(" + "\"" + msg + "\"" + ");");
+        }
+    }
+
+    public static String convert(String string) {
+        StringBuffer unicode = new StringBuffer();
+
+        for (int i = 0; i < string.length(); i++) {
+            // 取出每一个字符
+            char c = string.charAt(i);
+            // 转换为unicode
+            unicode.append(String.format("\\u%04x", Integer.valueOf(c)));
+        }
+        return unicode.toString();
+    }
+
 
 }
