@@ -35,7 +35,7 @@
     "@vue/eslint-config-typescript": "^11.0.0",
     "commitizen": "^4.2.5",
     "cz-customizable": "6.3.0",
-    "electron": "^20.2.0",
+    "electron": "^21.2.1",
     "electron-builder": "^23.3.3",
     "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
